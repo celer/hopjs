@@ -1,0 +1,4 @@
+<%=method.getMethod()%>.asJob=function(input,options){ 
+	var params = <%=JSON.stringify(method.params)%>;
+	RAPI.asJob("<%=method.getMethod()%>","<%=method.method%>","<%=method.getPath()%>",params,input,options);
+}

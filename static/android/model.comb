@@ -1,0 +1,42 @@
+package <%=package%>;
+
+import java.util.*;
+import com.google.gson.JsonElement;
+
+public class <%=RAPI.camelHump(model.name)%> extends JSObject {
+
+	<% for(var i in model.fields){ %>
+	<% var field = model.fields[i]; %>
+	<% var type = field.toJavaType(); %>
+	
+	public boolean is<%=RAPI.camelHump(field.name)%>Defined(){
+		return this.isDefined("<%=field.name%>");
+	}
+
+
+	public <%=type%> <%=(field.type!=Boolean?"get":"is")%><%=RAPI.camelHump(field.name)%>(){
+		return (<%=type%>) this.get("<%=field.name%>");
+	}
+	public void set<%=RAPI.camelHump(field.name)%>(<%=type%> value){
+		this.put("<%=field.name%>",(Object) value);
+	}
+	<% } %>
+
+	public Class getFieldType(String name){
+	<% for(var i in model.fields){ %>
+	<% var field = model.fields[i]; %>
+	<% var type = field.toJavaType(); %>
+		if(name.equalsIgnoreCase("<%=field.name%>")) return <%=type%>.class;
+		
+	<% } %>
+		return null;
+	}
+
+	public static <%=RAPI.camelHump(model.name)%> fromJson(JsonElement element){
+		<%=RAPI.camelHump(model.name)%> val = new <%=RAPI.camelHump(model.name)%>();
+		val.readJson(element);
+		return val;
+	}
+	
+}
+

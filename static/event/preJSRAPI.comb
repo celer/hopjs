@@ -1,0 +1,26 @@
+
+if(!RAPI.Event)
+	RAPI.Event={};
+
+RAPI.Event.routes={};
+
+
+RAPI.Event.on=function(url,onMessage){
+	if(!RAPI.Event.routes[url]){
+		var newChannel=true;
+		RAPI.Event.routes[url]=[];
+	}
+	RAPI.Event.routes[url].push(onMessage);
+	if(newChannel){
+		RAPI.Event.subscribe({ key: RAPI.Event.key, channel: url});	
+	}
+}
+
+RAPI.Event.route=function(msg){
+	if(RAPI.Event.routes[msg.url]){
+		for(var i in RAPI.Event.routes[msg.url]){
+			RAPI.Event.routes[msg.url][i](msg);
+		}
+	}
+}
+

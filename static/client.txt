@@ -1,0 +1,25 @@
+User.process.asJob(input,{
+	onStart:function(){
+
+	},
+	onStatus:function(msg,percent){
+
+	},
+	onFinish:function(err,result){
+
+	}
+});
+
+
+
+API.Event.connect(function(err,events){
+	//call _event/auth -> authCode
+	//socket.io.connect...
+	event.subscribe("/user/kelar",function(err,res){
+			//err -> Permission denied
+		event.onMessage("/usr/kelar",function(msg){
+		
+		});
+	}),
+
+});

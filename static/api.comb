@@ -1,0 +1,99 @@
+RAPI = { 
+	onAJAXSuccess:function(data, textStatus, xhr,onComplete,methodName){
+  	if(xhr.status==200){ 
+			onComplete(null, data); 
+			$(document).trigger(methodName,data); 
+		} else console.log(arguments); 
+	},
+	onAJAXError:function(xhr, textStatus, errorThrown,onComplete,methodName){
+		if(xhr.status==404){ 
+			onComplete(null,null); 
+		} else if(xhr && xhr.responseText && xhr.responseText.length>0){ 
+			onComplete(xhr.responseText) 
+		} else if(xhr.status==0){ 
+			_xhr=xhr; 
+			_errorThrown=errorThrown; 
+			console.log('Server Error',methodName,xhr,errorThrown,textStatus); 
+			onComplete('Error contacting server'); 
+		} else console.log(arguments);  
+	},
+	validateInput:function(input,params){
+		var output = {};
+		for(var paramName in params){
+			var param = params[paramName];
+			if(param.demand && input[paramName]==undefined)
+				throw ("Required parameter '"+paramName+"' is missing");
+			output[paramName]=input[paramName];
+		}
+		return output;
+	},
+	patchURL:function(input,url,params){
+		for(var paramName in params){
+			var param = params[paramName];
+
+			url = url.replace(":"+paramName,input[paramName]);
+		}
+		return url;
+	},
+	remoteExec:function(methodName,type,url,options,params,input,onComplete){
+		if(typeof input=="function" && typeof onComplete=="undefined"){
+			onComplete=input;
+			input=null;
+		}
+		input=input||{};
+		options=options||{};
+		onComplete=onComplete||function(err,res){
+			console.log("debug:",err,res);
+		};
+		try {
+			input = RAPI.validateInput(input,params);
+			url=RAPI.patchURL(input,url,params);
+		} catch(e){
+			return onComplete(e.toString());
+		}
+		if(options.noCache){
+			input._when=(new Date().getTime())
+		}
+		$.ajax(url,{
+			type:type,
+			data:input,
+			dataType:"json",
+			success: function(data, textStatus, jqXHR){ RAPI.onAJAXSuccess(data, textStatus, jqXHR,onComplete,methodName); },
+			error: function(jqXHR, textStatus, errorThrown){ RAPI.onAJAXError(jqXHR, textStatus, errorThrown,onComplete,methodName); },
+		});
+
+	}
+
+}
+
+<%= RAPI.renderBeforeTemplates("JavaScript",{}) %>
+
+
+<% for(var i in Objects){ %>
+<% var obj = Objects[i] %>
+
+<%= obj.renderBeforeTemplates("JavaScript",{ object: obj}) %>
+
+
+<%=obj.name %>={};
+<% for(var methodName in obj.methods){ %>
+<% var method = obj.methods[methodName]; %>
+
+<%= method.renderBeforeTemplates("JavaScript",{ method: method}) %>
+
+
+<%=obj.name%>.<%=methodName%>=function(input,onComplete){
+	var params = <%= JSON.stringify(method.params) %>;
+	RAPI.remoteExec("<%=obj.name%>.<%=methodName%>","<%=method.method%>","<%=method.getPath()%>",<%= JSON.stringify(method.options) %>,params,input,onComplete);
+}
+
+<%= method.renderAfterTemplates("JavaScript",{ method: method}) %>
+
+<% } %>
+			
+<%= obj.renderAfterTemplates("JavaScript",{ object: obj}) %>
+
+<% } %>
+
+<%= RAPI.renderAfterTemplates("JavaScript",{}) %>
+

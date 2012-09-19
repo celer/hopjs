@@ -1,0 +1,137 @@
+
+
+var TestCase = function(name){
+	this.name=name;
+	this.tasks=[];
+	TestCase.testCases[name]=this;
+}
+
+TestCase.testCases={};
+
+TestCase.get=function(name){
+	return TestCase.testCases[name];
+}
+
+TestCase.prototype.add=function(onTask){
+	this.tasks.push(onTask);
+}
+
+TestCase.prototype.run=function(onComplete){
+	onComplete = onComplete||{};
+	var self=this;
+	var results=[];
+	var taskNum = 0;
+	var runTask = function(){
+		if(taskNum < self.tasks.length){
+			var task = self.tasks[taskNum];
+			task(function(err,res){
+				results.push({ err: err, res: res, task: task.toString() });
+				taskNum++;
+				setTimeout(runTask,50);
+			});
+		}	else {
+			onComplete(null,results);
+		}
+	}
+	setTimeout(runTask,50);
+}
+
+TestCase.runInSelector=function(testCase,selector,onComplete){
+		var tc = TestCase.get(testCase);
+		$(selector).append("<br>"+testCase+"<hr>");
+		tc.run(function(err,res){
+			if(err){
+				$(selector).append(err);
+			}  else {
+				var fail=0, pass=0;
+				for(var i in res){
+					var r = res[i];	
+					if(!r.err){
+						pass++;
+					} else {
+						$(selector).append("FAIL:"+r.err+"<br>");		
+						r.task=r.task.replace(/\t/g,"  ");
+						r.task=r.task.replace(/^[\s\t]*\n/g,"");
+						$(selector).append("<pre>"+r.task+"</pre><br>");		
+						fail++;
+					}	
+				}
+				$(selector).append(fail+" tests failed, "+pass+" tests passed - "+((pass/(fail+pass))*100).toFixed(1)+"% pass rate");
+			}
+			onComplete(null,{ pass: pass, fail:fail });
+		});
+
+}
+
+TestCase.runInDialog=function(testCase,selector){
+	$(selector).empty();
+
+	if(TestCase.get(testCase)){
+	
+		$(selector).dialog({
+			title:"Running test: "+testCase,
+			width:740
+		});
+	
+		TestCase.runInSelector(testCase,selector,function(){});
+
+	} else {
+		$(selector).dialog({
+			title:"Running test: "+(testCase==""?"All":testCase),
+			width:740
+		});
+		var toRun = [];
+		for(var i in TestCase.testCases){
+			var tc = TestCase.testCases[i];
+			if(new RegExp("^"+testCase).test(i)){
+				toRun.push(i);	
+			}
+		}
+		var pass=0,fail=0, cases=0;
+		var runTestCases=function(){
+			if(toRun.length>0){
+				TestCase.runInSelector(toRun.pop(),selector,function(err,res){
+					pass+=res.pass;
+					fail+=res.fail;
+					cases++;
+					runTestCases();
+				});
+			} else {
+				$(selector).append("<hr>"+fail+" tests failed, "+pass+" tests passed - "+((pass/(fail+pass))*100).toFixed(1)+"% pass rate out of "+cases+" test cases");
+			}
+		}
+		runTestCases();
+	} 
+		
+}
+
+
+<% for(var testCase in TestCases){ %>
+<% var TestCase = TestCases[testCase]; %>
+var task = new TestCase("<%=TestCase.name%>");
+<% for(var taskIndex in TestCase.tasks){ %>
+<% var task = TestCase.tasks[taskIndex]; %>
+task.add(function(onComplete){	
+	<% if(task instanceof RAPI.TestTask){  %>
+	<%=task.funcName%>(<%=JSON.stringify(task.getInputObject())%>,function(err,output){
+			<% for(var testIndex in task.test){ %>
+			<% var test = task.test[testIndex]; %>
+			<% if(test.type=='noError'){ %>
+				if(err!=null) return onComplete("Error was not expected");
+			<% } else if(test.type=='hasError'){%>
+				if(err==null) return onComplete("Error was expected");
+				<% if(test.expectedError){ %>
+				else if( !(<%=test.expectedError %>.test(err)) ) return onComplete("Error did not match: "+<%=test.expectedError%>.toString());
+				<%}%>
+			<% } else if(test.type=='outputNotNull'){ %>
+				if(output==null) return onComplete("Output must not be null");
+			<% } else if(test.type=='outputMatches'){ %>
+				if(output==null) return onComplete("Output must not be null");
+			<% } %>
+			<% } %>
+			return onComplete(null,output);
+	});
+	<% } %>
+});
+<% } %>
+<% } %>

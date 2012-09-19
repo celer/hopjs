@@ -1,0 +1,34 @@
+RAPI.Event.initSocketIO=function(){
+	RAPI.Event.getKey(function(err,key){
+		RAPI.Event.key=key;		
+		socket.emit("RAPI.Event.Listen",key);
+
+		socket.on("RAPI.Event",function(msg){
+			RAPI.Event.route(msg);
+		});
+	});
+}
+
+RAPI.Event.initSocketIO();
+
+RAPI.socketExec=function(methodName,type,url,options,params,input,onComplete){
+		if(typeof input=="function" && typeof onComplete=="undefined"){
+			onComplete=input;
+			input=null;
+		}
+		input=input||{};
+		options=options||{};
+		onComplete=onComplete||function(err,res){
+			console.log("debug:",err,res);
+		};
+		try {
+			input = RAPI.validateInput(input,params);
+			url=RAPI.patchURL(input,url,params);
+		} catch(e){
+			return onComplete(e.toString());
+		}
+		if(options.noCache){
+			input._when=(new Date().getTime())
+		}
+		socket.emit("RAPI.call",{ call:methodName, input: input, options: options });
+}

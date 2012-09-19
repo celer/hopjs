@@ -1,0 +1,1 @@
+<div><button onClick='TestCase.runInDialog("<%=object.name%>","#dialog")'/>Run tests on <%=object.name%></button></div>

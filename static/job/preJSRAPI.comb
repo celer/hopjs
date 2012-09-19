@@ -1,0 +1,57 @@
+RAPI.asJob=function(methodName,type,url,params,input,options){
+		input=input||{};
+		options=options||{};
+
+		options.onStarted=options.onStarted||function(){};
+		options.onFinished=options.onFinished||function(){};
+
+		var waitForJob=function(jobID,status){
+			console.log("Id wait on job",jobID);
+			var finished=false;
+			options.onStarted(jobID,status)
+
+			if(options.onStatus){
+				var waitForStatus=function(){
+					JobStatus.listen({ jobID: jobID},function(err,res){
+						if(res && res.percent<=100 && !finished){
+        			options.onStatus(res.msg,res.percent);	
+							waitForStatus();
+						}
+      		});
+				}
+				waitForStatus();
+			}
+			
+
+			JobStatus.wait({ jobID: jobID},function(err,res){
+				finished=true;
+				options.onFinished(err,res);
+			});					
+			
+		
+
+		}
+
+		try {
+			input = RAPI.validateInput(input,params);
+			url=RAPI.patchURL(input,url,params);
+		} catch(e){
+			return options.onFinished(e.toString());
+		}
+		$.ajax(url,{
+			type:type,
+			headers: {
+				"Job-No-Wait":true
+			},
+			data:input,
+			dataType:"json",
+			success: function(data, textStatus, jqXHR){ 
+				console.log(data, textStatus, jqXHR); 
+				console.log(data,jqXHR.getResponseHeader("Job-ID"));
+				if(jqXHR.getResponseHeader("Job-ID")){  waitForJob(jqXHR.getResponseHeader("Job-ID"),jqXHR.getResponseHeader("Job-Status")); }  
+			},
+			error: function(jqXHR, textStatus, errorThrown){ console.log(jqXHR, textStatus, errorThrown); },
+		});
+
+
+}

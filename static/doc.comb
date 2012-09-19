@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+	</head>
+	<body>
+		
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/themes/pepper-grinder/jquery-ui.css" />
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+
+		<style type="text/css">
+			.apiObject {
+				margin: 5px;
+				padding: 2px;
+				border: 1px solid gray;
+				border-radius: 5px;
+			}
+		
+			.objUsage {
+				font-style: italic;
+				font-size: 1em;
+				color: gray;
+			}
+
+			.methodParams { 
+				font-style: italic;
+				color: gray;
+			}
+			
+			.paramBlock {
+				margin-left: 20px;
+			}
+	
+		</style>
+		<script src="<%=RAPI.apiURL%>"></script>
+		<script src="<%=RAPI.testURL%>"></script>
+	
+		<%= RAPI.renderBeforeTemplates("Doc") %>	
+
+		<% for(var objName in RAPI.Objects){ %>
+			<div class="apiObject">
+			<% var obj = RAPI.Objects[objName]; %>
+			<h2><%= obj.name %><%if(obj.desc){%>&nbsp;-&nbsp;<span class="objUsage"><%=obj.desc%></span><%}%></h2>
+			<hr>
+		
+			<%= obj.renderBeforeTemplates("Doc", { object: obj }) %>	
+
+				
+			<% for(var methodName in obj.methods){ %>
+				<% var method = obj.methods[methodName]; %>
+				<div class="apiMethod">
+				<%var params = []; %>
+				<%for(var paramName in method.params) {%>
+					<%var param = method.params[paramName]; %>
+					<%params.push(paramName+(param.demand?"*":""))%>
+				<% } %>
+				<%params.sort(function(a,b){ if(a.indexOf("*")==-1) return 1;  }) %>
+				<h3><%= obj.name %>.<%= method.name %>&nbsp;<span class="methodParams">({<%= params.join(", ") %>},onComplete)</span></h3>
+					<%= (method.usage?method.usage:"") %>
+				<div class="paramBlock">
+					<u>Input Parameters</u><br>
+					<%for(var i in params) {%>
+						<%var paramName = params[i]; %>
+						<%var origParamName = paramName.replace("*",""); %>
+						<span>&nbsp;<%=(paramName)%></span><% if(method.params[origParamName].desc){ %> - <span><%=method.params[origParamName].desc%><% } %><br>
+					<% } %>
+				</div>
+				<br>
+				<div class="postMethodBlock">
+					 <%= method.renderAfterTemplates("Doc", { method: method}) %> 
+				</div>
+				</div>
+				<br>
+			<% } %>
+			
+			<%= obj.renderAfterTemplates("Doc", { object: obj }) %>	
+			
+			
+			</div>
+
+		<% } %>
+		<span class="methodParams">* - Required parameter</span>
+		<div id="dialog"></div>
+		
+		<%= RAPI.renderAfterTemplates("Doc") %>	
+		
+	</body>
+</html>
