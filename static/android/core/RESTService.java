@@ -42,13 +42,14 @@ public class RESTService extends Service {
     static final String OUTPUT = "OUTPUT";
 
 	static final String METHODCALL = "METHODCALL";
-	static final String JSOBJECT = "JSOBJECT";
-	public static final String ERROR = "ERROR";
-	public static final String STRING = "STRING";
 	public static final String STATUSCODE = "STATUSCODE";
 	public static final String REASON = "REASON";
+
+	public static final String RESULT = "RESULT";
+
+	public static final String ERROR = "ERROR";
     
-    
+   
     /**
      * Handler of incoming messages from clients.
      */

@@ -1,6 +1,7 @@
 package us.slipangle.rest.android;
 
 import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -30,7 +31,9 @@ import org.apache.http.protocol.HttpContext;
 
 import us.slipangle.rapi.JSObject;
 import us.slipangle.rapi.MethodCall;
+import us.slipangle.rapi.RAPIFile;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.net.http.AndroidHttpClient;
 import android.net.http.HttpResponseCache;
 import android.os.Bundle;
@@ -69,7 +72,19 @@ public class RequestThread extends Thread {
 				    Log.d("XXXX",element.toString());				
 					 
 				    String outputType = call.getOutputClass();
-				    if(outputType.startsWith("List<")){
+				    if(outputType.equals("String")){
+				    	String s = element.getAsString();
+				    	bundle.putString(RESTService.RESULT,s);
+				    } else if(outputType.equals("Double")){
+				    	Double s = element.getAsDouble();
+				    	bundle.putDouble(RESTService.RESULT,s);
+				    } else if(outputType.equals("Boolean")){
+				    	Boolean s = element.getAsBoolean();
+				    	bundle.putBoolean(RESTService.RESULT,s);
+				    } else if(outputType.equals("Integer")){
+				    	Integer s = element.getAsInt();
+				    	bundle.putInt(RESTService.RESULT,s);
+				    } else if(outputType.startsWith("List<")){
 				    	if(element.isJsonArray()){
 				    		String objType = outputType.replace("List<","").replace(">","");
 				    		Log.d("XXXX","TYPE "+objType);
@@ -79,7 +94,7 @@ public class RequestThread extends Thread {
 				    			JSObject obj = JSObject.newObjectFromJson(objType, e);
 				    			list.add(obj);
 				    		}
-				    		bundle.putSerializable(RESTService.JSOBJECT, list);
+				    		bundle.putSerializable(RESTService.RESULT, list);
 				    	} else {
 				    		bundle.putString(RESTService.ERROR,"API Specification requires a return type of array, yet returned JSON element was not an array.");
 				    	}
@@ -87,25 +102,40 @@ public class RequestThread extends Thread {
 				    } else {
 				    	JSObject obj = JSObject.newObjectFromJson(call.getOutputClass(), element);
 				    	if(obj!=null){	
-				    		bundle.putSerializable(RESTService.JSOBJECT, obj);
+				    		bundle.putSerializable(RESTService.RESULT, obj);
 				    	} else {
 				    		bundle.putString(RESTService.ERROR,"Invalid model or class specified in API:"+call.getOutputClass());
 				    	}
 				    }
 				} else {
-					StringBuffer inputString = new StringBuffer();
-				    Reader inReader = new InputStreamReader(in);
-				    char inChars[] = new char[1024];
-				    int charsUsed = 0;
-				    while((charsUsed=inReader.read(inChars))!=-1){
-				    	inputString.append(inChars,0, charsUsed);
-				    }
-				    Log.d("XXXX",inputString.toString());
-				    bundle.putString(RESTService.STRING,inputString.toString());
+					String outputType = call.getOutputClass();
+					if(outputType=="File"){
+						String filename = restService.getCacheDir()+"/"+bundle.getString(RESTService.UUID);
+						FileOutputStream fos = restService.openFileOutput(filename, Context.MODE_PRIVATE);;
+						byte inBytes[] = new byte[2048];
+						int bytesLen=0;
+						while((bytesLen=in.read(inBytes))!=-1){
+							fos.write(inBytes,0,bytesLen);
+						}
+						fos.close();
+						RAPIFile file = new RAPIFile(filename,"","");
+						bundle.putSerializable(RESTService.RESULT,file);
+					} else {
+						StringBuffer inputString = new StringBuffer();
+					    Reader inReader = new InputStreamReader(in);
+					    char inChars[] = new char[1024];
+					    int charsUsed = 0;
+					    while((charsUsed=inReader.read(inChars))!=-1){
+					    	inputString.append(inChars,0, charsUsed);
+					    }
+					    Log.d("XXXX",inputString.toString());
+					    bundle.putString(RESTService.RESULT,inputString.toString());
+					}
 				}
 			} else if(resultCode==404){
 				
 			} else if(resultCode==500){
+	
 				bundle.putString(RESTService.ERROR, reason);
 				
 				StringBuffer inputString = new StringBuffer();
@@ -116,7 +146,8 @@ public class RequestThread extends Thread {
 			    	inputString.append(inChars,0, charsUsed);
 			    }
 			    Log.e("XXXX",inputString.toString());
-			    bundle.putString(RESTService.STRING,inputString.toString());
+			    bundle.putString(RESTService.RESULT,inputString.toString());
+				
 			}
 	
 		    in.close();
@@ -124,7 +155,7 @@ public class RequestThread extends Thread {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			bundle.putString(RESTService.STRING,e.getMessage());
+			bundle.putString(RESTService.RESULT,e.getMessage());
 		}
 	
 		restService.sendResponse(bundle);
@@ -137,7 +168,7 @@ public class RequestThread extends Thread {
     	
        	String uuid =  msg.getData().getString(RESTService.UUID);
        	MethodCall call = (MethodCall) msg.getData().getSerializable(RESTService.METHODCALL);
-       	JSObject input = (JSObject) msg.getData().getSerializable(RESTService.JSOBJECT);
+       	JSObject input = (JSObject) msg.getData().getSerializable(RESTService.INPUT);
     	
        	String strURL = msg.getData().getString(RESTService.URL);
        	String method = call.getMethod();
@@ -258,7 +289,7 @@ public class RequestThread extends Thread {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			bundle.putString(RESTService.STRING,e.getMessage());
+			bundle.putString(RESTService.RESULT,e.getMessage());
 		} finally {
 			if(httpClient!=null)
 				((AndroidHttpClient) httpClient).close();

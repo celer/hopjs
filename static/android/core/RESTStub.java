@@ -59,19 +59,9 @@ public class RESTStub extends HttpHelper {
 					if(resultCode==404){
 						listener.onComplete(null,null);
 					} else if(resultCode==200){
-						if(message.getData().containsKey(RESTService.JSOBJECT)){
-							Object res = message.getData().getSerializable(RESTService.JSOBJECT);
-							if(res instanceof JSObject){
-							
-								JSObject result = (JSObject)  message.getData().getSerializable(RESTService.JSOBJECT);
-							
-								listener.onComplete(error,result);
-							} else {
-								
-								listener.onComplete(error, res);
-							}
-						} else if(message.getData().containsKey(RESTService.STRING)){
-							listener.onComplete(error,message.getData().getString(RESTService.STRING));
+						if(message.getData().containsKey(RESTService.RESULT)){
+							Object res = message.getData().getSerializable(RESTService.RESULT);
+							listener.onComplete(error, res);
 						} else {
 							listener.onComplete(error, null);
 						}
@@ -117,7 +107,7 @@ public class RESTStub extends HttpHelper {
     	Bundle bundle = new Bundle();
     	bundle.putString(RESTService.UUID,requestUUID.toString());
     	bundle.putSerializable(RESTService.METHODCALL,call);
-    	bundle.putSerializable(RESTService.JSOBJECT, input);   
+    	bundle.putSerializable(RESTService.INPUT, input);   
     	bundle.putString(RESTService.URL,url);
     	
     	msg.setData(bundle);
@@ -158,7 +148,7 @@ public class RESTStub extends HttpHelper {
 
 	@Override
 	public void doRequest(MethodCall call, JSObject input,
-			Listener listener) throws Exception {
+			Listener listener)  {
 		
 		String path = "";
 		Bundle inputs = new Bundle();
