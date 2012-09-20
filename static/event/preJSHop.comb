@@ -1,0 +1,26 @@
+
+if(!Hop.Event)
+	Hop.Event={};
+
+Hop.Event.routes={};
+
+
+Hop.Event.on=function(url,onMessage){
+	if(!Hop.Event.routes[url]){
+		var newChannel=true;
+		Hop.Event.routes[url]=[];
+	}
+	Hop.Event.routes[url].push(onMessage);
+	if(newChannel){
+		Hop.Event.subscribe({ key: Hop.Event.key, channel: url});	
+	}
+}
+
+Hop.Event.route=function(msg){
+	if(Hop.Event.routes[msg.url]){
+		for(var i in Hop.Event.routes[msg.url]){
+			Hop.Event.routes[msg.url][i](msg);
+		}
+	}
+}
+
