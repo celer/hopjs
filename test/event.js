@@ -1,6 +1,6 @@
 var assert = require('assert');
 require('should');
-var RAPI = require('../index');
+var Hop = require('../index');
 
 var EventEmitter = function(){
 
@@ -14,7 +14,7 @@ EventEmitter.prototype.emit2=function(input,onComplete){
 	return onComplete(null,{ kittens: true, cats:false, key: input.key });
 }
 
-RAPI.defineClass("EventEmitter",new EventEmitter(),function(api){
+Hop.defineClass("EventEmitter",new EventEmitter(),function(api){
 	api.get("emit1","/emit1").emit("/emit1",function(req,input,err,result){
 		this.emit(result);		
 	});
@@ -27,17 +27,17 @@ describe("Event emitter",function(){
 	it("should emit events to channels without parameters",function(done){	
 		var result=null;
 
-		var request = new RAPI.StubRequest();
-		RAPI.call("RAPI.Event.getKey",{},function(err,key){
+		var request = new Hop.StubRequest();
+		Hop.call("Hop.Event.getKey",{},function(err,key){
 			console.log(err,key);
-			RAPI.call("RAPI.Event.listen",{channels:["/emit1"],key:key},function(err,res){
+			Hop.call("Hop.Event.listen",{channels:["/emit1"],key:key},function(err,res){
 				console.log("GOT ",err,res);
 				assert.deepEqual(res.message, { kittens: true, cats:false });
 				done();
 			},request);
 
 			setTimeout(function(){
-				RAPI.call("EventEmitter.emit1",{},function(){},request);
+				Hop.call("EventEmitter.emit1",{},function(){},request);
 			},500);
 
 
@@ -47,18 +47,18 @@ describe("Event emitter",function(){
 	it("should emit events to channels with parameters",function(done){	
 		var result=null;
 
-		var request = new RAPI.StubRequest();
+		var request = new Hop.StubRequest();
 
-		RAPI.call("RAPI.Event.getKey",{},function(err,key){
+		Hop.call("Hop.Event.getKey",{},function(err,key){
 			console.log(err,key);
-			RAPI.call("RAPI.Event.listen",{channels:["/emit2/"+key],key:key},function(err,res){
+			Hop.call("Hop.Event.listen",{channels:["/emit2/"+key],key:key},function(err,res){
 				console.log("GOT ",err,res);
 				assert.deepEqual(res.message, { kittens: true, cats:false, key: key });
 				done();
 			},request);
 
 			setTimeout(function(){
-				RAPI.call("EventEmitter.emit2",{key:key},function(){},request);
+				Hop.call("EventEmitter.emit2",{key:key},function(){},request);
 			},500);
 
 

@@ -32,14 +32,14 @@
 			}
 	
 		</style>
-		<script src="<%=RAPI.apiURL%>"></script>
-		<script src="<%=RAPI.testURL%>"></script>
+		<script src="<%=Hop.apiURL%>"></script>
+		<script src="<%=Hop.testURL%>"></script>
 	
-		<%= RAPI.renderBeforeTemplates("Doc") %>	
+		<%= Hop.renderBeforeTemplates("Doc") %>	
 
-		<% for(var objName in RAPI.Objects){ %>
+		<% for(var objName in Hop.Objects){ %>
 			<div class="apiObject">
-			<% var obj = RAPI.Objects[objName]; %>
+			<% var obj = Hop.Objects[objName]; %>
 			<h2><%= obj.name %><%if(obj.desc){%>&nbsp;-&nbsp;<span class="objUsage"><%=obj.desc%></span><%}%></h2>
 			<hr>
 		
@@ -82,7 +82,7 @@
 		<span class="methodParams">* - Required parameter</span>
 		<div id="dialog"></div>
 		
-		<%= RAPI.renderAfterTemplates("Doc") %>	
+		<%= Hop.renderAfterTemplates("Doc") %>	
 		
 	</body>
 </html>

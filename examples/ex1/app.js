@@ -1,7 +1,7 @@
 /**
  * Module dependencies.
  */
-var RAPI = require("./../../index");
+var Hop = require("./../../index");
 
 
 var express= require('express');
@@ -84,7 +84,7 @@ app.get("/bar",function(req,res){
 	Every so often go through our list of channels and see if the sockets are still active, if not axe them
 */
 
-RAPI.apiHook("/api/1.0/",app);
-RAPI.hookSocketIO(io);
+Hop.apiHook("/api/1.0/",app);
+Hop.hookSocketIO(io);
 
-RAPI.makeAndroid("./build/android");
+Hop.makeAndroid("./build/android");

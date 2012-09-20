@@ -112,7 +112,7 @@ var task = new TestCase("<%=TestCase.name%>");
 <% for(var taskIndex in TestCase.tasks){ %>
 <% var task = TestCase.tasks[taskIndex]; %>
 task.add(function(onComplete){	
-	<% if(task instanceof RAPI.TestTask){  %>
+	<% if(task instanceof Hop.TestTask){  %>
 	<%=task.funcName%>(<%=JSON.stringify(task.getInputObject())%>,function(err,output){
 			<% for(var testIndex in task.test){ %>
 			<% var test = task.test[testIndex]; %>

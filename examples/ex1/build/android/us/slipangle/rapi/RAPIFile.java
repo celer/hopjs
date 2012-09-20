@@ -3,8 +3,8 @@ package us.slipangle.rapi;
 import java.io.File;
 import java.io.Serializable;
 
-public class RAPIFile extends JSObject implements Serializable {
-	public RAPIFile(String localFile, String originalName, String contentType) {
+public class HopFile extends JSObject implements Serializable {
+	public HopFile(String localFile, String originalName, String contentType) {
 		super();
 		put("localFile", localFile);
 		put("originalName",originalName);

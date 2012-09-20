@@ -1,4 +1,4 @@
-RAPI = { 
+Hop = { 
 	onAJAXSuccess:function(data, textStatus, xhr,onComplete,methodName){
   	if(xhr.status==200){ 
 			onComplete(null, data); 
@@ -46,8 +46,8 @@ RAPI = {
 			console.log("debug:",err,res);
 		};
 		try {
-			input = RAPI.validateInput(input,params);
-			url=RAPI.patchURL(input,url,params);
+			input = Hop.validateInput(input,params);
+			url=Hop.patchURL(input,url,params);
 		} catch(e){
 			return onComplete(e.toString());
 		}
@@ -58,15 +58,15 @@ RAPI = {
 			type:type,
 			data:input,
 			dataType:"json",
-			success: function(data, textStatus, jqXHR){ RAPI.onAJAXSuccess(data, textStatus, jqXHR,onComplete,methodName); },
-			error: function(jqXHR, textStatus, errorThrown){ RAPI.onAJAXError(jqXHR, textStatus, errorThrown,onComplete,methodName); },
+			success: function(data, textStatus, jqXHR){ Hop.onAJAXSuccess(data, textStatus, jqXHR,onComplete,methodName); },
+			error: function(jqXHR, textStatus, errorThrown){ Hop.onAJAXError(jqXHR, textStatus, errorThrown,onComplete,methodName); },
 		});
 
 	}
 
 }
 
-<%= RAPI.renderBeforeTemplates("JavaScript",{}) %>
+<%= Hop.renderBeforeTemplates("JavaScript",{}) %>
 
 
 <% for(var i in Objects){ %>
@@ -84,7 +84,7 @@ RAPI = {
 
 <%=obj.name%>.<%=methodName%>=function(input,onComplete){
 	var params = <%= JSON.stringify(method.params) %>;
-	RAPI.remoteExec("<%=obj.name%>.<%=methodName%>","<%=method.method%>","<%=method.getPath()%>",<%= JSON.stringify(method.options) %>,params,input,onComplete);
+	Hop.remoteExec("<%=obj.name%>.<%=methodName%>","<%=method.method%>","<%=method.getPath()%>",<%= JSON.stringify(method.options) %>,params,input,onComplete);
 }
 
 <%= method.renderAfterTemplates("JavaScript",{ method: method}) %>
@@ -95,5 +95,5 @@ RAPI = {
 
 <% } %>
 
-<%= RAPI.renderAfterTemplates("JavaScript",{}) %>
+<%= Hop.renderAfterTemplates("JavaScript",{}) %>
 

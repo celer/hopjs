@@ -1,5 +1,5 @@
 var fs = require('fs');
-var RAPI = require('../../index.js');
+var Hop = require('../../index.js');
 
 var UserService = function(){
 	
@@ -57,10 +57,10 @@ UserService.prototype.currentUser=function(input,onComplete){
 
 UserService.prototype.avatarImage=function(input,onComplete,req){
 	console.log("AVatar image");
-	return onComplete(null, new RAPI.File("user.js"));	
+	return onComplete(null, new Hop.File("user.js"));	
 }
 
-RAPI.defineModel("UserMessage",function(model){
+Hop.defineModel("UserMessage",function(model){
 	model.field("id").integer().ID();
 	model.field("from").string();
 	model.field("to").string();
@@ -70,7 +70,7 @@ RAPI.defineModel("UserMessage",function(model){
 	model.field("message").string();
 });
 
-RAPI.defineModel("User",function(model){
+Hop.defineModel("User",function(model){
 	model.field("id").integer().ID();
 	model.field("name").string();
 	model.field("email").string();
@@ -80,10 +80,10 @@ RAPI.defineModel("User",function(model){
 });
 
 
-new RAPI.Event.Channel("/user/:username");
+new Hop.Event.Channel("/user/:username");
 
 var userService = new UserService();
-RAPI.defineClass("UserService",userService,function(api){
+Hop.defineClass("UserService",userService,function(api){
 	api.usage("Manages users");
 	api.del("delete","/user/:id").demand("id").cacheInvalidate("/user/:id").useModel("User",null).returnsBoolean();
 	api.get("list","/user/").optional("sortBy").cacheId("/users/:start/:size/",5000).defaultValues({ sortBy: "username", start:0, size:25 }).demand("start").demand("size").outputModel("User",Array);
@@ -106,7 +106,7 @@ RAPI.defineClass("UserService",userService,function(api){
 /**
  * Test for user creation
  */
-RAPI.defineTestCase("UserService.create",function(test){
+Hop.defineTestCase("UserService.create",function(test){
 	var validUser = { email:"test@test.com", username:"TestUser" };
 	test.do("UserService.create").with(validUser).noError().inputSameAsOutput().outputNotNull();
 	test.do("UserService.create").with({email:""},validUser).hasError(/Invalid username/);
@@ -114,7 +114,7 @@ RAPI.defineTestCase("UserService.create",function(test){
 });
 
 /*
-RAPI.defineTestCase("UserService.authenticate",function(test){
+Hop.defineTestCase("UserService.authenticate",function(test){
 	var validUser = { email:"test@test.com", username:"TestUser" };
 	test.do("UserService.create").with(validUser).noError();
 	test.do("UserService.authenticate").with(validUser).noError();

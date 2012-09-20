@@ -3,7 +3,7 @@ package <%=package%>;
 import java.util.*;
 import com.google.gson.JsonElement;
 
-public class <%=RAPI.camelHump(object.name)%> {
+public class <%=Hop.camelHump(object.name)%> {
 
 	protected HttpHelper helper;
 		<% for(var i in object.methods){ %>
@@ -13,7 +13,7 @@ public class <%=RAPI.camelHump(object.name)%> {
 
 		<% } %>
 
-	public <%=RAPI.camelHump(object.name)%>(HttpHelper helper){
+	public <%=Hop.camelHump(object.name)%>(HttpHelper helper){
 		this.helper = helper;
 	
 		<% for(var i in object.methods){ %>

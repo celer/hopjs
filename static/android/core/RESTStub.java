@@ -70,7 +70,7 @@ public class RESTStub extends HttpHelper {
 					}
 				}
 			} catch(Exception e){
-				Log.e("XXXX","Error calling RAPI listener:"+ e.getMessage(),e);
+				Log.e("XXXX","Error calling Hop listener:"+ e.getMessage(),e);
 				
 			}
 	    }

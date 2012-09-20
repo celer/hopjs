@@ -31,7 +31,7 @@ import org.apache.http.protocol.HttpContext;
 
 import us.slipangle.rapi.JSObject;
 import us.slipangle.rapi.MethodCall;
-import us.slipangle.rapi.RAPIFile;
+import us.slipangle.rapi.HopFile;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.http.AndroidHttpClient;
@@ -118,7 +118,7 @@ public class RequestThread extends Thread {
 							fos.write(inBytes,0,bytesLen);
 						}
 						fos.close();
-						RAPIFile file = new RAPIFile(filename,"","");
+						HopFile file = new HopFile(filename,"","");
 						bundle.putSerializable(RESTService.RESULT,file);
 					} else {
 						StringBuffer inputString = new StringBuffer();
@@ -234,7 +234,7 @@ public class RequestThread extends Thread {
 	    		HttpConnectionParams.setSoTimeout(params, 3000);
 	    		ConnManagerParams.setTimeout(params, 3000);
 	    		context.setAttribute(ClientContext.COOKIE_STORE, new CookieStore()); 		
-	    		httpClient = AndroidHttpClient.newInstance("RAPI");
+	    		httpClient = AndroidHttpClient.newInstance("Hop");
 
 				HttpResponse response;
 				HttpRequestBase request;

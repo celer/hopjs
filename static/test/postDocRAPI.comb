@@ -1,1 +1,0 @@
-<div><button onClick='TestCase.runInDialog("","#dialog")'/>Run all tests</button></div>

@@ -1,6 +1,6 @@
 var assert = require('assert');
 require('should');
-var RAPI = require('../index');
+var Hop = require('../index');
 
 var CacheTest = function(){
 
@@ -21,7 +21,7 @@ CacheTest.prototype.complex=function(input,onComplete){
 	return onComplete(null,input);
 }
 
-RAPI.defineClass("CacheTest",new CacheTest(),function(api){
+Hop.defineClass("CacheTest",new CacheTest(),function(api){
 	api.get("cacheIt","/cache").cacheId("/cache/:id").demand("id").demand("contents").demand("when");
 	api.get("invalidateIt","/invalidate").cacheInvalidate("/cache/:id").demand("id");
 	api.get("complex","/complex").cache(function(cache,input,result){
@@ -33,8 +33,8 @@ RAPI.defineClass("CacheTest",new CacheTest(),function(api){
 
 describe("Cache",function(){
 	it("should cache results",function(done){	
-		var _CacheTest = RAPI.Object.wrap("CacheTest");
-		var request = new RAPI.StubRequest();	
+		var _CacheTest = Hop.Object.wrap("CacheTest");
+		var request = new Hop.StubRequest();	
 		var id = Math.round((Math.random()*10000));
 		_CacheTest.cacheIt({id:id, contents:"hello", when: new Date().getTime()},function(err,res1){
 			setTimeout(function(){
@@ -47,8 +47,8 @@ describe("Cache",function(){
 		},request);
 	});
 	it("should cache invalidate results",function(done){	
-		var _CacheTest = RAPI.Object.wrap("CacheTest");
-		var request = new RAPI.StubRequest();	
+		var _CacheTest = Hop.Object.wrap("CacheTest");
+		var request = new Hop.StubRequest();	
 		var id = Math.round((Math.random()*10000));
 		_CacheTest.cacheIt({id:id, contents:"hello", when: new Date().getTime()},function(err,res1){
 			_CacheTest.invalidateIt({id: id},function(err,resX){
@@ -62,8 +62,8 @@ describe("Cache",function(){
 		},request);
 	});
 	it("should work with complex tests",function(done){	
-		var _CacheTest = RAPI.Object.wrap("CacheTest");
-		var request = new RAPI.StubRequest();	
+		var _CacheTest = Hop.Object.wrap("CacheTest");
+		var request = new Hop.StubRequest();	
 		var id = Math.round((Math.random()*10000));
 		_CacheTest.complex({what:"cache",id:id, contents:"hello", when: new Date().getTime()},function(err,res1){
 			_CacheTest.complex({what:"invalidate", id: id, when: new Date().getTime()},function(err,resX){

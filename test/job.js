@@ -1,6 +1,6 @@
 var assert = require('assert');
 require('should');
-var RAPI = require('../index');
+var Hop = require('../index');
 
 describe("Job Drivers",function(){
 	
@@ -10,11 +10,11 @@ describe("Job Drivers",function(){
 			expiresAt: (new Date()).getTime() + (1000*10)
 		};
 	
-		RAPI.Job.save("testJob",validJob,function(err,res){
+		Hop.Job.save("testJob",validJob,function(err,res){
 			assert.equal(err,null);
 			assert.deepEqual(res,validJob);
 		
-			RAPI.Job.load("testJob",function(err,res){
+			Hop.Job.load("testJob",function(err,res){
 				assert.equal(err,null);
 				assert.deepEqual(res,validJob);
 				done();
@@ -29,12 +29,12 @@ describe("Job Drivers",function(){
 			expiresAt: (new Date()).getTime() + (1500*1)
 		};
 	
-		RAPI.Job.save("testJob",validJob,function(err,res){
+		Hop.Job.save("testJob",validJob,function(err,res){
 			assert.equal(err,null);
 			assert.deepEqual(res,validJob);
 	
 			setTimeout(function(){	
-				RAPI.Job.load("testJob",function(err,res){
+				Hop.Job.load("testJob",function(err,res){
 					assert.equal(err,null);
 					assert.deepEqual(res,null);
 					done();
@@ -49,11 +49,11 @@ describe("Job Drivers",function(){
 			path: "/foo/bar"
 		};
 	
-		RAPI.Job.save("testJob",validJob,function(err,res){
+		Hop.Job.save("testJob",validJob,function(err,res){
 			assert.equal(err,null);
 			assert.deepEqual(res,validJob);
 	
-			RAPI.Job.loadByPath("/foo/bar",function(err,res){
+			Hop.Job.loadByPath("/foo/bar",function(err,res){
 				assert.equal(err,null);
 				assert.deepEqual(res,validJob);
 				done();
@@ -65,13 +65,13 @@ describe("Job Drivers",function(){
 	it("should notify listeners of a job being finished",function(done){
 		var inputRes = { complete: true };
 
-		RAPI.Job.wait("testJob",function(err,res){
+		Hop.Job.wait("testJob",function(err,res){
 			assert.equal(err,"error");
 			assert.deepEqual(res,inputRes);
 			done();
 		});
 		setTimeout(function(){
-			RAPI.Job.notifyFinished("testJob","error",inputRes,function(err,res){
+			Hop.Job.notifyFinished("testJob","error",inputRes,function(err,res){
 			});	
 		},500);
 	});
@@ -79,13 +79,13 @@ describe("Job Drivers",function(){
 	it("should notify listeners of job status",function(done){
 		var inputRes = { complete: true };
 
-		RAPI.Job.listen("testJob",function(msg,percent){
+		Hop.Job.listen("testJob",function(msg,percent){
 			assert.equal(msg,"running");
 			assert.equal(percent,51);
 			done();
 		});
 		setTimeout(function(){
-			RAPI.Job.notifyStatus("testJob","running",51,function(err,res){
+			Hop.Job.notifyStatus("testJob","running",51,function(err,res){
 			});	
 		},500);
 	});
@@ -126,7 +126,7 @@ JobTest.prototype.singletonJob=function(input,onComplete){
 	},1500);
 }
 
-RAPI.defineClass("JobTest",new JobTest(),function(api){
+Hop.defineClass("JobTest",new JobTest(),function(api){
 	api.get("singletonJob","/singletonJob").trackJob("/job/"+(new Date()).getTime());
 	api.get("singletonJobRepeat","/singletonJobRepeat").trackJob("/job/"+(new Date()).getTime(),10000,true);
 	api.get("jobStatusTest","/jobStatusTest").trackJob();
@@ -137,24 +137,24 @@ describe("Highlevel Job Interface",function(){
 	it("should track the status of a job",function(done){
 		this.timeout(8000);
 		var count=0;
-		var request = new RAPI.StubRequest();
+		var request = new Hop.StubRequest();
 		setTimeout(function(){
 
 			var listenToJob=function(){
-				RAPI.Job.listen(request.job.jobID,function(msg,percent){
+				Hop.Job.listen(request.job.jobID,function(msg,percent){
 					count++;
 					listenToJob();
 				});	
 			}
 			listenToJob()
-			RAPI.Job.wait(request.job.jobID,function(err,result){
+			Hop.Job.wait(request.job.jobID,function(err,result){
 				assert.ok(result);
 				assert.ok(count>10);
 				done();	
 			});
 
 		},50);
-		RAPI.call("JobTest.jobStatusTest",{},function(err,res){
+		Hop.call("JobTest.jobStatusTest",{},function(err,res){
 			assert.ok(res);
 		},request);
 	});
@@ -171,11 +171,11 @@ describe("Highlevel Job Interface",function(){
 			done();
 		};
 
-		var request = new RAPI.StubRequest();
+		var request = new Hop.StubRequest();
 		var tasks = 0;
 		var results = {};
 		tasks++;
-		RAPI.call("JobTest.singletonJob",{},function(err,res){
+		Hop.call("JobTest.singletonJob",{},function(err,res){
 					console.log("1",err,res,request.getResponse().get("Job-Status"));
 			tasks--;
 			results.fErr=err;
@@ -186,13 +186,13 @@ describe("Highlevel Job Interface",function(){
 			}
 		},request);
 		setTimeout(function(){
-			var srequest = new RAPI.StubRequest();
+			var srequest = new Hop.StubRequest();
 			tasks++;
-			RAPI.call("JobTest.singletonJob",{},function(err,res){
+			Hop.call("JobTest.singletonJob",{},function(err,res){
 					console.log("2",err,res);
-				var krequest = new RAPI.StubRequest();
+				var krequest = new Hop.StubRequest();
 				tasks++;
-				RAPI.call("JobTest.singletonJob",{},function(err,res){
+				Hop.call("JobTest.singletonJob",{},function(err,res){
 					console.log("3",err,res);
 					tasks--;
 					results.kErr=err;
@@ -225,11 +225,11 @@ describe("Highlevel Job Interface",function(){
 			done();
 		};
 
-		var request = new RAPI.StubRequest();
+		var request = new Hop.StubRequest();
 		var tasks = 0;
 		var results = {};
 		tasks++;
-		RAPI.call("JobTest.singletonJobRepeat",{},function(err,res){
+		Hop.call("JobTest.singletonJobRepeat",{},function(err,res){
 			tasks--;
 			results.fErr=err;
 			results.fRes=res;
@@ -239,12 +239,12 @@ describe("Highlevel Job Interface",function(){
 			}
 		},request);
 		setTimeout(function(){
-			var srequest = new RAPI.StubRequest();
+			var srequest = new Hop.StubRequest();
 			tasks++;
-			RAPI.call("JobTest.singletonJobRepeat",{},function(err,res){
-				var krequest = new RAPI.StubRequest();
+			Hop.call("JobTest.singletonJobRepeat",{},function(err,res){
+				var krequest = new Hop.StubRequest();
 				tasks++;
-				RAPI.call("JobTest.singletonJobRepeat",{},function(err,res){
+				Hop.call("JobTest.singletonJobRepeat",{},function(err,res){
 					tasks--;
 					results.kErr=err;
 					results.kRes=res;

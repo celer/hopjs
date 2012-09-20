@@ -143,7 +143,7 @@ public class UserService {
 		
 		
 
-		avatarImageCall = new MethodCall("UserService.avatarImage","get","/api/1.0/user/:id/icon","User","RAPIFile");
+		avatarImageCall = new MethodCall("UserService.avatarImage","get","/api/1.0/user/:id/icon","User","HopFile");
 		
 		
 			avatarImageCall.addParam("id",true,false);	
@@ -234,7 +234,7 @@ public class UserService {
 	
 
 
-	public void avatarImage(User input,Listener<RAPIFile> listener)  {
+	public void avatarImage(User input,Listener<HopFile> listener)  {
 			helper.doRequest(avatarImageCall,input,listener);
 	}
 

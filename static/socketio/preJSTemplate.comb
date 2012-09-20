@@ -1,17 +1,17 @@
-RAPI.Event.initSocketIO=function(){
-	RAPI.Event.getKey(function(err,key){
-		RAPI.Event.key=key;		
-		socket.emit("RAPI.Event.Listen",key);
+Hop.Event.initSocketIO=function(){
+	Hop.Event.getKey(function(err,key){
+		Hop.Event.key=key;		
+		socket.emit("Hop.Event.Listen",key);
 
-		socket.on("RAPI.Event",function(msg){
-			RAPI.Event.route(msg);
+		socket.on("Hop.Event",function(msg){
+			Hop.Event.route(msg);
 		});
 	});
 }
 
-RAPI.Event.initSocketIO();
+Hop.Event.initSocketIO();
 
-RAPI.socketExec=function(methodName,type,url,options,params,input,onComplete){
+Hop.socketExec=function(methodName,type,url,options,params,input,onComplete){
 		if(typeof input=="function" && typeof onComplete=="undefined"){
 			onComplete=input;
 			input=null;
@@ -22,13 +22,13 @@ RAPI.socketExec=function(methodName,type,url,options,params,input,onComplete){
 			console.log("debug:",err,res);
 		};
 		try {
-			input = RAPI.validateInput(input,params);
-			url=RAPI.patchURL(input,url,params);
+			input = Hop.validateInput(input,params);
+			url=Hop.patchURL(input,url,params);
 		} catch(e){
 			return onComplete(e.toString());
 		}
 		if(options.noCache){
 			input._when=(new Date().getTime())
 		}
-		socket.emit("RAPI.call",{ call:methodName, input: input, options: options });
+		socket.emit("Hop.call",{ call:methodName, input: input, options: options });
 }
