@@ -100,7 +100,7 @@ hopjs-gen -url http://www.website.com:3000/ shell -unitTest -output test_api.sh
 ```
 You can see a complete working example at: https://github.com/celer/hopjs/tree/master/examples/ex1
 
-# Intellegent Server-side caching of results
+# Intellegent server-side caching of results
 
 Now lets assume that we've written a killer server-side API, but we haven't done any caching of our results so each 
 time we need to do something we're hitting our database. HopJS has the ability to add caching on top of your API quickly
@@ -131,7 +131,7 @@ and easily.
 
 ```
 
-Caching works by associating a unique ID with each result returned from an API call - the trick is that the ID is calculated based upon the object that is returned as a result of calling the API call. Time for a quick example:
+Caching works by associating a unique ID with each result returned from an API call - the trick is that the ID is calculated based upon the object that is used as an input or returned as a result of calling the API call. Time for a quick example:
 
 
 ```javascript
@@ -158,6 +158,30 @@ Caching works by associating a unique ID with each result returned from an API c
 
 You can see a complete working example at: https://github.com/celer/hopjs/tree/master/examples/ex2
 
+# Advanced Topics
+
+## API Interfaces
+
+HopJS also has the ability to define an API interface which can be used to quickly stub out APIs which share their interfaces:
+
+```javascript
+
+  // This will define an interface which can the be applied to other objects later
+  Hop.defineInterface("Notification",function(api){
+      //#classname will cause the classname of the extending class to be substituded into the path
+      api.post("send","#classname/send").usage("Sends a message").demand("msg").demand("subject").demand("to");
+  });
+
+  Hop.defineClass("Email",EmailService,function(api){
+    //This will cause the interface defined above to be applied to this object
+    // Now EmailService.send will exist on /email/send with all the associated demands, etc.
+    api.extends("Notification");
+  });  
+
+```
+## Models
+
+TBD
 
 # Known Issues / Todo
  - Android API is non-functional after major refactor
