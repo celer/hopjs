@@ -87,4 +87,3 @@ app.get("/bar",function(req,res){
 Hop.apiHook("/api/1.0/",app);
 Hop.hookSocketIO(io);
 
-Hop.makeAndroid("./build/android");

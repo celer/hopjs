@@ -1,0 +1,9 @@
+{ 
+  "desc": "Generators a restful hook for Android based devices",
+  "generates":"dir",
+  "demand":{ "apiVersion":"The version of Android API to use","package":"the package name" },
+  "optional":{ "apiVersionList":"List the valid API versions" },
+  "require":[ "android.js" ],
+  "inputDir":"templates",
+  "translatePath":"Java.translatePath"
+}

@@ -1,4 +1,5 @@
-package <%=package%>;
+package org.hopjs;
+
 
 public abstract class HttpHelper {
 

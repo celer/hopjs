@@ -1,9 +1,10 @@
-package <%=package%>;
+package <%=package%>.hopjs.api;
 
+import org.hopjs.*;
 import java.util.*;
 import com.google.gson.JsonElement;
 
-public class <%=Hop.camelHump(object.name)%> {
+public class <%=Java.camelHump(object.name)%> {
 
 	protected HttpHelper helper;
 		<% for(var i in object.methods){ %>
@@ -13,15 +14,15 @@ public class <%=Hop.camelHump(object.name)%> {
 
 		<% } %>
 
-	public <%=Hop.camelHump(object.name)%>(HttpHelper helper){
+	public <%=Java.camelHump(object.name)%>(HttpHelper helper){
 		this.helper = helper;
 	
 		<% for(var i in object.methods){ %>
 		<% var method = object.methods[i]; %>
-		<% var inputType = method.getJavaInputType(); %>
-		<% var outputType = method.getJavaOutputType();  %>
+		<% var inputType = Java.methodGetJavaInputType(method); %>
+		<% var outputType = Java.methodGetJavaOutputType(method);  %>
 
-		<%=method.name%>Call = new MethodCall("<%=method.getMethod()%>","<%=method.method%>","<%=method.getPath()%>","<%=inputType%>","<%=outputType%>");
+		<%=method.name%>Call = new MethodCall("<%=(object.name+'.'+method.name)%>","<%=method.method%>","<%=method.fullPath%>","<%=inputType%>","<%=outputType%>");
 		<% for(var i in method.params){ %>
 		<% var param = method.params[i]; %>
 			<%=method.name%>Call.addParam("<%=i%>",<%=param.demand==true?"true":"false"%>,false)<%=((method.defaults&&(method.defaults[i]!=undefined))?".setDefaultValue(\""+method.defaults[i]+"\")":"")%>;	
@@ -33,8 +34,8 @@ public class <%=Hop.camelHump(object.name)%> {
 
 	<% for(var i in object.methods){ %>
 	<% var method = object.methods[i]; %>
-	<% var inputType = method.getJavaInputType();  %>
-	<% var outputType = method.getJavaOutputType(); %>
+	<% var inputType = Java.methodGetJavaInputType(method);  %>
+	<% var outputType = Java.methodGetJavaOutputType(method); %>
 
 
 	public void <%=method.name%>(<%=inputType%> input,Listener<<%=outputType%>> listener)  {

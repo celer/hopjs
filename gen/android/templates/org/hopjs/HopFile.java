@@ -1,4 +1,4 @@
-package us.slipangle.rapi;
+package org.hopjs;
 
 import java.io.File;
 import java.io.Serializable;

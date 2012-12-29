@@ -1,4 +1,4 @@
-package <%=package%>;
+package org.hopjs;
 
 import java.io.Serializable;
 import java.util.Date;

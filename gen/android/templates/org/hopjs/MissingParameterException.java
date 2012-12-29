@@ -1,4 +1,4 @@
-package <%=package%>;
+package org.hopjs;
 
 public class MissingParameterException extends Exception {
 	protected String parameter;

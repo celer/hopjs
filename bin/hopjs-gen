@@ -1,0 +1,85 @@
+#!/usr/bin/env node
+
+require("../lib/codegen");
+var path=require('path');
+var fs = require('fs');
+
+var optimist = require('optimist');
+
+optimist=optimist.demand("url").describe("url","The url of the remote hopjs API to use");
+optimist=optimist.describe("list","List the available generators");
+optimist=optimist.describe("help","Show usage information for a specific generator");
+optimist=optimist.describe("unitTest","Generate a unit test for this generator");
+
+var args = optimist.argv;
+if(args.url){
+  if(args["_"].length>0){
+    var generator = args["_"][0];
+   
+
+    Hop.CodeGenerator.describe(generator,function(err,_generator){
+      if(err) {
+        console.error(err);
+        process.exit(-2);
+      } else {
+        if(args.help){
+            var dir = Hop.CodeGenerator.getGenDir(generator);
+            if(fs.existsSync(path.join(dir,"README.md"))){
+              fs.readFile(path.join(dir,"README.md"),function(err,res){
+                console.log(res.toString());
+                process.exit(0);
+              }); 
+            } else {
+               console.error("No usage information is available");
+               process.exit(-1);
+            }
+        } else if(args.unitTest){
+          if(typeof _generator.testTemplate=="string"){
+            optimist=optimist.demand("output").describe("output","The output location");
+            args = optimist.argv;
+            Hop.CodeGenerator.generateTest(args.url,generator,args,function(err,res){
+              if(err){
+                console.log(err);
+                process.exit(-1);
+              } else {
+                process.exit(0);
+              }        
+            });
+             
+          } else {
+            console.log("This generator does not support generating unit tests");
+            process.exit(-4);
+          }
+        } else {
+          if(_generator.generates=="dir"){
+            optimist=optimist.demand("outputDir").describe("outputDir","The output directory to place generated code in");
+          } else if(_generator.generates=="file"){
+            optimist=optimist.demand("output").describe("output","The output file");
+          }
+          for(var i in _generator.demand){
+            optmist=optimist.demand(i).describe(i,_generator.demand[i]);
+          } 
+          for(var i in _generator.optional){
+            optmist=optimist.describe(i,_generator.optional[i]);
+          } 
+          args = optimist.argv;
+          Hop.CodeGenerator.generate(args.url,generator,args,function(err,res){
+            if(err){
+              console.log(err);
+              process.exit(-1);
+            } else {
+              process.exit(0);
+            }        
+          });
+        }
+      }
+    });
+
+  } else if(args.list){
+    Hop.CodeGenerator.list(function(err,generators){
+      for(var gen in generators){
+       console.log(generators[gen]); 
+      }
+    });
+  }
+}

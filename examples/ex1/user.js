@@ -6,6 +6,10 @@ var UserService = function(){
 }
 
 UserService.prototype.create=function(input,onComplete){
+  Hop.log(input);
+
+  if(input && !input.name)
+    return onComplete("Invalid username");
 	input.id=505;
 	return onComplete(null,input);
 }
@@ -107,9 +111,9 @@ Hop.defineClass("UserService",userService,function(api){
  * Test for user creation
  */
 Hop.defineTestCase("UserService.create",function(test){
-	var validUser = { email:"test@test.com", username:"TestUser" };
+	var validUser = { email:"test@test.com", name:"TestUser" };
 	test.do("UserService.create").with(validUser).noError().inputSameAsOutput().outputNotNull();
-	test.do("UserService.create").with({email:""},validUser).hasError(/Invalid username/);
+	test.do("UserService.create").with({email:""},validUser).errorContains("parameter 'name'");
 	test.do("UserService.delete").with(validUser);
 });
 

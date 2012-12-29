@@ -118,10 +118,10 @@ task.add(function(onComplete){
 			<% var test = task.test[testIndex]; %>
 			<% if(test.type=='noError'){ %>
 				if(err!=null) return onComplete("Error was not expected");
-			<% } else if(test.type=='hasError'){%>
+			<% } else if(test.type=='errorContains'){%>
 				if(err==null) return onComplete("Error was expected");
 				<% if(test.expectedError){ %>
-				else if( !(<%=test.expectedError %>.test(err)) ) return onComplete("Error did not match: "+<%=test.expectedError%>.toString());
+				else if( err.indexOf(test.expectedError)==-1 ) return onComplete("Error did not contain: "+<%=test.expectedError%>.toString()+", instead got: "+err);
 				<%}%>
 			<% } else if(test.type=='outputNotNull'){ %>
 				if(output==null) return onComplete("Output must not be null");
