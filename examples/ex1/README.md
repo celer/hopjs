@@ -12,17 +12,17 @@ Next start the example:
 
 Now visit http://localhost:3000/ 
 
-# Next steps - Things to try doing with the example:
+*Next steps - Things to try doing with the example:*
 
-## Visit the documentation page and run all the examples
+1. Visit the documentation page and run all the examples
 
-## Open the JavaScript console in your browser and use the API 
+2. Open the JavaScript console in your browser and use the API 
  
 ```javascript
    UserService.create({ name: "user", email:"user@site.com", password:"foofoo"},function(err,result){ console.log(err,result}; });
 ```
 
-## Generate the shell script stub
+3. Generate the shell script stub
 
 ```shell
   # This will generate a shell script which uses 'curl' to call our API
