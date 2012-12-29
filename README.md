@@ -30,8 +30,8 @@ UserService.authenicate=function(input,onComplete){
 
 //This will create a RESTful set of URLs which expose the following functions:
 Hop.defineClass("UserService",UserService,function(api){
-  api.post("create","/user").demand("email").demand("username").usage("Create a new user");
-  api.post("authenticate","/user/auth").demand("email").demand("username").usage("Authenticate a user");
+  api.post("create","/user").demand("email").demand("username");
+  api.post("authenticate","/user/auth").demand("email").demand("username");
 });
 
 //Now tell HopJS to expose our API in express.js
@@ -93,9 +93,14 @@ hopjs-gen -url http://www.website.com:3000/ shell -unitTest -output test_api.sh
 ./test_api.sh http://www.website.com:3000/ ./api.sh
 
 ```
+You can see a complete working example at: https://github.com/celer/hopjs/tree/master/examples/ex1
 
 
-# Known Issues
- - It is unclear how multiple versions of an API are supported
+
+# Known Issues / Todo
+ - Android API is non-functional after major refactor
+ - Curl can't save session cookies so some shell tests won't work
+ - Need to add SSL support
+ - Need to add dev key support
  - Add more tests
 

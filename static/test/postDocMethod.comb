@@ -1,1 +1,1 @@
-<div><button onClick='TestCase.runInDialog("<%=method.getMethod()%>","#dialog")'/>Run test <%=method.getMethod()%></button></div>
+<div><button onClick='TestCase.runInDialog("<%=method.getMethod()%>","#dialog")'/>Run all test cases for: <%=method.getMethod()%></button></div>

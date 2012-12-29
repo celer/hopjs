@@ -1,7 +1,0 @@
-Rename to Hop
-Javacode and android build clean up
-Seperate into seperate projects
-Generate android test cases
-Fix combustion to not add so many damned new lines
-More test cases
-More examples

@@ -48,6 +48,14 @@ test_num=0
             echo "P - No error was recieved" >> $log
             test_passed=`expr $test_passed + 1`
           fi 
+        <% } else if(test.type=="outputNull"){ %>
+          if [ -s .stdout.log ]; then
+            echo "F - Output isn't null" >> $log
+            test_failed=`expr $test_failed + 1` 
+          else
+            echo "P - Output was null" >> $log
+            test_passed=`expr $test_passed + 1`
+          fi 
         <% } else if(test.type=="outputNotNull"){ %>
           if [ ! -s .stdout.log ]; then
             echo "F - Output appears to be null" >> $log

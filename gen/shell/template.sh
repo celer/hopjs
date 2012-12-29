@@ -58,12 +58,12 @@ case "$call" in
                 --<%=paramName%>) <%=paramName%>=${arguments[index]}; ;; 
               <% } %>
               --showHelp) 
-                echo "<%=object.name+"."+method.name%> <%=method.desc||""%>"
+                echo "<%=object.name+"."+method.name%> <%=Hop.addslashes(method.desc||"")%>"
                 echo "<%=method.method.toUpperCase()%> ${APIURL}"
                 echo
                 <% for(var paramName in method.params) {%>
                   <% var param = method.params[paramName]; %>
-                  echo --<%=paramName%><%=(param.required?"*":"")%><%="\t"+(param.desc||"")%>
+                  echo --<%=paramName%><%=(param.required?"*":"")%><%="\t"+Hop.addslashes(param.desc||"")%>
                 <% } %>
                 exit 0;
               ;;
@@ -104,7 +104,7 @@ case "$call" in
     <% for(var objName in Objects){ %>
       <% for(var methodName in Objects[objName].methods){ %>
         <% var method = Objects[objName].methods[methodName] %>
-        echo <%=objName+"."+methodName%><%="\t"+(method.desc||"")%>
+        echo <%=objName+"."+methodName%><%="\t"+Hop.addslashes(method.desc||"")%>
       <%}%>
     <%}%>
     echo

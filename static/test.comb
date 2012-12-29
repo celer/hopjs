@@ -38,7 +38,7 @@ TestCase.prototype.run=function(onComplete){
 
 TestCase.runInSelector=function(testCase,selector,onComplete){
 		var tc = TestCase.get(testCase);
-		$(selector).append("<br>"+testCase+"<hr>");
+		$(selector).append("<br><b>"+testCase+"</b><hr>");
 		tc.run(function(err,res){
 			if(err){
 				$(selector).append(err);
@@ -56,7 +56,7 @@ TestCase.runInSelector=function(testCase,selector,onComplete){
 						fail++;
 					}	
 				}
-				$(selector).append(fail+" tests failed, "+pass+" tests passed - "+((pass/(fail+pass))*100).toFixed(1)+"% pass rate");
+				$(selector).append(fail+" tests failed, "+pass+" tests passed - "+((pass/(fail+pass))*100).toFixed(1)+"% pass rate+<br>");
 			}
 			onComplete(null,{ pass: pass, fail:fail });
 		});
@@ -97,7 +97,7 @@ TestCase.runInDialog=function(testCase,selector){
 					runTestCases();
 				});
 			} else {
-				$(selector).append("<hr>"+fail+" tests failed, "+pass+" tests passed - "+((pass/(fail+pass))*100).toFixed(1)+"% pass rate out of "+cases+" test cases");
+				$(selector).append("<br><br><hr>"+fail+" tests failed, "+pass+" tests passed - "+((pass/(fail+pass))*100).toFixed(1)+"% pass rate out of "+cases+" test cases");
 			}
 		}
 		runTestCases();
@@ -117,14 +117,16 @@ task.add(function(onComplete){
 			<% for(var testIndex in task.test){ %>
 			<% var test = task.test[testIndex]; %>
 			<% if(test.type=='noError'){ %>
-				if(err!=null) return onComplete("Error was not expected");
+				if(err!=null) return onComplete("Error was not expected, got:"+err.toString());
 			<% } else if(test.type=='errorContains'){%>
 				if(err==null) return onComplete("Error was expected");
 				<% if(test.expectedError){ %>
-				else if( err.indexOf(test.expectedError)==-1 ) return onComplete("Error did not contain: "+<%=test.expectedError%>.toString()+", instead got: "+err);
+				else if( err.indexOf("<%=Hop.addslashes(test.expectedError)%>")==-1 ) return onComplete("Error did not contain: '<%=(test.expectedError)%>', instead got: "+err);
 				<%}%>
 			<% } else if(test.type=='outputNotNull'){ %>
 				if(output==null) return onComplete("Output must not be null");
+			<% } else if(test.type=='outputNull'){ %>
+				if(output!=null) return onComplete("Output must be null");
 			<% } else if(test.type=='outputMatches'){ %>
 				if(output==null) return onComplete("Output must not be null");
 			<% } %>
