@@ -11,7 +11,7 @@ Next start the example:
 ```
 
 
-Now visit http://localhost:3000/ 
+Now visit http://localhost:3000/ in your browser 
 
 *Next steps - Things to try doing with the example:*
 
