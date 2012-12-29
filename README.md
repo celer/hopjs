@@ -109,7 +109,9 @@ and easily.
 ```javascript
 
   //First let's tell HopJS that we want to use caching  
-  Hop.enableCaching();
+  // log - log what is happening with our serverside cache
+  // redisClient - the redisClient to use - HopJS will create a default one if not specified
+  Hop.enableCaching({ log:true, redisClient: myRedisClient });
  
    
   Hop.defineClass("UserService",UserService,function(api){
