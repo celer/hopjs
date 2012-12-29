@@ -10,6 +10,7 @@ Next start the example:
   node app.js
 ```
 
+
 Now visit http://localhost:3000/ 
 
 *Next steps - Things to try doing with the example:*
@@ -37,5 +38,16 @@ Now visit http://localhost:3000/
   chmod 755 ./test_api.sh
 
   ./test_api.sh http://localhost:3000/ ./api.sh
+
+```
+
+*Hints*
+
+Run app.js with node-dev instead of node, it will automatically restart the server when you make changes to the code
+
+```shell
+sudo npm install -g node-dev
+
+node-dev app.js
 
 ```
