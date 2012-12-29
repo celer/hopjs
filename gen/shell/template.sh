@@ -90,7 +90,7 @@ case "$call" in
           cmd="curl ${curlargs} -XPUT --data ${args} ${APIURL}"
         <% } else if(method.method=='post'){ %>
           cmd="curl ${curlargs} --data ${args} ${APIURL}"
-        <% } else if(method.method=='del'){ %>
+        <% } else if(method.method=='delete'){ %>
           cmd="curl ${curlargs} -XDELETE ${APIURL}?${args}"
         <% } %>
         $cmd

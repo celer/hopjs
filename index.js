@@ -1,6 +1,9 @@
 Hop  = require('./lib/api');
 
-Hop.useCache=function(){
+Hop.enableCaching=function(options){
+  
+  Hop.cacheOptions=options||{};
+
   require('./lib/cache.js');
   require('./lib/cachemem.js');
   require('./lib/cacheredis.js');
