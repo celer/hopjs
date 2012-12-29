@@ -37,7 +37,7 @@ Now that we've done that we get a few things:
    * UserService.create(input,onComplete)
    * UserService.authenticate(input,onComplete)
 
-* But we can also define the test cases for our new interface!*
+*But we can also define the test cases for our new interface!*
 
 ```javascript
 
