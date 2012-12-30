@@ -101,7 +101,7 @@ Hop.defineClass("UserService",UserService,function(api){
 	api.post("authenticate","/user/auth").demand("password").demand("name");
 	api.get("currentUser","/user");
 	api.get("logout","/user/logout");
-  api.get("load","/user/:id").demand("id").cacheId("/user/:id",60);
+  api.get("load","/user/:id").demand("id").cacheId("/user/:id",60,true);
   api.del("del","/user/:id").demand("id").cacheInvalidate("/user/:id");
 });
 
@@ -147,7 +147,15 @@ Hop.defineTestCase("UserService.load",function(test){
   test.do("TestService.wait").with({duration:3}).noError();
   test.do("UserService.load").with("cachedUser").noError().outputNotNull().outputSameAs("cachedUser");
   test.do("UserService.del").with("cachedUser").noError();
-  test.do("UserService.load").with("cachedUser").noError().outputIsNull();
+
+  /* This last attempt to load the user may or may not return a result! 
+      
+      This is becase we asked the browser to cache the result
+      and our prior delete can't invalidate the browsers cached version
+      so we might get a result - even though the server side copy has been deleted.
+
+  */    
+  test.do("UserService.load").with("cachedUser").noError()
 });
 
 

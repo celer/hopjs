@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /*
   This will iterate through each one of the examples running the unit tests on them
 */
