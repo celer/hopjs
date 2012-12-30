@@ -29,7 +29,7 @@ UserService.authenicate=function(input,onComplete){
 }
 
 ```
-*Next, we use Hop to define the interface, this will expose the interface via a RESTful API*
+*Next, we use Hop to define the interface; this will expose the interface via a RESTful API*
 
 ```javascript
 
