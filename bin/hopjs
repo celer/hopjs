@@ -10,6 +10,7 @@ optimist=optimist.describe("list","List the available methods");
 optimist=optimist.describe("help","Describe a specific method");
 optimist=optimist.describe("eval","Eval the specified file with the api included in the global context");
 optimist=optimist.describe("unitTest","Run the unit tests on the specified url");
+optimist=optimist.describe("testDetails","Show the details for each test");
 
 var args = optimist.argv;
 
@@ -72,13 +73,22 @@ if(args.url){
   
             }
             Hop.TestCase.lastTaskIndex=-1;
-  
+            Hop.TestCase.results={ pass:0, fail:0};
             Hop.TestCase.prototype.testResult=function(taskIndex,method,input,err,response,testType,result){
               if(Hop.TestCase.lastTaskIndex!=taskIndex){
                 console.log("#"+(taskIndex+1),method);
                 Hop.TestCase.lastTaskIndex=taskIndex;
+              
+                if(args.testDetails){
+                  console.log("\tInput",JSON.stringify(input));
+                  console.log("\tError",err);
+                  console.log("\tResult",JSON.stringify(response));
+                  console.log();
+                } 
               }
               console.log("\t",(result?"P":"F"),Hop.Tests[testType][result?"pass":"fail"]);
+
+              Hop.TestCase.results[(result?"pass":"fail")]++;
             }
             if(typeof args.unitTest=="string"){
               Hop.TestCase.run(args.unitTest); 
@@ -91,7 +101,12 @@ if(args.url){
                       Hop.TestCase.lastTaskIndex=-1;
                       run();
                       });
-                } else {
+                } else {  
+                  console.log();
+                  console.log("---------------------------------------------------------------");
+                  
+                  console.log("Pass",Hop.TestCase.results.pass,"Fail",Hop.TestCase.results.fail, (Hop.TestCase.results.pass/(Hop.TestCase.results.pass+Hop.TestCase.results.fail)*100).toFixed(2)+"%");
+                  process.exit((Hop.TestCase.results.fail==0?0:128));
                 }
               }
               run();

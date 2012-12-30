@@ -74,8 +74,9 @@ UserService.authenticate=function(credentials,onComplete,request){
       //stick the user in our session
       request.session.user=user;
       return onComplete(null,user);
-    } else return onComplete("Permission denied");
+    } 
   } 
+  return onComplete("Permission denied");
 }
 
 UserService.currentUser=function(input,onComplete,request){

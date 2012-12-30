@@ -113,7 +113,6 @@ Hop.defineClass("UserService",userService,function(api){
 Hop.defineTestCase("UserService.create",function(test){
 	var validUser = { email:"test@test.com", name:"TestUser" };
 	test.do("UserService.create").with(validUser).noError().inputSameAsOutput().outputNotNull();
-	test.do("UserService.create").with({email:""},validUser).errorContains("parameter 'name'");
 	test.do("UserService.delete").with(validUser);
 });
 

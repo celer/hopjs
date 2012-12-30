@@ -49,13 +49,10 @@ UserService.create=function(user,onComplete){
 }
 
 UserService.authenticate=function(credentials,onComplete,request){
-  console.log("ASDFADSFDASFDSFASDFSDF");
-  console.log(credentials);
-  console.log(users);
   for(var i in users){
     var user = users[i];
-    console.log(user,credentials);
     if(user.name==credentials.name && user.password==credentials.password){
+      console.log(user,credentials);
       //stick the user in our session
       request.session.user=user;
       return onComplete(null,user);

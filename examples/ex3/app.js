@@ -12,6 +12,9 @@ var io = require('socket.io').listen(server);
 var sessionStore = new RedisStore();
 var path = require('path');
 
+Hop.enableCaching();
+Hop.enableEvents();
+
 require('./user');
 
 server.listen(3000);
@@ -58,6 +61,8 @@ app.get("/bar",function(req,res){
 		res.send("foo");
 	},5000);
 });
+
+
 
 /*
 	Browser 

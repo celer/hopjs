@@ -14,6 +14,7 @@
 
   Hop.TestCase=function(name){
     this.tasks=[];
+    this.name=name;
     this.taskIndex=0;
     Hop.TestCases[name]=this;
   }
@@ -33,10 +34,13 @@
   }
 
   Hop.TestCase.prototype.runTasks=function(onComplete){
-    Hop.TestUtils.clearValues();
     this._onComplete=onComplete||function(){};
-    this.reset();
-    this.nextTask();
+    this.reset(); 
+    Hop.TestUtils.clearValues();
+    var self=this;
+    this.do("TestService.log",{ msg: "Test: Starting "+this.name},function(){
+      self.nextTask();
+    })
     
   }
 
@@ -88,15 +92,16 @@
     <% } else {%>
       var inputValue = <%= JSON.stringify(task.inputObject) %>;    
     <% } %>
-
-      testCase.do("<%=task.funcName%>",inputValue,function(err,output){
-       <% for(var k in task.test){ %>
-        <% var test = task.test[k]; %>   
-            var value = <%= test.value!=undefined?JSON.stringify(test.value):"undefined"%>;
-            var result = (<%=test.testFunc%>)(inputValue,err,output,value);
-            testCase.testResult(taskIndex,"<%=task.funcName%>",inputValue,err,output,"<%=test.type%>",result);
-       <% } %> 
-       testCase.nextTask();    
+      testCase.do("TestService.log",{ msg: "Test: Doing <%=task.funcName%>"},function(){
+        testCase.do("<%=task.funcName%>",inputValue,function(err,output){
+         <% for(var k in task.test){ %>
+          <% var test = task.test[k]; %>   
+              var value = <%= test.value!=undefined?JSON.stringify(test.value):"undefined"%>;
+              var result = (<%=test.testFunc%>)(inputValue,err,output,value);
+              testCase.testResult(taskIndex,"<%=task.funcName%>",inputValue,err,output,"<%=test.type%>",result);
+         <% } %> 
+         testCase.nextTask();    
+       });
       });
     });
 

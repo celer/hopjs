@@ -9,7 +9,7 @@ Hop.enableCaching=function(options){
   require('./lib/cacheredis.js');
 }
 
-Hop.useEvent=function(){
+Hop.enableEvents=function(){
   require('./lib/event.js');
   require('./lib/eventredis.js');
   require('./lib/socketio.js');
@@ -19,7 +19,7 @@ Hop.useEvent=function(){
 require('./lib/express.js');
 
 
-Hop.useJob=function(){
+Hop.enableJobs=function(){
   Hop.warn("Job support is expiremental at best");
   require('./lib/job.js');
   require('./lib/joblocal.js');
