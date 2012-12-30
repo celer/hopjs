@@ -1,1 +1,12 @@
-<div><button onClick='TestCase.runInDialog("<%=method.getMethod()%>","#dialog")'/>Run all test cases for: <%=method.getMethod()%></button></div>
+<div>
+  <% if(typeof testControl=="undefined") testControl=0; testControl++; %>
+  <select id="testControl_<%=testControl%>">
+  <option value="<%=method.getMethod()%>">All for <%=method.getMethod()%></option>
+  <% for(var testCaseName in Hop.TestCases){ %>
+    <% if(testCaseName.indexOf(method.getMethod())==0){ %>
+      <option value="<%=testCaseName%>"><%=testCaseName%></option>
+    <% } %>
+  <% } %>
+  </select>
+  <button onClick='Hop.TestCase.runInDialog($("#testControl_<%=testControl%>").val(),"#dialog")'/>Run</button>
+</div>

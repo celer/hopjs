@@ -49,14 +49,19 @@ UserService.create=function(user,onComplete){
 }
 
 UserService.authenticate=function(credentials,onComplete,request){
+  console.log("ASDFADSFDASFDSFASDFSDF");
+  console.log(credentials);
+  console.log(users);
   for(var i in users){
     var user = users[i];
+    console.log(user,credentials);
     if(user.name==credentials.name && user.password==credentials.password){
       //stick the user in our session
       request.session.user=user;
       return onComplete(null,user);
-    } else return onComplete("Permission denied");
+    } 
   } 
+  return onComplete("Invalid name or password");
 }
 
 
@@ -64,7 +69,9 @@ UserService.load=function(input,onComplete,request){
   console.log("Loading user with id:",input.id);
   console.log(users);
   if(users[input.id]!=undefined){
-    return onComplete(null,users[input.id]);
+    var user = users[input.id];
+    user.when = (new Date()).getTime();
+    return onComplete(null,user);
   } else {  
     // No error but, also no result
     return onComplete(null,null);
@@ -79,10 +86,6 @@ UserService.del=function(input,onComplete,request){
   } else {  
     return onComplete(null,false);
   }
-}
-
-UserService.currentUser=function(input,onComplete,request){
-  return onComplete(null,request.session.user);
 }
 
 
@@ -101,7 +104,7 @@ Hop.defineClass("UserService",UserService,function(api){
 	api.post("authenticate","/user/auth").demand("password").demand("name");
 	api.get("currentUser","/user");
 	api.get("logout","/user/logout");
-  api.get("load","/user/:id").demand("id").cacheId("/user/:id",60,true);
+  api.get("load","/user/:id").demand("id").cacheId("/user/:id",60);
   api.del("del","/user/:id").demand("id").cacheInvalidate("/user/:id");
 });
 
@@ -129,10 +132,10 @@ Hop.defineTestCase("UserService.create: Advanced",function(test){
  */
 Hop.defineTestCase("UserService.authenticate",function(test){
 	var validUser = { email:"test@test.com", name:"AuthUser", password:"sillycat" };
-	test.do("UserService.create").with(validUser).noError().inputSameAsOutput().outputNotNull();
+	test.do("UserService.create").with(validUser).noError().inputSameAsOutput().outputNotNull().saveOutputAs("createdUser");
   test.do("UserService.logout").noError();
-	test.do("UserService.authenticate").with({name:"authuser",password:"badpass"}).errorContains("Permission denied");
-  test.do("UserService.currentUser").noError().outputNull();
+	test.do("UserService.authenticate").with({name:"authuser",password:"badpass"}).errorContains("Invalid name or password");
+  test.do("UserService.currentUser").noError().outputIsNull();
 	test.do("UserService.authenticate").with({name:"AuthUser",password:"sillycat"}).noError();
   test.do("UserService.currentUser").noError().outputNotNull();
 });
@@ -142,16 +145,12 @@ Hop.defineTestCase("UserService.authenticate",function(test){
  */
 Hop.defineTestCase("UserService.load",function(test){
 	var validUser = { email:"test@test.com", name:"LoadUser", password:"sillycat" };
-	test.do("UserService.create").with(validUser).noError().inputSameAsOutput().outputNotNull();
-  //FIXME need to capture id from create to reuse with load - ie allow one result to feed into another
-  test.do("UserService.load").with({id:0}).noError().outputNotNull();
-  test.do("UserService.load").with({id:0}).noError().outputNotNull();
-  test.do("UserService.load").with({id:0}).noError().outputNotNull();
-  test.do("UserService.load").with({id:0}).noError().outputNotNull();
-  test.do("UserService.load").with({id:0}).noError().outputNotNull();
-  test.do("UserService.load").with({id:0}).noError().outputNotNull();
-  test.do("UserService.del").with({id:0}).noError();
-  test.do("UserService.load").with({id:0}).noError().outputNotNull();
+	test.do("UserService.create").with(validUser).noError().inputSameAsOutput().outputNotNull().saveOutputAs("createdUser");
+  test.do("UserService.load").with("createdUser").noError().outputNotNull().outputSameAs("createdUser").saveOutputAs("cachedUser");
+  test.do("TestService.wait").with({duration:3}).noError();
+  test.do("UserService.load").with("cachedUser").noError().outputNotNull().outputSameAs("cachedUser");
+  test.do("UserService.del").with("cachedUser").noError();
+  test.do("UserService.load").with("cachedUser").noError().outputIsNull();
 });
 
 

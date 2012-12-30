@@ -1,1 +1,1 @@
-<div><button onClick='TestCase.runInDialog("","#dialog")'/>Run all test cases</button></div>
+<div><button onClick='Hop.TestCase.runInDialog("","#dialog")'/>Run all test cases</button></div>

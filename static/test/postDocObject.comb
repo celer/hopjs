@@ -1,1 +1,1 @@
-<div><button onClick='TestCase.runInDialog("<%=object.name%>","#dialog")'/>Run all test cases for <%=object.name%></button></div>
+<div><button onClick='Hop.TestCase.runInDialog("<%=object.name%>","#dialog")'/>Run all test cases for <%=object.name%></button></div>

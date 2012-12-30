@@ -122,11 +122,10 @@ Hop.defineTestCase("UserService.authenticate",function(test){
 	test.do("UserService.create").with(validUser).noError().inputSameAsOutput().outputNotNull();
   test.do("UserService.logout").noError();
 	test.do("UserService.authenticate").with({name:"authuser",password:"badpass"}).errorContains("Permission denied");
-  test.do("UserService.currentUser").noError().outputNull();
+  test.do("UserService.currentUser").noError().outputIsNull();
 	test.do("UserService.authenticate").with({name:"AuthUser",password:"sillycat"}).noError();
   test.do("UserService.currentUser").noError().outputNotNull();
 });
-
 
 Hop.apiHook("/api/",app);
 

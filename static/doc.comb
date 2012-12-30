@@ -32,6 +32,7 @@
 			}
 	
 		</style>
+		<script src="/_hopjs/apitest.js"></script>
 		<script src="<%=Hop.apiURL%>"></script>
 		<script src="<%=Hop.testURL%>"></script>
 	

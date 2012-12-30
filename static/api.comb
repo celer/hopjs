@@ -1,11 +1,14 @@
-Hop = { 
-	onAJAXSuccess:function(data, textStatus, xhr,onComplete,methodName){
+if(typeof Hop=="undefined")
+  Hop={}
+
+Hop.onAJAXSuccess=function(data, textStatus, xhr,onComplete,methodName){
   	if(xhr.status==200){ 
 			onComplete(null, data); 
 			$(document).trigger(methodName,data); 
 		} else console.log(arguments); 
-	},
-	onAJAXError:function(xhr, textStatus, errorThrown,onComplete,methodName){
+	}
+
+Hop.onAJAXError=function(xhr, textStatus, errorThrown,onComplete,methodName){
 		if(xhr.status==404){ 
 			onComplete(null,null); 
 		} else if(xhr && xhr.responseText && xhr.responseText.length>0){ 
@@ -16,8 +19,9 @@ Hop = {
 			console.log('Server Error',methodName,xhr,errorThrown,textStatus); 
 			onComplete('Error contacting server'); 
 		} else console.log(arguments);  
-	},
-	validateInput:function(input,params){
+	}
+
+Hop.validateInput=function(input,params){
 		var output = {};
 		for(var paramName in params){
 			var param = params[paramName];
@@ -26,16 +30,18 @@ Hop = {
 			output[paramName]=input[paramName];
 		}
 		return output;
-	},
-	patchURL:function(input,url,params){
+	}
+
+Hop.patchURL=function(input,url,params){
 		for(var paramName in params){
 			var param = params[paramName];
 
 			url = url.replace(":"+paramName,input[paramName]);
 		}
 		return url;
-	},
-	remoteExec:function(methodName,type,url,options,params,input,onComplete){
+	}
+
+Hop.remoteExec=function(methodName,type,url,options,params,input,onComplete){
 		if(typeof input=="function" && typeof onComplete=="undefined"){
 			onComplete=input;
 			input=null;
@@ -63,8 +69,6 @@ Hop = {
 		});
 
 	}
-
-}
 
 <%= Hop.renderBeforeTemplates("JavaScript",{}) %>
 

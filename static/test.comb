@@ -1,139 +1,84 @@
-
-
-var TestCase = function(name){
-	this.name=name;
-	this.tasks=[];
-	TestCase.testCases[name]=this;
+var patchTestCases=function(){
+  if(typeof Hop!="undefined" && typeof Hop.TestCase!="undefined"){
+    
+    Hop.TestCase.prototype.do=function(method,inputValue,onComplete){
+      (eval(method))(inputValue,onComplete);
+    }
+    Hop.TestCase.prototype.testResult=function(taskIndex,method,inputValue,err,outputValue,testType,result){
+      console.log(arguments);
+      if(Hop.TestCase.lastTaskIndex!=taskIndex){ 
+        Hop.TestCase.resultIndex++; 
+        $(Hop.TestCase.resultSelector).append("<p><div>#"+(taskIndex+1)+" "+method+"(<a href='#foo' onclick='$(\"#testResult_"+Hop.TestCase.resultIndex+"\").slideToggle();return false;'>Details</a>)</div><p>");
+        Hop.TestCase.lastTaskIndex=taskIndex
+        $(Hop.TestCase.resultSelector).append("<div class='testDetails' id='testResult_"+Hop.TestCase.resultIndex+"' style='display:none'><h4>Input</h4><div class='testInput'>"+JSON.stringify(inputValue)+"</div><h4>Error</h4><div class='testResultError'>"+err+"</div><h4>Result</h4><div class='testResult'>"+JSON.stringify(outputValue)+"</div><br></div>");
+      } 
+      
+      var what = Hop.Tests[testType];
+      if(what){ 
+        if(result==false)
+          $(Hop.TestCase.resultSelector).append("<div style='color:red'>"+what.fail+"</div>");
+        else 
+          $(Hop.TestCase.resultSelector).append("<div style='color:green'>"+what.pass+"</div>");
+      } else {
+        if(result==false)
+          $(Hop.TestCase.resultSelector).append("<div style='color:red'>"+testType+"</div>");
+        else 
+          $(Hop.TestCase.resultSelector).append("<div style='color:green'>"+testType+"</div>");
+      }
+      if(result==true)
+        Hop.TestCase.results.pass++
+      else Hop.TestCase.results.fail++;
+        
+    }
+  } else {
+    setTimeout(patchTestCases,200);
+  }
 }
+patchTestCases();
+Hop.TestCase.resultSelector=null;
+Hop.TestCase.runInDialog=function(what,selector){
+  Hop.TestCase.resultSelector=selector;
+  Hop.TestCase.resultIndex=0;
+  Hop.TestCase.lastTaskIndex=-1;
+  Hop.TestCase.results={ pass:0, fail:0 };
+  $(selector).empty();
+  $(selector).dialog({
+    title: "Running test case:"+what,
+    width:740
+  }); 
 
-TestCase.testCases={};
+  if(Hop.TestCases[what]){
+    Hop.TestCase.run(what); 
+    $(Hop.TestCase.resultSelector).append("<p>Passed: "+Hop.TestCase.results.pass+" Failed: "+Hop.TestCase.results.fail);
+  } else {
 
-TestCase.get=function(name){
-	return TestCase.testCases[name];
-}
+    if(typeof what=="string" && what.length>0){
+      var toRun=[];
+      for(var i in Hop.TestCases){
+        if(i.indexOf(what)==0){ 
+          toRun.push(i);
+        }
+      }
+    }  else {
+      var toRun=Object.keys(Hop.TestCases);
+    }
 
-TestCase.prototype.add=function(onTask){
-	this.tasks.push(onTask);
-}
+    var run=function(){
+      if (toRun.length>0){
+        var testCase = toRun.shift();
+        $(Hop.TestCase.resultSelector).append("<h3>Running :"+testCase+"</h3>");
+        Hop.TestCase.run(testCase,function(){ 
+          console.log("Done running test cases");
+          Hop.TestCase.lastTaskIndex=-1;
+          run();
+        });
+      } else {
+        $(Hop.TestCase.resultSelector).append("<p>Passed: "+Hop.TestCase.results.pass+" Failed: "+Hop.TestCase.results.fail+" "+((Hop.TestCase.results.pass/(Hop.TestCase.results.pass+Hop.TestCase.results.fail))*100.0).toFixed(1)+"%");
+      }
+    }
+    run();
+  }
 
-TestCase.prototype.run=function(onComplete){
-	onComplete = onComplete||{};
-	var self=this;
-	var results=[];
-	var taskNum = 0;
-	var runTask = function(){
-		if(taskNum < self.tasks.length){
-			var task = self.tasks[taskNum];
-			task(function(err,res){
-				results.push({ err: err, res: res, task: task.toString() });
-				taskNum++;
-				setTimeout(runTask,50);
-			});
-		}	else {
-			onComplete(null,results);
-		}
-	}
-	setTimeout(runTask,50);
-}
 
-TestCase.runInSelector=function(testCase,selector,onComplete){
-		var tc = TestCase.get(testCase);
-		$(selector).append("<br><b>"+testCase+"</b><hr>");
-		tc.run(function(err,res){
-			if(err){
-				$(selector).append(err);
-			}  else {
-				var fail=0, pass=0;
-				for(var i in res){
-					var r = res[i];	
-					if(!r.err){
-						pass++;
-					} else {
-						$(selector).append("FAIL:"+r.err+"<br>");		
-						r.task=r.task.replace(/\t/g,"  ");
-						r.task=r.task.replace(/^[\s\t]*\n/g,"");
-						$(selector).append("<pre>"+r.task+"</pre><br>");		
-						fail++;
-					}	
-				}
-				$(selector).append(fail+" tests failed, "+pass+" tests passed - "+((pass/(fail+pass))*100).toFixed(1)+"% pass rate+<br>");
-			}
-			onComplete(null,{ pass: pass, fail:fail });
-		});
 
 }
-
-TestCase.runInDialog=function(testCase,selector){
-	$(selector).empty();
-
-	if(TestCase.get(testCase)){
-	
-		$(selector).dialog({
-			title:"Running test: "+testCase,
-			width:740
-		});
-	
-		TestCase.runInSelector(testCase,selector,function(){});
-
-	} else {
-		$(selector).dialog({
-			title:"Running test: "+(testCase==""?"All":testCase),
-			width:740
-		});
-		var toRun = [];
-		for(var i in TestCase.testCases){
-			var tc = TestCase.testCases[i];
-			if(new RegExp("^"+testCase).test(i)){
-				toRun.push(i);	
-			}
-		}
-		var pass=0,fail=0, cases=0;
-		var runTestCases=function(){
-			if(toRun.length>0){
-				TestCase.runInSelector(toRun.pop(),selector,function(err,res){
-					pass+=res.pass;
-					fail+=res.fail;
-					cases++;
-					runTestCases();
-				});
-			} else {
-				$(selector).append("<br><br><hr>"+fail+" tests failed, "+pass+" tests passed - "+((pass/(fail+pass))*100).toFixed(1)+"% pass rate out of "+cases+" test cases");
-			}
-		}
-		runTestCases();
-	} 
-		
-}
-
-
-<% for(var testCase in TestCases){ %>
-<% var TestCase = TestCases[testCase]; %>
-var task = new TestCase("<%=TestCase.name%>");
-<% for(var taskIndex in TestCase.tasks){ %>
-<% var task = TestCase.tasks[taskIndex]; %>
-task.add(function(onComplete){	
-	<% if(task instanceof Hop.TestTask){  %>
-	<%=task.funcName%>(<%=JSON.stringify(task.getInputObject())%>,function(err,output){
-			<% for(var testIndex in task.test){ %>
-			<% var test = task.test[testIndex]; %>
-			<% if(test.type=='noError'){ %>
-				if(err!=null) return onComplete("Error was not expected, got:"+err.toString());
-			<% } else if(test.type=='errorContains'){%>
-				if(err==null) return onComplete("Error was expected");
-				<% if(test.expectedError){ %>
-				else if( err.indexOf("<%=Hop.addslashes(test.expectedError)%>")==-1 ) return onComplete("Error did not contain: '<%=(test.expectedError)%>', instead got: "+err);
-				<%}%>
-			<% } else if(test.type=='outputNotNull'){ %>
-				if(output==null) return onComplete("Output must not be null");
-			<% } else if(test.type=='outputNull'){ %>
-				if(output!=null) return onComplete("Output must be null");
-			<% } else if(test.type=='outputMatches'){ %>
-				if(output==null) return onComplete("Output must not be null");
-			<% } %>
-			<% } %>
-			return onComplete(null,output);
-	});
-	<% } %>
-});
-<% } %>
-<% } %>

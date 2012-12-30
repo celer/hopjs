@@ -188,6 +188,7 @@ TBD
  - Curl can't save session cookies so some shell tests won't work
  - Need to add SSL support
  - Need to add dev key support
+ - DRY for local API calling
  - Figure out a way for unit tests to save intermediate results for later usage or comparison
  - Add more tests
 

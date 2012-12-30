@@ -1,0 +1,4 @@
+node_modules
+.stderr.log
+.stdout.log
+.test*.log
