@@ -1,3 +1,5 @@
+
+
 var express= require('express');
 var path = require('path');
 
@@ -52,7 +54,7 @@ UserService.authenticate=function(credentials,onComplete,request){
   for(var i in users){
     var user = users[i];
     if(user.name==credentials.name && user.password==credentials.password){
-      console.log(user,credentials);
+      console.log("Found user",user,credentials);
       //stick the user in our session
       request.session.user=user;
       return onComplete(null,user);
@@ -74,6 +76,8 @@ UserService.load=function(input,onComplete,request){
     return onComplete(null,null);
   }
 }
+
+UserService.advancedCaching=UserService.load;
 
 UserService.del=function(input,onComplete,request){
   if(users[input.id]!=undefined){
@@ -101,8 +105,63 @@ Hop.defineClass("UserService",UserService,function(api){
 	api.post("authenticate","/user/auth").demand("password").demand("name");
 	api.get("currentUser","/user");
 	api.get("logout","/user/logout");
+    
+  /*
+    The .cacheId will create a unique ID that is used to identify the item in our cache 
+    by taking the returned result, and pulling the :id parameter out and substituting it
+    into the path "/user/:id" - we could also use any other parameter we wanted from the 
+    returned object in the path. 
+
+    The duration for how long to cache the item is specified next. Any users
+    loaded will be cached for up to 60 sections. 
+
+    The last parameter 'true' is used to indicate if we should also leverage client 
+    side caching by adding extra HTTP headers. If so we will try to get the client
+    side to cache the object for up to 60 seconds as well. The key thing to know here
+    is that we may not easily be able to insure that the client side cache works or 
+    can be invalidated.
+
+  */
   api.get("load","/user/:id").demand("id").cacheId("/user/:id",60,true);
+
+  /*
+    The .cacheInvalidate works much like the .cacheId modifier above. It will
+    substitude the input objects paramers into the specified cache path
+    to determine which item to delete. 
+  */
   api.del("del","/user/:id").demand("id").cacheInvalidate("/user/:id");
+
+    
+  /*
+    This call uses .cache modifier to provide a more custom caching capability.
+    
+    In this example we want to always return a fresh instance of the user if they are
+    asking for thier own user object. 
+
+    For more details see the documentation under /lib/cache.js 
+  */
+  api.get("advancedCaching","/caching/advanced/:id").demand("id").cache(function(when,cache,req,input,err,result){
+      if(when=="before"){
+      /*
+        Test to see if a user is logged in, and if the logged in user
+        is the same as the user we are requesting to load, if so
+        never return a cached copy
+
+        Note that we do not tell the browser to cache the user
+        or else upon login we'd still get a cached user.
+      */
+      console.log("ADVC",req.session.user);
+      if(req.session.user && req.session.user.id==input.id){
+          return false;
+      } else {  
+        /* If the user isn't logged attempt to return the item from the cache */
+        return cache.id("/user/:id",60);
+      }
+    } else if(when=="after"){
+      /* We always want to save the result in our cache */
+      return cache.id("/user/:id",60);
+    }
+  });
 });
 
 /*
@@ -112,16 +171,20 @@ Hop.defineClass("UserService",UserService,function(api){
  */
 Hop.defineTestCase("UserService.create: Basic tests",function(test){
 	var validUser = { email:"test@test.com", name:"TestUser", password:"sillycat" };
-	test.do("UserService.create").with(validUser).noError().inputSameAsOutput().outputNotNull();
+	test.do("UserService.create").with(validUser).inputSameAsOutput().saveOutputAs("createdUser");
+  
+  test.do("UserService.del").with("createdUser").noError();
 });
 
 //Notice that we can have multiple test cases for each API call
 Hop.defineTestCase("UserService.create: Advanced",function(test){
 	var validUser = { email:"test@test.com", name:"TestUser", password:"sillycat" };
-	test.do("UserService.create").with(validUser).noError().inputSameAsOutput().outputNotNull();
+	test.do("UserService.create").with(validUser).inputSameAsOutput().saveOutputAs("createdUser");
 	test.do("UserService.create").with({name:undefined},validUser).errorContains("parameter 'name'");
 	test.do("UserService.create").with({email:"X"},validUser).errorContains("Invalid email");
 	test.do("UserService.create").with({name:"@#$"},validUser).errorContains("Invalid name");
+  
+  test.do("UserService.del").with("createdUser").noError();
 });
 
 /**
@@ -129,12 +192,14 @@ Hop.defineTestCase("UserService.create: Advanced",function(test){
  */
 Hop.defineTestCase("UserService.authenticate",function(test){
 	var validUser = { email:"test@test.com", name:"AuthUser", password:"sillycat" };
-	test.do("UserService.create").with(validUser).noError().inputSameAsOutput().outputNotNull().saveOutputAs("createdUser");
+	test.do("UserService.create").with(validUser).inputSameAsOutput().saveOutputAs("createdUser");
   test.do("UserService.logout").noError();
 	test.do("UserService.authenticate").with({name:"authuser",password:"badpass"}).errorContains("Invalid name or password");
   test.do("UserService.currentUser").noError().outputIsNull();
 	test.do("UserService.authenticate").with({name:"AuthUser",password:"sillycat"}).noError();
   test.do("UserService.currentUser").noError().outputNotNull();
+
+  test.do("UserService.del").with("createdUser").noError();
 });
 
 /**
@@ -142,10 +207,10 @@ Hop.defineTestCase("UserService.authenticate",function(test){
  */
 Hop.defineTestCase("UserService.load",function(test){
 	var validUser = { email:"test@test.com", name:"LoadUser", password:"sillycat" };
-	test.do("UserService.create").with(validUser).noError().inputSameAsOutput().outputNotNull().saveOutputAs("createdUser");
-  test.do("UserService.load").with("createdUser").noError().outputNotNull().outputSameAs("createdUser").saveOutputAs("cachedUser");
+	test.do("UserService.create").with(validUser).noError().inputSameAsOutput().saveOutputAs("createdUser");
+  test.do("UserService.load").with("createdUser").outputSameAs("createdUser").saveOutputAs("cachedUser");
   test.do("TestService.wait").with({duration:3}).noError();
-  test.do("UserService.load").with("cachedUser").noError().outputNotNull().outputSameAs("cachedUser");
+  test.do("UserService.load").with("cachedUser").outputSameAs("cachedUser");
   test.do("UserService.del").with("cachedUser").noError();
 
   /* This last attempt to load the user may or may not return a result! 
@@ -155,8 +220,48 @@ Hop.defineTestCase("UserService.load",function(test){
       so we might get a result - even though the server side copy has been deleted.
 
   */    
-  test.do("UserService.load").with("cachedUser").noError()
+  test.do("UserService.load").with("cachedUser").noError();
+
 });
+
+/**
+ * Test case for advanced caching
+ */
+Hop.defineTestCase("UserService.load: Advanced caching",function(test){
+	var user1 = { email:"test@test.com", name:"user1", password:"sillycat" };
+	var user2 = { email:"test@test.com", name:"user2", password:"sillycat" };
+
+	test.do("UserService.create").with(user1).inputSameAsOutput().saveOutputAs("createdUser1");
+	test.do("UserService.create").with(user2).inputSameAsOutput().saveOutputAs("createdUser2");
+
+  /*
+    We will saved two cached users, each of which will have a "when" value indicating when it 
+    actually hit our back-end call. 
+  */
+  test.do("UserService.advancedCaching").with("createdUser1").inputSameAsOutput().saveOutputAs("cachedUser1");  
+  test.do("UserService.advancedCaching").with("createdUser2").inputSameAsOutput().saveOutputAs("cachedUser2");  
+
+  /*
+    Now let's login
+  */ 
+  test.do("UserService.authenticate").with("createdUser1").inputSameAsOutput();
+  test.do("UserService.currentUser").with({}).outputNotNull();
+
+  /*
+    Now if we hit the cache the .when value for our logged in user should have changed:
+  */
+  test.do("UserService.advancedCaching").with("cachedUser1").outputPropertyChanged("when"); 
+
+  /*
+    And the other user should remain the same
+  */
+  test.do("UserService.advancedCaching").with("cachedUser2").inputSameAsOutput(); 
+
+  test.do("UserService.del").with("createdUser1");
+  test.do("UserService.del").with("createdUser2");
+
+});
+
 
 
 

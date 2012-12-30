@@ -2,7 +2,13 @@ var patchTestCases=function(){
   if(typeof Hop!="undefined" && typeof Hop.TestCase!="undefined"){
     
     Hop.TestCase.prototype.do=function(method,inputValue,onComplete){
-      (eval(method))(inputValue,onComplete);
+      try {
+        (eval(method))(inputValue,onComplete);
+      } catch(e){
+        if(typeof eval(method)=="undefined"){
+          return onComplete("Invalid method call:"+method);
+        } else return onComplete(e);
+      }
     }
     Hop.TestCase.prototype.testResult=function(taskIndex,method,inputValue,err,outputValue,testType,result){
       console.log(arguments);

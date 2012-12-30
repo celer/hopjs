@@ -98,7 +98,7 @@ hopjs-gen -url http://www.website.com:3000/ shell -unitTest -output test_api.sh
 ./test_api.sh http://www.website.com:3000/ ./api.sh
 
 ```
-You can see a complete working example at: https://github.com/celer/hopjs/tree/master/examples/ex1
+You can see a complete working example at: https://github.com/celer/hopjs/tree/master/examples/intro
 
 # Intelligent server-side caching of results
 
@@ -160,7 +160,7 @@ Time for a quick example:
   UserService.del({id:5})
 ```
 
-You can see a complete working example at: https://github.com/celer/hopjs/tree/master/examples/ex2
+You can see a complete working example at: https://github.com/celer/hopjs/tree/master/examples/caching
 
 # Advanced Topics
 

@@ -2,6 +2,8 @@ var assert = require('assert');
 require('should');
 var Hop = require('../index');
 
+Hop.enableCaching();
+
 var CacheTest = function(){
 
 }

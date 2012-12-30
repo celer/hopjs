@@ -15,6 +15,11 @@ optimist=optimist.describe("testDetails","Show the details for each test");
 var args = optimist.argv;
 
 if(args.url){
+	var apiOptions={};
+	if(args.unitTest){
+		apiOptions.ignoreDemands=true;
+	}
+
   Hop.remoteAPI(args.url,function(err,api){
     if(args["_"].length>0){
 
@@ -165,6 +170,6 @@ if(args.url){
         process.exit(-1);
       }
     }
-  });
+  },apiOptions);
 
 }
