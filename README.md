@@ -100,7 +100,7 @@ hopjs-gen -url http://www.website.com:3000/ shell -unitTest -output test_api.sh
 ```
 You can see a complete working example at: https://github.com/celer/hopjs/tree/master/examples/intro
 
-# Intelligent server-side caching of results
+## Intelligent server-side caching of results
 
 Now lets assume that we've written a killer server-side API, but we haven't done any caching of our results so each 
 time we need to do something we're hitting our database. HopJS has the ability to add caching on top of your API quickly
@@ -161,8 +161,6 @@ Time for a quick example:
 ```
 
 You can see a complete working example at: https://github.com/celer/hopjs/tree/master/examples/caching
-
-# Advanced Topics
 
 ## API Interfaces
 
