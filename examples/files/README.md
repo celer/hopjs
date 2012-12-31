@@ -29,3 +29,5 @@ sudo npm install -g node-dev
 node-dev app.js
 
 ```
+
+(Pig courtesy of http://openclipart.org/detail/26011/pig-roundcartoon-by-bloodsong )
