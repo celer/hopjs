@@ -85,6 +85,14 @@ if(args.url){
                 Hop.TestCase.lastTaskIndex=taskIndex;
               
                 if(args.testDetails){
+									if(input && input instanceof Buffer){
+										input={ type:"Buffer", length: input.length, sample: output.toString().substr(0,10) };
+									}
+									if(response && response instanceof Buffer){
+										response={ type:"Buffer", length: response.length, sample: response.toString().substr(0,10) };
+									}
+									if(typeof input=="string" && input.length>100) input=input.substr(0,100)+"...";
+									if(typeof response=="string" && response.length>100) response=response.substr(0,100)+"...";
                   console.log("\tInput",JSON.stringify(input));
                   console.log("\tError",err);
                   console.log("\tResult",JSON.stringify(response));

@@ -50,7 +50,7 @@ Now that we've done that we get a few things:
    * UserService.create(input,onComplete)
    * UserService.authenticate(input,onComplete)
 
-So now our website has:
+So now our web-site has:
 ```shell
   # An API for UserService.create 
   POST /api/user
@@ -179,10 +179,39 @@ HopJS also has the ability to define an API interface which can be used to quick
   Hop.defineClass("Email",EmailService,function(api){
     //This will cause the interface defined above to be applied to this object
     // Now EmailService.send will exist on /email/send with all the associated demands, etc.
-    api.extends("Notification");
+    api.extend("Notification");
   });  
 
 ```
+You can see a complete working example at: https://github.com/celer/hopjs/tree/master/examples/interface
+
+## Working with files
+
+Working with files is pretty simple! To send files we can simply tell HopJS how to send the file, either as a raw file, or as an attachmet. We can 
+also allow uploads using the .demandFile or the .optionalFile
+
+```javascript
+	FileTest.sendFile=function(input,onComplete){
+		return onComplete(null,Hop.sendFile("public/pig.png"));
+	}	
+
+	FileTest.sendAttachment=function(input,onComplete){
+		return onComplete(null,Hop.sendAttachment("public/pig.png","image.png"));
+	}
+
+	FileTest.upload=function(input,onComplete){
+		return onComplete(null,input);
+	}	
+
+
+	Hop.defineClass("FileTest",FileTest,function(api){
+		api.get("sendFile","/file")
+		api.get("sendAttachment","/attachment");
+		api.post("upload","/upload").demandFile("required").optionalFile("optional");
+	});  
+```
+You can see a complete working example at: https://github.com/celer/hopjs/tree/master/examples/files
+
 ## Models
 
 TBD

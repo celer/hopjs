@@ -4,12 +4,14 @@ if(typeof Hop=="undefined")
 Hop.onAJAXSuccess=function(data, textStatus, xhr,onComplete,methodName){
   	if(xhr.status==200){ 
 			onComplete(null, data); 
-			$(document).trigger(methodName,data); 
+			//$(document).trigger(methodName,data); 
 		} else console.log(arguments); 
 	}
 
 Hop.onAJAXError=function(xhr, textStatus, errorThrown,onComplete,methodName){
-		if(xhr.status==404){ 
+		if(xhr.status==200){
+			onComplete(null,xhr.responseText); 
+		} else if(xhr.status==404){ 
 			onComplete(null,null); 
 		} else if(xhr && xhr.responseText && xhr.responseText.length>0){ 
 			onComplete(xhr.responseText) 
@@ -60,13 +62,46 @@ Hop.remoteExec=function(methodName,type,url,options,params,input,onComplete){
 		if(options.noCache){
 			input._when=(new Date().getTime())
 		}
-		$.ajax(url,{
-			type:type,
-			data:input,
-			dataType:"json",
-			success: function(data, textStatus, jqXHR){ Hop.onAJAXSuccess(data, textStatus, jqXHR,onComplete,methodName); },
-			error: function(jqXHR, textStatus, errorThrown){ Hop.onAJAXError(jqXHR, textStatus, errorThrown,onComplete,methodName); },
-		});
+		if(type=="post" || type=="put" || type=="delete"){
+			<% if(_csrf!=undefined){%>
+				input._csrf=<%=JSON.stringify(_csrf)%>;
+				input.csrf=<%=JSON.stringify(_csrf)%>;
+			<%}%>
+		}
+		if(type=="post" && typeof FormData!="undefined"){	
+			var xhr = new XMLHttpRequest();
+			var form = new FormData();
+			for(var i in input){
+				form.append(i,input[i]);
+			}	
+			xhr.open(type,url);
+			xhr.responseType="text";	
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4){
+					var value=xhr.response;
+					if(typeof xhr.response=="string"){
+						try {
+							value = JSON.parse(xhr.response);	
+						} catch (e){
+						}
+					}
+					if(xhr.status==200 && xhr.response!=null){
+						Hop.onAJAXSuccess(value,xhr.statusText,xhr,onComplete,methodName);	
+					} else {
+						Hop.onAJAXError(xhr,xhr.statusText,xhr.responseText,onComplete,methodName);
+					}
+				}
+			}	
+			xhr.send(form);	
+		} else {
+			$.ajax(url,{
+				type:type,
+				data:input,
+				dataType:"json",
+				success: function(data, textStatus, jqXHR){ Hop.onAJAXSuccess(data, textStatus, jqXHR,onComplete,methodName); },
+				error: function(jqXHR, textStatus, errorThrown){ Hop.onAJAXError(jqXHR, textStatus, errorThrown,onComplete,methodName); },
+			});
+		}
 
 	}
 

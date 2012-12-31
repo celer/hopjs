@@ -1,6 +1,6 @@
 To run this example:
 
-First install all the depedencies
+First install all the dependencies
 ```shell
   npm install .
 ```
@@ -33,7 +33,7 @@ Now visit http://localhost:3000/ in your browser
 If we look at the browsers network inspection tool you'll notice that HopJS has applied all the various HTTP caching headers to prevent 
 the browser from requesting the object again.
 
-Also if you look at the console log for the application you'll see the log messags that HopJS has created regarding caching. You should notice that even though we requested the object multiple times we only see that the item was saved once. 
+Also if you look at the console log for the application you'll see the log message that HopJS has created regarding caching. You should notice that even though we requested the object multiple times we only see that the item was saved once. 
 
 
 ```shell

@@ -1,14 +1,49 @@
 var patchTestCases=function(){
   if(typeof Hop!="undefined" && typeof Hop.TestCase!="undefined"){
-    
+   
+		Hop.TestCase.blobFromURL=function(url,onComplete){
+				var xhr = new XMLHttpRequest();
+				xhr.open("get",url);
+				xhr.responseType="blob";
+				xhr.onload=function(e){
+					if(this.response instanceof Blob){
+						return onComplete(null,this.response);
+					} else {
+						return onComplete(null,new Blob([this.response]));
+					}
+				}	
+				xhr.send();
+		}
+ 
     Hop.TestCase.prototype.do=function(method,inputValue,onComplete){
-      try {
-        (eval(method))(inputValue,onComplete);
-      } catch(e){
-        if(typeof eval(method)=="undefined"){
-          return onComplete("Invalid method call:"+method);
-        } else return onComplete(e);
-      }
+			var xhrTasks = [];
+			for(var i in inputValue){
+				var input = inputValue[i];
+				if(input._fileFromURL!=null){
+					xhrTasks.push({ url: input._fileFromURL, field: i });	
+				}
+			}
+
+			var run = function(){
+				if(xhrTasks.length>0){
+					var xhrTask = xhrTasks.shift();
+					Hop.TestCase.blobFromURL(xhrTask.url,function(err,blob){
+						inputValue[xhrTask.field]=blob;	
+						console.log("Got blob from",xhrTask.url,xhrTask.field);
+						run();
+					});
+				} else {
+					console.log(inputValue);
+					try {
+						(eval(method))(inputValue,onComplete);
+					} catch(e){
+						if(typeof eval(method)=="undefined"){
+							return onComplete("Invalid method call:"+method);
+						} else return onComplete(e);
+					}	
+				}
+			}
+			run();
     }
     Hop.TestCase.prototype.testResult=function(taskIndex,method,inputValue,err,outputValue,testType,result){
       console.log(arguments);

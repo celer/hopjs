@@ -1,0 +1,18 @@
+extends layout
+
+block head
+	script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js")
+	script(src=Hop.apiURL);
+block content
+	script
+	a(href=Hop.docURL) Documentation about the API
+	p
+	img(src="/api/file")
+	form(method="post",enctype="multipart/form-data",action="/api/upload")
+		label required
+		input(type="file",name="required")
+		br
+		label optional
+		input(type="file",name="optional")
+		br
+		input(type="submit")
