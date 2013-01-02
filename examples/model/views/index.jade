@@ -1,0 +1,13 @@
+extends layout
+
+block head
+  script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js")
+  script(src=Hop.apiURL);
+block content
+  script
+  a(href=Hop.docURL) Documentation about the API
+  p  
+    | You an also use the API you've defined in your own JavaScript applications! 
+    | Simply open the JavaScript console in your browser and type:
+    pre
+      | UserService.create({ name: "user", password:"password", email:"email@email.com" });

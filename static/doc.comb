@@ -57,7 +57,7 @@
 				<% } %>
 				<%params.sort(function(a,b){ if(a.indexOf("*")==-1) return 1;  }) %>
 				<h3><%= obj.name %>.<%= method.name %>&nbsp;<span class="methodParams">({<%= params.join(", ") %>},onComplete)</span></h3>
-					<%= (method.usage?method.usage:"") %>
+					<%= (method.desc?method.desc:"") %>
 				<div class="paramBlock">
 					<u>Input Parameters</u><br>
 					<%for(var i in params) {%>
