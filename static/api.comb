@@ -28,7 +28,7 @@ Hop.validateInput=function(input,params){
 		for(var paramName in params){
 			var param = params[paramName];
 			if(param.demand && input[paramName]==undefined)
-				throw ("Required parameter '"+paramName+"' is missing");
+				throw ("Missing parameter:"+paramName);
 			output[paramName]=input[paramName];
 		}
 		return output;
