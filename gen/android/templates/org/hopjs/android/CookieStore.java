@@ -1,4 +1,4 @@
-package us.slipangle.rest.android;
+package org.hopjs.android;
 
 import java.util.Date;
 import java.util.LinkedList;

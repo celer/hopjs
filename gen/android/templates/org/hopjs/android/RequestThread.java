@@ -1,4 +1,4 @@
-package us.slipangle.rest.android;
+package org.hopjs.android;
 
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
@@ -29,9 +29,9 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 
-import us.slipangle.rapi.JSObject;
-import us.slipangle.rapi.MethodCall;
-import us.slipangle.rapi.HopFile;
+import org.hopjs.JSObject;
+import org.hopjs.MethodCall;
+import org.hopjs.HopFile;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.http.AndroidHttpClient;

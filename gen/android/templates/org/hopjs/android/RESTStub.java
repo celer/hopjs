@@ -1,12 +1,12 @@
-package us.slipangle.rest.android;
+package org.hopjs.android;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-import us.slipangle.rapi.HttpHelper;
-import us.slipangle.rapi.JSObject;
-import us.slipangle.rapi.Listener;
-import us.slipangle.rapi.MethodCall;
+import org.hopjs.HttpHelper;
+import org.hopjs.JSObject;
+import org.hopjs.Listener;
+import org.hopjs.MethodCall;
 
 import android.content.ComponentName;
 import android.content.Context;

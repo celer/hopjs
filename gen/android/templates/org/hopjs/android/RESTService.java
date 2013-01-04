@@ -1,4 +1,4 @@
-package us.slipangle.rest.android;
+package org.hopjs.android;
 
 import java.io.File;
 import java.net.CookieHandler;
