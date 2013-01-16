@@ -19,7 +19,7 @@ var patchTestCases=function(){
 			var xhrTasks = [];
 			for(var i in inputValue){
 				var input = inputValue[i];
-				if(input._fileFromURL!=null){
+				if(input!=null && input._fileFromURL!=null){
 					xhrTasks.push({ url: input._fileFromURL, field: i });	
 				}
 			}

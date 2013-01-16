@@ -52,7 +52,7 @@
           self.taskIndex++;
           self.tasks[taskIndex](self,taskIndex);
         } catch(e){
-          console.log(e);
+          console.log(e.toString());
         }
       })(this.taskIndex)
     } else {
