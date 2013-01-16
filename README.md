@@ -237,7 +237,7 @@ Now we can simply indicate a model is used for a call by using .useModel, .input
 
 You can see a complete working example at: https://github.com/celer/hopjs/tree/master/examples/model
 
-### Notes about REST
+# Notes about REST
 
  * Our implementation of REST is designed to be used with forms and does not support null values or special types, all values are converted to strings (null=="")
  * Per specification HTTP delete does not allow passing of parameters beyond what are specified in the path
