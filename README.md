@@ -212,14 +212,39 @@ You can see a complete working example at: https://github.com/celer/hopjs/tree/m
 
 ## Models
 
-TBD
+Models can be defined which will enable both validation of inputs but re-use of documenation and type conversion.
+
+```javascript
+	Hop.defineModel("User",function(user){
+		user.field("id","UserID","The user's id").integer().ID();
+		user.field("name","Username","The user's username").string().regexp(/[A-Za-z0-9\_\-]{3,10}/,"Usernames must be between 3 and 10 characters long, and can only contain alphanumeric characters");
+		user.field("email","Email","The user's email address").string();
+		user.field("password","Password","The user's password").password();
+	});
+```
+Now we can simply indicate a model is used for a call by using .useModel, .inputModel or .outputModel
+
+```javascript
+	Hop.defineClass("UserService",UserService,function(api){
+		api.usage("Manages users");
+		api.post("create","/user").usage("Creates a user").demands("email","name","password").useModel("User");
+		api.post("authenticate","/user/auth").usage("Authenticates a user").demands("password","name").useModel("User");
+		api.get("currentUser","/user").usage("Returns the current user").outputModel("User");
+		api.get("logout","/user/logout").usage("Logs the current user out");
+		api.del("del","/user/:id").usage("Deletes the user").demand("id").inputModel("User");
+	});
+```
+
+You can see a complete working example at: https://github.com/celer/hopjs/tree/master/examples/model
+
+### Notes about REST
+
+ * Our implementation of REST is designed to be used with forms and does not support null values or special types, all values are converted to strings (null=="")
+ * Per specification HTTP delete does not allow passing of parameters beyond what are specified in the path
 
 # Known Issues / Todo
  - Android API is non-functional after major re-factor
- - Curl can't save session cookies so some shell tests won't work
+ - A bug in combination-stream, which is utilized by request and form-data prevents the unit tests for expirements/test from passing, see my fork of combination-stream for a fix
+ - Curl can't save session cookies so some shell tests won't wor
  - Need to add SSL support
  - Need to add dev key support
- - DRY for local API calling
- - Figure out a way for unit tests to save intermediate results for later usage or comparison
- - Add more tests
-
