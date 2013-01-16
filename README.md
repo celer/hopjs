@@ -76,6 +76,11 @@ Hop.defineTestCase("UserService.authenticate",function(test){
 });
 
 ```
+*We can unit test our API using the hopjs utility, which will run all the unit tests from the command line:*
+```shell
+hopjs --url http://localhost:3000/ --unitTest
+```
+
 *Now let's suppose we wanted an Android set of native client stubs for our API in Java:*
 
 ```shell
