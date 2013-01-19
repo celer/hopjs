@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+
+require("../lib/remote");
+var colors=require("colors");
+var path=require('path');
+var Selenium=require('selenium-inproc');
+
+var optimist = require('optimist');
+
+optimist=optimist.demand("url").describe("url","The url of the remote hopjs API to use");
+
+var args = optimist.argv;
+
+var selenium=new Selenium({
+	url: args.url,
+	proxy: "localhost:#{PROXY_PORT}"
+});
+
+selenium.seleniumWrapper.openBrowser(function(err,res){
+	res.open("/_hopjs/",function(){
+			res.runScript("Hop.TestCase.runInDialog('','#dialog')",function(){
+				setTimeout(function(){
+
+					res.getText("//*[@id='allTestResults']",function(err,r){
+						console.log(r);
+						res.close();
+					});
+				},1000);
+			});
+	});
+});
