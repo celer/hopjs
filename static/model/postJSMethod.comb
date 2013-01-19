@@ -1,0 +1,1 @@
+<%=method._className%>.<%=method.name%>.validateInput=function(input){ Hop.Models[<%=JSON.stringify(method.input.model)%>].validate(input) };
