@@ -97,8 +97,8 @@ Hop.defineClass("UnitTestService",UnitTestService,function(api){
 
 function basicTest(funcName,test){
 	var d=new Date();
-	var testValue = {string:"string", number:7, float:3.23, object: { a:1, b:"a", c:true, d:{ e:44} }, date: d, booleanTrue: true, booleanFalse:false, nullValue: null, modelMinMax: 6, modelArray:"red", modelObject:"R", modelString:"ADDFD", modelBool:true, modelFloat: 3.232 };
-	var expectedValue = {string:"string", number:"7", float:"3.23", object: { a:"1", b:"a", c:"true", d:{ e:"44"} }, date: d, booleanTrue: "true", booleanFalse:"false", nullValue: "", modelMinMax: 6, modelBool:true, modelFloat:3.232};
+	var testValue = {string:"string",  number:8, float:3.23, object: { a:1, b:"a", c:true, d:{ e:44} }, date: d, booleanTrue: true, booleanFalse:false, nullValue: null, modelMinMax: 6, modelArray:"red", modelObject:"R", modelString:"ADDFD", modelBool:true, modelFloat: 3.232 };
+	var expectedValue = {string:"string", number:"8", float:"3.23", object: { a:"1", b:"a", c:"true", d:{ e:"44"} }, date: d, booleanTrue: "true", booleanFalse:"false", nullValue: "", modelMinMax: 6, modelBool:true, modelFloat:3.232};
 	test.do(funcName).with({}).errorContains("Missing parameter:");
 	test.do(funcName).with(testValue).outputContains(expectedValue);
 	test.do(funcName).with(testValue,{modelMinMax: 2 }).errorContains("Value must be greater than 5");

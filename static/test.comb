@@ -114,7 +114,8 @@ Hop.TestCase.runInDialog=function(what,selector){
           run();
         });
       } else {
-        $(Hop.TestCase.resultSelector).append("<p>Passed: "+Hop.TestCase.results.pass+" Failed: "+Hop.TestCase.results.fail+" "+((Hop.TestCase.results.pass/(Hop.TestCase.results.pass+Hop.TestCase.results.fail))*100.0).toFixed(1)+"%");
+        $(Hop.TestCase.resultSelector).append("<p><span id='allTestResults'>Passed: "+Hop.TestCase.results.pass+" Failed: "+Hop.TestCase.results.fail+" "+((Hop.TestCase.results.pass/(Hop.TestCase.results.pass+Hop.TestCase.results.fail))*100.0).toFixed(1)+"%</span>");
+
       }
     }
     run();
