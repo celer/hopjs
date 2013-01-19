@@ -1,0 +1,27 @@
+if(typeof Hop.Models=="undefined"){ Hop.Models={}; }
+Hop.Models.validate=function(input,fieldsToValidate){
+		var fieldsToValidate = fieldsToValidate||Object.keys(this);
+		for(var fieldName in this){
+			if(this[fieldName].validate && fieldsToValidate.indexOf(fieldName)!=-1){
+				this[fieldName].validate(input);
+			}
+		}
+	}
+<%for(var modelName in Hop.Models){%>
+	<% var model = Hop.Models[modelName]; %>
+Hop.Models[<%=JSON.stringify(modelName)%>]={
+	<% for(var fieldName in model.fields) {%>
+		<% var field=model.fields[fieldName]; %>
+		<%=fieldName%>:{
+			name:<%=JSON.stringify(field.name)%>,
+			<% if(field.displayName){ %> displayName:<%=JSON.stringify(field.displayName)%>, <% } %>
+			<% if(field.desc){ %> desc:<%=JSON.stringify(field.desc)%>, <% } %>
+			validate:function(input){ 
+				<%= field.getValidator() %> 	
+			},
+		},
+	<%}%>
+	validate:Hop.Models.validate
+}
+
+<%}%>
