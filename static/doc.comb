@@ -67,6 +67,7 @@
 					<% } %>
 				</div>
 				<br>
+				<%= (method.secure==true?"<i>This method can only be called via https</i>":"") %>
 				<div class="postMethodBlock">
 					 <%= method.renderAfterTemplates("Doc", { method: method}) %> 
 				</div>
