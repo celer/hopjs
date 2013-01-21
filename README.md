@@ -78,6 +78,7 @@ Hop.defineTestCase("UserService.authenticate",function(test){
 ```
 *We can unit test our API using the hopjs utility, which will run all the unit tests from the command line:*
 ```shell
+npm install hopjs-remote -g
 hopjs --url http://localhost:3000/ --unitTest
 ```
 *We can also run the test in the browser of our choosing*

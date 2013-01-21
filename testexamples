@@ -61,7 +61,7 @@ var testExample=function(example,onComplete){
         return onComplete("Application quit before being tested");
       }
 
-      var unitTest = cp.exec("./bin/hopjs --url "+url+" --unitTest --testDetails");
+      var unitTest = cp.exec("hopjs --url "+url+" --unitTest --testDetails");
       
       var unitTestErr="";
       var unitTestOut="";      
