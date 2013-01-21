@@ -80,28 +80,17 @@ Hop.defineTestCase("UserService.authenticate",function(test){
 ```shell
 hopjs --url http://localhost:3000/ --unitTest
 ```
+*We can also run the test in the browser of our choosing*
+
+```shell
+hopjs-browser-test --url http://localhost:3000/  --browser firefox
+```
+
 
 *Now let's suppose we wanted an Android set of native client stubs for our API in Java:*
 
 ```shell
 hopjs-gen -url http://www.website.com:3000/ android -outputDir ./androidApp -package com.website.www
-```
-
-*Let's also generate a shell script for using our new API*
-
-```shell
-# This will create a shell script which uses curl to call our API
-hopjs-gen -url http://www.website.com:3000/ shell -output api.sh
-
-./api.sh UserService.create -APIURL http://www.website.com:3000/ --email user@user.com --username foo
-```
-*We can also generate a unit test for our shell script*
-```shell
-# This will create a shell script which runs our unit tests on our shell script
-hopjs-gen -url http://www.website.com:3000/ shell -unitTest -output test_api.sh
-
-./test_api.sh http://www.website.com:3000/ ./api.sh
-
 ```
 You can see a complete working example at: https://github.com/celer/hopjs/tree/master/examples/intro
 
