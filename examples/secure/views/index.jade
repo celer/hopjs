@@ -1,0 +1,13 @@
+extends layout
+
+block head
+	script(src="/scripts/jquery.min.js")
+	script(src=Hop.apiURL);
+block content
+	script
+	a(href=Hop.docURL) Documentation about the API
+	form(method="post", action="https://localhost:3443/api/secure/")
+		input(type="hidden", name="_hopTemplate", value="result.jade")
+		input(type="text", name="username")
+		input(type="password",name="password")
+		input(type="submit")

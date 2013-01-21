@@ -10,5 +10,7 @@
 	Pass 18 Fail 0 100.00%
 #model:
 	Pass 24 Fail 0 100.00%
+#secure:
+	Pass 1 Fail 0 100.00%
 #test:
 	Pass 25 Fail 0 100.00%

@@ -1,0 +1,12 @@
+extends layout
+
+block head
+	script(src="/scripts/jquery.min.js")
+	script(src=Hop.apiURL);
+block content
+	div error: 
+		span#err= error
+	div username: 
+		span#username= result.username
+	div password: 
+		span#password= result.password
