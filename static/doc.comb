@@ -7,7 +7,7 @@
 		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/themes/pepper-grinder/jquery-ui.css" />
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
-
+		<script>_csrf=<%=JSON.stringify(_csrf)%>;</script>
 		<style type="text/css">
 			.apiObject {
 				margin: 5px;

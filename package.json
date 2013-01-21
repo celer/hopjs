@@ -15,6 +15,10 @@
     "Web",
     "Framework"
   ],
+	"scripts:":{
+		"postinstall":"patch -p0 < combined-stream.patch",
+		"test":"testexamples"
+	},
   "dependencies": {
     "tracer": ">= 0.5.1",
     "mocha": ">=1.4.2",

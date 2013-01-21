@@ -268,10 +268,9 @@ Hop.remoteExec=function(methodName,type,url,options,params,input,onComplete){
 			input._when=(new Date().getTime())
 		}
 		if(type=="post" || type=="put" || type=="delete"){
-			<% if(_csrf!=undefined){%>
-				input._csrf=<%=JSON.stringify(_csrf)%>;
-				input.csrf=<%=JSON.stringify(_csrf)%>;
-			<%}%>
+			if(typeof _csrf=="string"){
+				input._csrf=_csrf;
+			}
 		}
 		if(type=="post" && typeof FormData!="undefined"){	
 			var xhr = new XMLHttpRequest();

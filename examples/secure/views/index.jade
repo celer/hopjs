@@ -6,8 +6,9 @@ block head
 block content
 	script
 	a(href=Hop.docURL) Documentation about the API
-	form(method="post", action="https://localhost:3443/api/secure/")
+	form(method="post", action="https://"+hostname+":3443/api/secure/")
 		input(type="hidden", name="_hopTemplate", value="result.jade")
+		input(type="hidden", name="_csrf", value=_csrf)
 		input(type="text", name="username")
 		input(type="password",name="password")
 		input(type="submit")
