@@ -28,5 +28,6 @@ Hop.enableJobs=function(){
 require('./lib/test.js');
 require('./lib/user.js');
 require('./lib/model.js');
+require('./lib/remote.js');
 
 module.exports=Hop;
