@@ -18,7 +18,6 @@ Hop.enableEvents=function(){
 
 require('./lib/express.js');
 
-
 Hop.enableJobs=function(){
   Hop.warn("Job support is expiremental at best");
   require('./lib/job.js');

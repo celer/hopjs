@@ -6,6 +6,7 @@ var fs=require('fs');
 var cp=require('child_process');
 var path=require('path');
 var optimist=require('optimist');
+var colors=require('colors');
 
 optimist=optimist.describe("url","url to use for testing");
 optimist=optimist.describe("log","log file");
@@ -131,13 +132,19 @@ fs.readdir("./examples",function(err,examples){
       })
     } else {
       console.log("--------------------------");
+			var str="";
       for(var i in results){
         console.log(i+":");
-        if(results[i].results)
-          console.log("\t",results[i].results);
-        else console.log("\t exited with",results[i].exitCode);
-
-      }
+				str+="#"+i+":\n";
+        if(results[i].results){
+          	console.log("\t",results[i].results);
+						str+="\t"+results[i].results.toString()+"\n";
+				} else { 
+					console.log("\t exited with",results[i].exitCode)
+					str+=("\t exited with "+results[i].exitCode+"\n");
+				}
+      }	
+			fs.writeFileSync("testresults.md",str);
       process.exit();
     }
   }

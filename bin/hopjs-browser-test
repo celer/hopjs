@@ -1,0 +1,74 @@
+#!/usr/bin/env node
+	
+
+
+require("../lib/remote");
+var colors=require("colors");
+var path=require('path');
+var optimist = require('optimist');
+
+
+optimist=optimist.describe("list","List the supported browsers");
+optimist=optimist.describe("install","Install the requirements to run the browser driver");
+var args = optimist.argv;
+
+if(args.install){
+	try {
+		var element34=require('element34');
+	} catch(e){
+		var cp = require('child_process');
+		var cmd = "(cd "+path.join(__dirname,"../")+" && npm install element34)";
+		console.log(cmd);
+		var proc = cp.exec(cmd).on("close",function(){
+			element34=require('element34');
+		});
+		proc.stdout.on("data",console.log);
+		proc.stderr.on("data",console.error);
+
+	}
+} else { 
+
+	try {
+		var element34=require('element34');
+	} catch(e){
+		console.error("Please re-run using --install");
+		process.exit();
+	}
+
+
+	if(args.list){
+		element34.browsers(function(err,browsers){
+			console.log(browsers.join("\n"));
+			process.exit(1);
+		});
+	} else {
+
+		optimist=optimist.demand("url").describe("url","The url of the remote hopjs API to use");
+		optimist=optimist.demand("browser").describe("browser","The browser to test with");
+		args = optimist.argv;
+
+		element34.browsers(function(err,browsers){
+			
+			if(browsers.indexOf(args.browser)!=-1){	
+				var browser = new element34[args.browser]();
+
+				browser.open(args.url,function(err,res){
+					res.open("/_hopjs/",function(){
+							res.runScript("Hop.TestCase.runInDialog('','#dialog')",function(){
+								setTimeout(function(){
+
+									res.getText("//*[@id='allTestResults']",function(err,r){
+										console.log("Result:",r);
+										res.close();
+									});
+								},2000);
+							});
+					});
+				});
+			} else {
+				console.error("Invalid browser specified");
+				process.exit(-1);
+			}
+		});
+	}
+}

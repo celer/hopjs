@@ -53,6 +53,15 @@ UserService.create=function(user,onComplete){
 	return onComplete(null,user);
 }
 
+UserService.list=function(input,onComplete){
+	var ret=[];
+  for(var i in users){
+    var user = users[i];
+		ret.push(user);
+	}
+	onComplete(null,ret);
+}
+
 UserService.authenticate=function(credentials,onComplete,request){
   for(var i in users){
     var user = users[i];
@@ -69,7 +78,6 @@ UserService.authenticate=function(credentials,onComplete,request){
 
 UserService.load=function(input,onComplete,request){
   console.log("Loading user with id:",input.id);
-  console.log(users);
   if(users[input.id]!=undefined){
     var user = users[input.id];
     user.when = (new Date()).getTime();
@@ -92,6 +100,22 @@ UserService.del=function(input,onComplete,request){
   }
 }
 
+UserService.save=function(input,onComplete){
+  console.log("Saving user with id:",input.id);
+  if(users[input.id]!=undefined){
+		for(var paramName in input){	
+			if(paramName!="id"){
+				if(input[paramName]!=""){
+	    		users[input.id][paramName] = input[paramName];	
+				} else return onComplete("Missing field: "+paramName);
+			}
+		}
+    return onComplete(null,users[input.id]);
+  } else {  
+    // No error but, also no result
+    return onComplete(null,null);
+  }
+}
 
 UserService.currentUser=function(input,onComplete,request){
   return onComplete(null,request.session.user);
@@ -106,9 +130,10 @@ Hop.defineClass("UserService",UserService,function(api){
 	api.usage("Manages users");
 	api.post("create","/user").demand("email","The email address for the user").demand("name","The user's name").demand("password","The password for the user");
 	api.post("authenticate","/user/auth").demand("password").demand("name");
-	api.get("currentUser","/user");
+	api.get("list","/user");  
+	api.get("currentUser","/user/current");
 	api.get("logout","/user/logout");
-    
+  
   /*
     The .cacheId will create a unique ID that is used to identify the item in our cache 
     by taking the returned result, and pulling the :id parameter out and substituting it
@@ -126,6 +151,13 @@ Hop.defineClass("UserService",UserService,function(api){
 
   */
   api.get("load","/user/:id").demand("id").cacheId("/user/:id",60,true);
+
+	/* 
+		When a user is saved we will invalidate the cached copy of the user. We could cache the user
+		at this point as well, but the cache will save the error if a one occurs; which isn't something
+		we desire. 
+	*/	
+  api.post("save","/user/:id").demands("name","email","password").cacheInvalidate("/user/:id");  
 
   /*
     The .cacheInvalidate works much like the .cacheId modifier above. It will
@@ -153,7 +185,6 @@ Hop.defineClass("UserService",UserService,function(api){
         Note that we do not tell the browser to cache the user
         or else upon login we'd still get a cached user.
       */
-      console.log("ADVC",req.session.user);
       if(req.session.user && req.session.user.id==input.id){
           return false;
       } else {  
@@ -183,9 +214,9 @@ Hop.defineTestCase("UserService.create: Basic tests",function(test){
 Hop.defineTestCase("UserService.create: Advanced",function(test){
 	var validUser = { email:"test@test.com", name:"TestUser", password:"sillycat" };
 	test.do("UserService.create").with(validUser).inputSameAsOutput().saveOutputAs("createdUser");
-	test.do("UserService.create").with({name:undefined},validUser).errorContains("Missing parameter");
-	test.do("UserService.create").with({email:"X"},validUser).errorContains("Invalid email");
-	test.do("UserService.create").with({name:"@#$"},validUser).errorContains("Invalid name");
+	test.do("UserService.create").with(validUser,{name:undefined}).errorContains("Missing parameter");
+	test.do("UserService.create").with(validUser,{email:"X"}).errorContains("Invalid email");
+	test.do("UserService.create").with(validUser,{name:"@#$"}).errorContains("Invalid name");
   
   test.do("UserService.del").with("createdUser").noError();
 });
@@ -211,9 +242,9 @@ Hop.defineTestCase("UserService.authenticate",function(test){
 Hop.defineTestCase("UserService.load",function(test){
 	var validUser = { email:"test@test.com", name:"LoadUser", password:"sillycat" };
 	test.do("UserService.create").with(validUser).noError().inputSameAsOutput().saveOutputAs("createdUser");
-  test.do("UserService.load").with("createdUser").outputSameAs("createdUser").saveOutputAs("cachedUser");
+  test.do("UserService.load").with("createdUser").outputSameAs("#{createdUser}").saveOutputAs("cachedUser");
   test.do("TestService.wait").with({duration:3}).noError();
-  test.do("UserService.load").with("cachedUser").outputSameAs("cachedUser");
+  test.do("UserService.load").with("cachedUser").outputSameAs("#{cachedUser}");
   test.do("UserService.del").with("cachedUser").noError();
 
   /* This last attempt to load the user may or may not return a result! 
@@ -224,6 +255,40 @@ Hop.defineTestCase("UserService.load",function(test){
 
   */    
   test.do("UserService.load").with("cachedUser").noError();
+});
+
+/*
+	Test case for list
+*/
+Hop.defineTestCase("UserService.list",function(test){
+	var user1 = { email:"test@test.com", name:"user1", password:"sillycat" };
+	var user2 = { email:"test@test.com", name:"user2", password:"sillycat" };
+
+	test.do("UserService.create").with(user1).inputSameAsOutput().saveOutputAs("createdUser1");
+	test.do("UserService.create").with(user2).inputSameAsOutput().saveOutputAs("createdUser2");
+		
+	test.do("UserService.list").with({}).outputArrayContains("createdUser1").outputArrayContains("createdUser2");
+
+ 
+	test.do("UserService.del").with("createdUser1").noError();
+	test.do("UserService.del").with("createdUser2").noError();
+
+});
+
+/*
+	Test case for saving
+*/
+Hop.defineTestCase("UserService.save",function(test){
+	var user1 = { email:"test@test.com", name:"user1", password:"sillycat" };
+	var user2 = { email:"test@test.com", name:"user2", password:"sillycat" };
+
+	test.do("UserService.create").with(user1).inputSameAsOutput().saveOutputAs("createdUser1");
+	
+	test.do("UserService.save").with("createdUser1",{name: "foo"}).saveOutputAs("savedUser1"); 
+	test.do("UserService.load").with("createdUser1").outputSameAs("savedUser1");
+
+ 
+	test.do("UserService.del").with("createdUser1").noError();
 
 });
 

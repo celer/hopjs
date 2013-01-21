@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 require("../lib/remote");
+var colors=require("colors");
 var path=require('path');
 
 var optimist = require('optimist');
@@ -67,15 +68,26 @@ if(args.url){
       } else if(args.unitTest){
         Hop.remoteAPITestHarness(args.url,function(err,testHarness){
           try {
+						if(err)
+							throw err;
+
             eval(testHarness);
+					
+
 
             Hop.TestCase.prototype.do=function(methodName,input,onComplete){
               var m = /(.*)\.([A-Za-z0-9]+)/.exec(methodName);
               var object=m[1];
               var method=m[2];
-                
-              api[object][method](input,onComplete);
-  
+              
+							try {   
+              	api[object][method](input,onComplete);
+  						} catch(e){
+								console.error("Error executing `"+methodName+":"+e.toString());
+								console.error(e.stack);
+								return onComplete(e.toString());
+							}
+	
             }
             Hop.TestCase.lastTaskIndex=-1;
             Hop.TestCase.results={ pass:0, fail:0};
@@ -99,7 +111,9 @@ if(args.url){
                   console.log();
                 } 
               }
-              console.log("\t",(result?"P":"F"),Hop.Tests[testType][result?"pass":"fail"]);
+							var res = Hop.Tests[testType][result?"pass":"fail"];
+						
+              console.log("\t",(result?"P".green:"F".red),(result?res.green:res.red));
 
               Hop.TestCase.results[(result?"pass":"fail")]++;
             }
@@ -126,6 +140,7 @@ if(args.url){
             }
           } catch(e){
             console.error("Error loading test harness:",e);
+						console.error(e.stack);
             process.exit(-9);
           }
         });     

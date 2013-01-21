@@ -1,17 +1,68 @@
 extends layout
 
 block head
-  script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js")
-  script(src=Hop.apiURL);
+	script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js")
+	script(src=Hop.apiURL);
 block content
-  script
-  a(href=Hop.docURL) Documentation about the API
-  p  
-    | You an also use the API you've defined in your own JavaScript applications! 
-    | Simply open the JavaScript console in your browser and type:
-    pre
-      | UserService.create({ name: "user", password:"password", email:"email@email.com" });
-      |
-      | UserService.load({id:0});
-      | UserService.load({id:0});
-      | UserService.load({id:0});
+	script
+		$(document).ready(function(){
+			showUsers=function(){
+				UserService.list({},function(err,users){
+					$("#users").empty();
+					users.map(function(user){
+						$("#users").append("<div><a href='#' onclick='UserService.load.toForm(\"#editUser\",{id:"+user.id+", _noCache:true }); return false;'>"+user.name+"</a></div>");
+					});
+				});
+			}
+			showUsers();
+			
+			editUser=function(){
+				Hop.FormUtil.resetErrors("#editUser");
+				UserService.save.fromForm('#editUser',function(err){ 
+					if(!err){ Hop.FormUtil.reset('#editUser'); showUsers(); }
+				}); 
+				return false
+			}
+
+		});
+	a(href=Hop.docURL) Documentation about the API
+	p	
+		| You an also use the API you've defined in your own JavaScript applications! 
+		| Simply open the JavaScript console in your browser and type:
+		pre
+			| UserService.create({ name: "user", password:"password", email:"email@email.com" });
+			|
+			| UserService.load({id:0});
+			| UserService.load({id:0});
+			| UserService.load({id:0});
+	p
+		h3 Example user create form
+		form#createUser
+			div.flash(style="color:red;")
+			label(for="email") Email
+			input(type="text",name="email")
+			br
+			label(for="name") Name
+			input(type="text",name="name")	
+			br
+			label(for="password") Password
+			input(type="password",name="password")
+			br
+			input(type="submit",value="Create",onClick="UserService.create.fromForm('#createUser'); Hop.FormUtil.reset('#createUser'); showUsers(); return false")
+		h3 Example user edit form
+		form#editUser
+			div.flash(style="color:red;")
+			input(type="hidden",name="id")
+			label(for="email") Email
+			input(type="text",name="email")
+			br
+			label(for="name") Name
+			input(type="text",name="name")	
+			br
+			label(for="password") Password
+			input(type="password",name="password")
+			br
+			input(type="submit",value="Save",onClick="return editUser();")
+	p
+		h3 Current users
+		div#users
