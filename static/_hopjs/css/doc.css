@@ -2,6 +2,9 @@ body {
 	font-family:'sans-serif';
 	
 }
+b{ 
+	font-weight: bold;
+}
 h1 { 
 	font-size: 1.9em;
 	font-weight: bold;
