@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Hopjs by celer</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Hopjs</h1>
+          <h2>Restful API Framework</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/celer/hopjs/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/celer/hopjs/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/celer/hopjs" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>HopJS</h1>
+
+<p>The RESTful API dynamic web apps crave.</p>
+
+<h2>Introduction</h2>
+
+<p>HopJS is a RESTful based declarative API framework for Node.js that:</p>
+
+<ul>
+<li>Supports Android, and Shell client side stub generation</li>
+<li>Generates easy to use browser side API hooks</li>
+<li>Has a declarative testing interface, which can generate native unit tests in JavaScript and Shell code</li>
+<li>Generates it's own API documentation</li>
+<li>Supports intelligent server-side caching of results using Redis</li>
+<li>Supports event based APIs using Socket.io </li>
+<li>Enhanced APIs with optional declarative models</li>
+</ul><p><em>First, we simply define the interface you wish to expose</em>
+(either as static methods on an object or as a proper JavaScript class)</p>
+
+<div class="highlight"><pre>
+<span class="nx">UserService</span><span class="o">=</span><span class="p">{};</span>
+
+<span class="c1">//All functions backed by HopJS should have a signature of (input,onComplete,request)</span>
+<span class="nx">UserService</span><span class="p">.</span><span class="nx">create</span><span class="o">=</span><span class="kd">function</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span><span class="nx">onComplete</span><span class="p">){</span>
+  <span class="c1">// Here we would create a new user and call onComplete(err,result) when were done</span>
+<span class="p">}</span>
+
+<span class="nx">UserService</span><span class="p">.</span><span class="nx">authenticate</span><span class="o">=</span><span class="kd">function</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span><span class="nx">onComplete</span><span class="p">){</span>
+  <span class="c1">// Here we would authenticate a user and call onComplete(err,result) when were done</span>
+<span class="p">}</span>
+
+</pre></div>
+
+<p><em>Next, we use Hop to define the interface; this will expose the interface via a RESTful API</em></p>
+
+<div class="highlight"><pre>
+<span class="c1">//This will create a RESTful set of URLs which expose the following functions:</span>
+<span class="nx">Hop</span><span class="p">.</span><span class="nx">defineClass</span><span class="p">(</span><span class="s2">"UserService"</span><span class="p">,</span><span class="nx">UserService</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">api</span><span class="p">){</span>
+  <span class="nx">api</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">"create"</span><span class="p">,</span><span class="s2">"/user"</span><span class="p">).</span><span class="nx">demand</span><span class="p">(</span><span class="s2">"email"</span><span class="p">).</span><span class="nx">demand</span><span class="p">(</span><span class="s2">"username"</span><span class="p">);</span>
+  <span class="nx">api</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">"authenticate"</span><span class="p">,</span><span class="s2">"/user/auth"</span><span class="p">).</span><span class="nx">demand</span><span class="p">(</span><span class="s2">"email"</span><span class="p">).</span><span class="nx">demand</span><span class="p">(</span><span class="s2">"username"</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">//Now tell HopJS to expose our API in express.js</span>
+<span class="nx">Hop</span><span class="p">.</span><span class="nx">exposeAPI</span><span class="p">(</span><span class="s2">"/api/"</span><span class="p">,</span><span class="nx">app</span><span class="p">)</span>
+
+</pre></div>
+
+<p>Now that we've done that we get a few things:</p>
+
+<ul>
+<li>We have our RESTful API</li>
+<li>HopJS generates a client side API we can use in our browser which will have the following definitions:
+
+<ul>
+<li>UserService.create(input,onComplete)</li>
+<li>UserService.authenticate(input,onComplete)</li>
+</ul>
+</li>
+</ul><p>So now our web-site has:</p>
+
+<div class="highlight"><pre>  <span class="c"># An API for UserService.create </span>
+  POST /api/user
+  <span class="c"># An API for UserService.authenticate</span>
+  POST /api/user/authenticate
+  <span class="c"># Documentation for our API as generated by HopJS with online unit tests</span>
+  GET /api/ 
+  <span class="c"># A jQuery based client set of stubs for our API</span>
+  GET /api/api.js
+  <span class="c"># A JSON definition of our API for client side stub generation</span>
+  GET /api/api.json
+</pre></div>
+
+<p><em>But we can also define the test cases for our new interface!</em></p>
+
+<div class="highlight"><pre>
+<span class="nx">Hop</span><span class="p">.</span><span class="nx">defineTestCase</span><span class="p">(</span><span class="s2">"UserService.authenticate"</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">test</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">validUser</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">email</span><span class="o">:</span><span class="s2">"test@test.com"</span><span class="p">,</span> <span class="nx">username</span><span class="o">:</span><span class="s2">"TestUser"</span> <span class="p">};</span>
+    <span class="nx">test</span><span class="p">.</span><span class="k">do</span><span class="p">(</span><span class="s2">"UserService.create"</span><span class="p">).</span><span class="kd">with</span><span class="p">(</span><span class="nx">validUser</span><span class="p">).</span><span class="nx">noError</span><span class="p">();</span>
+    <span class="nx">test</span><span class="p">.</span><span class="k">do</span><span class="p">(</span><span class="s2">"UserService.authenticate"</span><span class="p">).</span><span class="kd">with</span><span class="p">(</span><span class="nx">validUser</span><span class="p">).</span><span class="nx">noError</span><span class="p">();</span>
+    <span class="nx">test</span><span class="p">.</span><span class="k">do</span><span class="p">(</span><span class="s2">"UserService.authenticate"</span><span class="p">).</span><span class="kd">with</span><span class="p">({</span><span class="nx">password</span><span class="o">:</span><span class="s2">"BOB"</span><span class="p">},</span><span class="nx">validUser</span><span class="p">).</span><span class="nx">hasError</span><span class="p">(</span><span class="sr">/Permission denied/</span><span class="p">);</span>
+<span class="p">});</span>
+
+</pre></div>
+
+<p><em>We can unit test our API using the hopjs utility, which will run all the unit tests from the command line:</em></p>
+
+<div class="highlight"><pre>npm install hopjs-remote -g
+hopjs --url http://localhost:3000/ --unitTest
+</pre></div>
+
+<p><em>We can also run the test in the browser of our choosing</em></p>
+
+<div class="highlight"><pre>hopjs-browser-test --url http://localhost:3000/  --browser firefox
+</pre></div>
+
+<p><em>Now let's suppose we wanted an Android set of native client stubs for our API in Java:</em></p>
+
+<div class="highlight"><pre>hopjs-gen -url http://www.website.com:3000/ android -outputDir ./androidApp -package com.website.www
+</pre></div>
+
+<p>You can see a complete working example at: <a href="https://github.com/celer/hopjs/tree/master/examples/intro">https://github.com/celer/hopjs/tree/master/examples/intro</a></p>
+
+<h2>Intelligent server-side caching of results</h2>
+
+<p>Now lets assume that we've written a killer server-side API, but we haven't done any caching of our results so each 
+time we need to do something we're hitting our database. HopJS has the ability to add caching on top of your API quickly
+and easily.</p>
+
+<div class="highlight"><pre>
+  <span class="cm">/* </span>
+<span class="cm">      First let's tell HopJS that we want to use caching  </span>
+<span class="cm">      log - log what is happening with our server side cache</span>
+<span class="cm">      redisClient - the redisClient to use - HopJS will create a default one if not specified</span>
+<span class="cm">  */</span>
+  <span class="nx">Hop</span><span class="p">.</span><span class="nx">enableCaching</span><span class="p">({</span> <span class="nx">log</span><span class="o">:</span><span class="kc">true</span><span class="p">,</span> <span class="nx">redisClient</span><span class="o">:</span> <span class="nx">myRedisClient</span> <span class="p">});</span>
+
+
+  <span class="nx">Hop</span><span class="p">.</span><span class="nx">defineClass</span><span class="p">(</span><span class="s2">"UserService"</span><span class="p">,</span><span class="nx">UserService</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">api</span><span class="p">){</span>
+    <span class="nx">api</span><span class="p">.</span><span class="nx">usage</span><span class="p">(</span><span class="s2">"Manages users"</span><span class="p">);</span>
+
+    <span class="c1">//Cache user's as they are loaded for 60 seconds, and try to force the client to cache the results as well!</span>
+    <span class="nx">api</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">"load"</span><span class="p">,</span><span class="s2">"/user/:id"</span><span class="p">).</span><span class="nx">demand</span><span class="p">(</span><span class="s2">"id"</span><span class="p">).</span><span class="nx">cacheId</span><span class="p">(</span><span class="s2">"/user/:id"</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="kc">true</span><span class="p">);</span>
+
+    <span class="c1">//Invalidate the cache when a user is deleted </span>
+    <span class="nx">api</span><span class="p">.</span><span class="nx">del</span><span class="p">(</span><span class="s2">"delete"</span><span class="p">,</span><span class="s2">"/user/:id"</span><span class="p">).</span><span class="nx">demand</span><span class="p">(</span><span class="s2">"id"</span><span class="p">).</span><span class="nx">cacheInvalidate</span><span class="p">(</span><span class="s2">"/user/:id"</span><span class="p">);</span>
+
+    <span class="c1">//Cache the search results for 5000</span>
+    <span class="nx">api</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">"list"</span><span class="p">,</span><span class="s2">"/user/"</span><span class="p">).</span><span class="nx">optional</span><span class="p">(</span><span class="s2">"sortBy"</span><span class="p">).</span><span class="nx">cacheId</span><span class="p">(</span><span class="s2">"/users/:start/:size/"</span><span class="p">,</span><span class="mi">5000</span><span class="p">).</span><span class="nx">demand</span><span class="p">(</span><span class="s2">"start"</span><span class="p">).</span><span class="nx">demand</span><span class="p">(</span><span class="s2">"size"</span><span class="p">);</span>
+
+
+  <span class="p">});</span>
+
+</pre></div>
+
+<p>Caching works by associating a unique ID with each result returned from an API call - the trick is that the ID is calculated based upon the object that is used as an input or returned as a result of calling the API call. </p>
+
+<p>Time for a quick example:</p>
+
+<div class="highlight"><pre>  <span class="cm">/* </span>
+<span class="cm">    Assuming the requested user was found Redis would return the cached object, otherwise HopJS would</span>
+<span class="cm">    call the underlying API, and also keep a copy of the returned object</span>
+<span class="cm">    under the id '/user/5' for a duration of 60 sections. HopJS would also add all the extra headers</span>
+<span class="cm">    to get the HTTP agent on the other end to cache this result for the specified duration as well!</span>
+
+<span class="cm">    Essentially</span>
+<span class="cm">      - If we have the cached object return it</span>
+<span class="cm">      - If not execute the call and cache the result </span>
+
+<span class="cm">    The id for the cached object is generated by plugging the result objects properties into "/user/:id" to compute "/user/5"</span>
+
+<span class="cm">  */</span>
+  <span class="nx">UserService</span><span class="p">.</span><span class="nx">load</span><span class="p">({</span><span class="nx">id</span><span class="o">:</span><span class="mi">5</span><span class="p">})</span> 
+
+  <span class="cm">/*</span>
+<span class="cm">    This would end up deleting the cached object from Redis</span>
+<span class="cm">  */</span>
+  <span class="nx">UserService</span><span class="p">.</span><span class="nx">del</span><span class="p">({</span><span class="nx">id</span><span class="o">:</span><span class="mi">5</span><span class="p">})</span>
+</pre></div>
+
+<p>You can see a complete working example at: <a href="https://github.com/celer/hopjs/tree/master/examples/caching">https://github.com/celer/hopjs/tree/master/examples/caching</a></p>
+
+<h2>API Interfaces</h2>
+
+<p>HopJS also has the ability to define an API interface which can be used to quickly stub out APIs which share their interfaces:</p>
+
+<div class="highlight"><pre>
+  <span class="c1">// This will define an interface which can the be applied to other objects later</span>
+  <span class="nx">Hop</span><span class="p">.</span><span class="nx">defineInterface</span><span class="p">(</span><span class="s2">"Notification"</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">api</span><span class="p">){</span>
+      <span class="c1">//#classname will cause the classname of the extending class to be substituted into the path</span>
+      <span class="nx">api</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">"send"</span><span class="p">,</span><span class="s2">"#classname/send"</span><span class="p">).</span><span class="nx">usage</span><span class="p">(</span><span class="s2">"Sends a message"</span><span class="p">).</span><span class="nx">demand</span><span class="p">(</span><span class="s2">"msg"</span><span class="p">).</span><span class="nx">demand</span><span class="p">(</span><span class="s2">"subject"</span><span class="p">).</span><span class="nx">demand</span><span class="p">(</span><span class="s2">"to"</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="nx">Hop</span><span class="p">.</span><span class="nx">defineClass</span><span class="p">(</span><span class="s2">"Email"</span><span class="p">,</span><span class="nx">EmailService</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">api</span><span class="p">){</span>
+    <span class="c1">//This will cause the interface defined above to be applied to this object</span>
+    <span class="c1">// Now EmailService.send will exist on /email/send with all the associated demands, etc.</span>
+    <span class="nx">api</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="s2">"Notification"</span><span class="p">);</span>
+  <span class="p">});</span>  
+
+</pre></div>
+
+<p>You can see a complete working example at: <a href="https://github.com/celer/hopjs/tree/master/examples/interface">https://github.com/celer/hopjs/tree/master/examples/interface</a></p>
+
+<h2>Working with files</h2>
+
+<p>Working with files is pretty simple! To send files we can simply tell HopJS how to send the file, either as a raw file, or as an attachmet. We can 
+also allow uploads using the .demandFile or the .optionalFile</p>
+
+<div class="highlight"><pre>    <span class="nx">FileTest</span><span class="p">.</span><span class="nx">sendFile</span><span class="o">=</span><span class="kd">function</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span><span class="nx">onComplete</span><span class="p">){</span>
+        <span class="k">return</span> <span class="nx">onComplete</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span><span class="nx">Hop</span><span class="p">.</span><span class="nx">sendFile</span><span class="p">(</span><span class="s2">"public/pig.png"</span><span class="p">));</span>
+    <span class="p">}</span>   
+
+    <span class="nx">FileTest</span><span class="p">.</span><span class="nx">sendAttachment</span><span class="o">=</span><span class="kd">function</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span><span class="nx">onComplete</span><span class="p">){</span>
+        <span class="k">return</span> <span class="nx">onComplete</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span><span class="nx">Hop</span><span class="p">.</span><span class="nx">sendAttachment</span><span class="p">(</span><span class="s2">"public/pig.png"</span><span class="p">,</span><span class="s2">"image.png"</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="nx">FileTest</span><span class="p">.</span><span class="nx">upload</span><span class="o">=</span><span class="kd">function</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span><span class="nx">onComplete</span><span class="p">){</span>
+        <span class="k">return</span> <span class="nx">onComplete</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span><span class="nx">input</span><span class="p">);</span>
+    <span class="p">}</span>   
+
+
+    <span class="nx">Hop</span><span class="p">.</span><span class="nx">defineClass</span><span class="p">(</span><span class="s2">"FileTest"</span><span class="p">,</span><span class="nx">FileTest</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">api</span><span class="p">){</span>
+        <span class="nx">api</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">"sendFile"</span><span class="p">,</span><span class="s2">"/file"</span><span class="p">)</span>
+        <span class="nx">api</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">"sendAttachment"</span><span class="p">,</span><span class="s2">"/attachment"</span><span class="p">);</span>
+        <span class="nx">api</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">"upload"</span><span class="p">,</span><span class="s2">"/upload"</span><span class="p">).</span><span class="nx">demandFile</span><span class="p">(</span><span class="s2">"required"</span><span class="p">).</span><span class="nx">optionalFile</span><span class="p">(</span><span class="s2">"optional"</span><span class="p">);</span>
+    <span class="p">});</span>  
+</pre></div>
+
+<p>You can see a complete working example at: <a href="https://github.com/celer/hopjs/tree/master/examples/files">https://github.com/celer/hopjs/tree/master/examples/files</a></p>
+
+<h2>Models</h2>
+
+<p>Models can be defined which will enable both validation of inputs but re-use of documenation and type conversion.</p>
+
+<div class="highlight"><pre>    <span class="nx">Hop</span><span class="p">.</span><span class="nx">defineModel</span><span class="p">(</span><span class="s2">"User"</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">user</span><span class="p">){</span>
+        <span class="nx">user</span><span class="p">.</span><span class="nx">field</span><span class="p">(</span><span class="s2">"id"</span><span class="p">,</span><span class="s2">"UserID"</span><span class="p">,</span><span class="s2">"The user's id"</span><span class="p">).</span><span class="nx">integer</span><span class="p">().</span><span class="nx">ID</span><span class="p">();</span>
+        <span class="nx">user</span><span class="p">.</span><span class="nx">field</span><span class="p">(</span><span class="s2">"name"</span><span class="p">,</span><span class="s2">"Username"</span><span class="p">,</span><span class="s2">"The user's username"</span><span class="p">).</span><span class="nx">string</span><span class="p">().</span><span class="nx">regexp</span><span class="p">(</span><span class="sr">/[A-Za-z0-9\_\-]{3,10}/</span><span class="p">,</span><span class="s2">"Usernames must be between 3 and 10 characters long, and can only contain alphanumeric characters"</span><span class="p">);</span>
+        <span class="nx">user</span><span class="p">.</span><span class="nx">field</span><span class="p">(</span><span class="s2">"email"</span><span class="p">,</span><span class="s2">"Email"</span><span class="p">,</span><span class="s2">"The user's email address"</span><span class="p">).</span><span class="nx">string</span><span class="p">();</span>
+        <span class="nx">user</span><span class="p">.</span><span class="nx">field</span><span class="p">(</span><span class="s2">"password"</span><span class="p">,</span><span class="s2">"Password"</span><span class="p">,</span><span class="s2">"The user's password"</span><span class="p">).</span><span class="nx">password</span><span class="p">();</span>
+    <span class="p">});</span>
+</pre></div>
+
+<p>Now we can simply indicate a model is used for a call by using .useModel, .inputModel or .outputModel</p>
+
+<div class="highlight"><pre>    <span class="nx">Hop</span><span class="p">.</span><span class="nx">defineClass</span><span class="p">(</span><span class="s2">"UserService"</span><span class="p">,</span><span class="nx">UserService</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">api</span><span class="p">){</span>
+        <span class="nx">api</span><span class="p">.</span><span class="nx">usage</span><span class="p">(</span><span class="s2">"Manages users"</span><span class="p">);</span>
+        <span class="nx">api</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">"create"</span><span class="p">,</span><span class="s2">"/user"</span><span class="p">).</span><span class="nx">usage</span><span class="p">(</span><span class="s2">"Creates a user"</span><span class="p">).</span><span class="nx">demands</span><span class="p">(</span><span class="s2">"email"</span><span class="p">,</span><span class="s2">"name"</span><span class="p">,</span><span class="s2">"password"</span><span class="p">).</span><span class="nx">useModel</span><span class="p">(</span><span class="s2">"User"</span><span class="p">);</span>
+        <span class="nx">api</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">"authenticate"</span><span class="p">,</span><span class="s2">"/user/auth"</span><span class="p">).</span><span class="nx">usage</span><span class="p">(</span><span class="s2">"Authenticates a user"</span><span class="p">).</span><span class="nx">demands</span><span class="p">(</span><span class="s2">"password"</span><span class="p">,</span><span class="s2">"name"</span><span class="p">).</span><span class="nx">useModel</span><span class="p">(</span><span class="s2">"User"</span><span class="p">);</span>
+        <span class="nx">api</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">"currentUser"</span><span class="p">,</span><span class="s2">"/user"</span><span class="p">).</span><span class="nx">usage</span><span class="p">(</span><span class="s2">"Returns the current user"</span><span class="p">).</span><span class="nx">outputModel</span><span class="p">(</span><span class="s2">"User"</span><span class="p">);</span>
+        <span class="nx">api</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">"logout"</span><span class="p">,</span><span class="s2">"/user/logout"</span><span class="p">).</span><span class="nx">usage</span><span class="p">(</span><span class="s2">"Logs the current user out"</span><span class="p">);</span>
+        <span class="nx">api</span><span class="p">.</span><span class="nx">del</span><span class="p">(</span><span class="s2">"del"</span><span class="p">,</span><span class="s2">"/user/:id"</span><span class="p">).</span><span class="nx">usage</span><span class="p">(</span><span class="s2">"Deletes the user"</span><span class="p">).</span><span class="nx">demand</span><span class="p">(</span><span class="s2">"id"</span><span class="p">).</span><span class="nx">inputModel</span><span class="p">(</span><span class="s2">"User"</span><span class="p">);</span>
+    <span class="p">});</span>
+</pre></div>
+
+<p>You can see a complete working example at: <a href="https://github.com/celer/hopjs/tree/master/examples/model">https://github.com/celer/hopjs/tree/master/examples/model</a></p>
+
+<h1>Notes about REST</h1>
+
+<ul>
+<li>Our implementation of REST is designed to be used with forms and does not support null values or special types, all values are converted to strings (null=="")</li>
+<li>Per specification HTTP delete does not allow passing of parameters beyond what are specified in the path</li>
+</ul><h1>Known Issues / Todo</h1>
+
+<ul>
+<li>Android API is non-functional after major re-factor</li>
+<li>A bug in combination-stream, which is utilized by request and form-data prevents the unit tests for expirements/test from passing, see my fork of combination-stream for a fix</li>
+<li>Curl can't save session cookies so some shell tests won't wor</li>
+<li>Need to add SSL support</li>
+<li>Need to add dev key support</li>
+</ul>
+        </section>
+
+        <footer>
+          Hopjs is maintained by <a href="https://github.com/celer">celer</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
