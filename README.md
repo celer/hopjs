@@ -13,7 +13,7 @@ HopJS is a RESTful based declarative API framework for Node.js that:
   * Supports event based APIs using Socket.io 
   * Enhanced APIs with optional declarative models
 
-[Documentation](http://celer.github.com/hopjs/doc/)
+[API Documentation](http://celer.github.com/hopjs/doc/)
 
 *First, we simply define the interface you wish to expose*
 (either as static methods on an object or as a proper JavaScript class)
