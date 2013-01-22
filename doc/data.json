@@ -300,7 +300,7 @@
             "module": "Hop",
             "namespace": "",
             "file": "lib/api.js",
-            "line": 584,
+            "line": 575,
             "description": "Class used to define methods",
             "is_constructor": 1
         },
@@ -523,7 +523,7 @@
             ],
             "params": [
                 {
-                    "name": "objectName!~YUIDOC_LINE~!",
+                    "name": "objectName",
                     "description": "Then name of the object to wrap",
                     "type": "String"
                 }
@@ -539,7 +539,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 423,
+            "line": 422,
             "description": "Have this object extend from an interface",
             "example": [
                 "\n\tHop.defineInterface(\"Notification\",function(api){\n\t\tapi.post(\"send\",\"#classname/send\").usage(\"Sends a message\").demand(\"msg\").demand(\"subject\").demand(\"to\");\n\t}\n\tHop.defineClass(\"Email\",function(api){\n\t\t//This will essentially evaluate the interface defined above against thsi class adding the send function\n\t\tapi.extend(\"Notification\");\n\t});"
@@ -551,16 +551,16 @@
         },
         {
             "file": "lib/api.js",
-            "line": 448,
+            "line": 447,
             "description": "Define a HTTP get call on this method",
             "params": [
                 {
-                    "name": "method!~YUIDOC_LINE~!",
+                    "name": "method",
                     "description": "The name of the method on the associated object",
                     "type": "String"
                 },
                 {
-                    "name": "path!~YUIDOC_LINE~!",
+                    "name": "path",
                     "description": "The HTTP path that this call can be found on. Variables can be specified as part of the path utilizing ':'",
                     "type": "String"
                 }
@@ -576,16 +576,16 @@
         },
         {
             "file": "lib/api.js",
-            "line": 471,
+            "line": 468,
             "description": "Define a HTTP post call on this method",
             "params": [
                 {
-                    "name": "method!~YUIDOC_LINE~!",
+                    "name": "method",
                     "description": "The name of the method on the associated object",
                     "type": "String"
                 },
                 {
-                    "name": "path!~YUIDOC_LINE~!",
+                    "name": "path",
                     "description": "The HTTP path that this call can be found on. Variables can be specified as part of the path utilizing ':'",
                     "type": "String"
                 }
@@ -601,16 +601,16 @@
         },
         {
             "file": "lib/api.js",
-            "line": 494,
+            "line": 489,
             "description": "Define a HTTP del call on this method",
             "params": [
                 {
-                    "name": "method!~YUIDOC_LINE~!",
+                    "name": "method",
                     "description": "The name of the method on the associated object",
                     "type": "String"
                 },
                 {
-                    "name": "path!~YUIDOC_LINE~!",
+                    "name": "path",
                     "description": "The HTTP path that this call can be found on. Variables can be specified as part of the path utilizing ':'",
                     "type": "String"
                 }
@@ -626,16 +626,16 @@
         },
         {
             "file": "lib/api.js",
-            "line": 518,
+            "line": 511,
             "description": "Define a HTTP put call on this method",
             "params": [
                 {
-                    "name": "method!~YUIDOC_LINE~!",
+                    "name": "method",
                     "description": "The name of the method on the associated object",
                     "type": "String"
                 },
                 {
-                    "name": "path!~YUIDOC_LINE~!",
+                    "name": "path",
                     "description": "The HTTP path that this call can be found on. Variables can be specified as part of the path utilizing ':'",
                     "type": "String"
                 }
@@ -651,7 +651,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 541,
+            "line": 532,
             "description": "Define the usage for this class",
             "example": [
                 "\n\tHop.defineClass(\"UserService\",function(api){\n\t\tapi.usage(\"Manages Users\");\n\t\t//..\n\t});"
@@ -664,7 +664,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 559,
+            "line": 550,
             "description": "Find an object by name",
             "return": {
                 "description": "The name of the method",
@@ -681,7 +681,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 616,
+            "line": 607,
             "description": "Find a method by name",
             "return": {
                 "description": "The name of the method",
@@ -698,7 +698,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 641,
+            "line": 632,
             "description": "Get the name of the method\n\nThis will get the name of the method",
             "return": {
                 "description": "The name of the method",
@@ -714,7 +714,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 667,
+            "line": 658,
             "description": "Get the full url for the method\n\nThis will get the full path for the url for the method.",
             "return": {
                 "description": "The URL for the method",
@@ -727,7 +727,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 686,
+            "line": 677,
             "description": "Specify the default values for this call\n\nThese values will be copied into the input if no existing value is found.",
             "params": [
                 {
@@ -744,7 +744,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 699,
+            "line": 690,
             "description": "Specify a number of optionals for  for a call",
             "example": [
                 "\n\tapi.post(\"create\",\"/user/profile/\").optionals(\"email\",\"name\",\"password\");"
@@ -764,7 +764,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 717,
+            "line": 708,
             "description": "Specify a number of demands for  for a call",
             "example": [
                 "\n\tapi.post(\"create\",\"/user/profile/\").demands(\"email\",\"name\",\"password\");"
@@ -772,7 +772,7 @@
             "params": [
                 {
                     "name": "name",
-                    "description": "of parameter (+)",
+                    "description": "name of parameter (+)",
                     "type": "String"
                 }
             ],
@@ -784,7 +784,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 735,
+            "line": 726,
             "description": "Demand a parameter for a call",
             "example": [
                 "\n\tapi.post(\"create\",\"/user/profile/\").demand(\"email\",\"Email address\");"
@@ -809,7 +809,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 753,
+            "line": 744,
             "description": "Describe this method",
             "params": [
                 {
@@ -826,7 +826,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 768,
+            "line": 759,
             "description": "Note that this method can only be called using https",
             "chainable": 1,
             "itemtype": "method",
@@ -836,7 +836,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 784,
+            "line": 775,
             "description": "Include the express CSRF token in the response headers for this method\n\nThe CSRF token is utilized to prevent cross site request forgery attacks, and is a middleware component\nfor express. \n\nSee here for information: http://www.senchalabs.org/connect/middleware-csrf.html\n\nBy default HopJS will attempt to utilize the CSRF functionality in express if it is enabled, but \nsome clients require a means to access the CSRF token, hence this function will will send the csrf token\nin the headers as 'x-crsf-token'\n\nThe primary usage for this function is with secure login functions",
             "example": [
                 "\n\tHop.defineClass(\"UserService\",UserService,function(api){\n\t\tapi.post(\"login\",\"/login\").demands(\"username\",\"password\").sendCSRFToken();\n\t});"
@@ -849,7 +849,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 818,
+            "line": 809,
             "description": "Optional parameter for a call",
             "example": [
                 "\n\tapi.post(\"create\",\"/user/profile/\").optional(\"phoneNumber\",\"Phone Number\");"
@@ -874,7 +874,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 836,
+            "line": 827,
             "description": "Indicate this function performs longPolling",
             "example": [
                 "\n\tapi.get(\"status\",\"/server/:serverID/status\").longPoll();"
@@ -887,7 +887,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 852,
+            "line": 843,
             "description": "Indicate this function should avoid caching",
             "example": [
                 "\n\tapi.post(\"create\",\"/user/profile/\").noCache();"
@@ -900,7 +900,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 891,
+            "line": 882,
             "description": "Demand a file be provided for this method.",
             "example": [
                 "\n\tapi.post(\"create\",\"/user/profile/\").demandFile(\"avatar\",\"Users avatar image\");"
@@ -913,7 +913,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 906,
+            "line": 897,
             "description": "Specify that a file may optionally be provided as an input to this call.",
             "example": [
                 "\n\tapi.post(\"create\",\"/user/profile/\").optionalFile(\"avatar\",\"Users avatar image\");"
@@ -926,7 +926,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 921,
+            "line": 912,
             "description": "Add a function that will be called after this call is completed",
             "params": [
                 {
@@ -977,7 +977,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 975,
+            "line": 966,
             "description": "Add a function that will be called before this call is executed",
             "params": [
                 {
@@ -1024,7 +1024,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 1033,
+            "line": 1024,
             "description": "Indicate that this method call has been depricated",
             "itemtype": "method",
             "name": "depricated",
@@ -1034,7 +1034,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 1045,
+            "line": 1036,
             "description": "Calls the specified method \n\nThis function is provided so that all functionality around a specific call may be utilized.",
             "params": [
                 {

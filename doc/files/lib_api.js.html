@@ -477,8 +477,7 @@ Hop.Object = function(name,instance){
 
 		},request);
 
-	@param {String} objectName
-		Then name of the object to wrap
+	@param {String} objectName Then name of the object to wrap
 
 
 	@returns {Object} 
@@ -568,10 +567,8 @@ Hop.Object.prototype.extend=function(intf){
 &#x2F;**
 Define a HTTP get call on this method
 
-@params {String} method
-	The name of the method on the associated object
-@params {String} path
-	The HTTP path that this call can be found on. Variables can be specified as part of the path utilizing &#x27;:&#x27;
+@params {String} method The name of the method on the associated object
+@params {String} path The HTTP path that this call can be found on. Variables can be specified as part of the path utilizing &#x27;:&#x27;
 
 @example
 	Hop.defineClass(&quot;UserService&quot;,function(api){
@@ -591,10 +588,8 @@ Hop.Object.prototype.get=function(name,path){
 &#x2F;**
 Define a HTTP post call on this method
 
-@params {String} method
-	The name of the method on the associated object
-@params {String} path
-	The HTTP path that this call can be found on. Variables can be specified as part of the path utilizing &#x27;:&#x27;
+@params {String} method The name of the method on the associated object
+@params {String} path The HTTP path that this call can be found on. Variables can be specified as part of the path utilizing &#x27;:&#x27;
 
 @example
 	Hop.defineClass(&quot;UserService&quot;,function(api){
@@ -614,10 +609,8 @@ Hop.Object.prototype.post=function(name,path){
 &#x2F;**
 Define a HTTP del call on this method
 
-@params {String} method
-	The name of the method on the associated object
-@params {String} path
-	The HTTP path that this call can be found on. Variables can be specified as part of the path utilizing &#x27;:&#x27;
+@params {String} method The name of the method on the associated object
+@params {String} path The HTTP path that this call can be found on. Variables can be specified as part of the path utilizing &#x27;:&#x27;
 
 @example
 	Hop.defineClass(&quot;UserService&quot;,function(api){
@@ -638,10 +631,8 @@ Hop.Object.prototype.del=function(name,path){
 &#x2F;**
 Define a HTTP put call on this method
 
-@params {String} method
-	The name of the method on the associated object
-@params {String} path
-	The HTTP path that this call can be found on. Variables can be specified as part of the path utilizing &#x27;:&#x27;
+@params {String} method The name of the method on the associated object
+@params {String} path The HTTP path that this call can be found on. Variables can be specified as part of the path utilizing &#x27;:&#x27;
 
 @example
 	Hop.defineClass(&quot;UserService&quot;,function(api){
@@ -840,7 +831,7 @@ Specify a number of demands for  for a call
 @example
 	api.post(&quot;create&quot;,&quot;&#x2F;user&#x2F;profile&#x2F;&quot;).demands(&quot;email&quot;,&quot;name&quot;,&quot;password&quot;);
 
-@param {string} name of parameter (+)
+@param {string} name name of parameter (+)
 
 @for Hop.Method
 @method demands
