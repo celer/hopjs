@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lib&#x2F;test.js</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.5.1&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.5.1&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/Hop.html">Hop</a></li>
+            
+                <li><a href="..&#x2F;classes/Hop.CodeGenerator.html">Hop.CodeGenerator</a></li>
+            
+                <li><a href="..&#x2F;classes/Hop.Method.html">Hop.Method</a></li>
+            
+                <li><a href="..&#x2F;classes/Hop.Object.html">Hop.Object</a></li>
+            
+                <li><a href="..&#x2F;classes/Hop.StubRequest.html">Hop.StubRequest</a></li>
+            
+                <li><a href="..&#x2F;classes/Hop.StubResponse.html">Hop.StubResponse</a></li>
+            
+                <li><a href="..&#x2F;classes/Hop.TestCase.html">Hop.TestCase</a></li>
+            
+                <li><a href="..&#x2F;classes/Hop.TestTask.html">Hop.TestTask</a></li>
+            
+                <li><a href="..&#x2F;classes/Hop.TestUtils.html">Hop.TestUtils</a></li>
+            
+                <li><a href="..&#x2F;classes/Hop.User.html">Hop.User</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="..&#x2F;modules/Cache.html">Cache</a></li>
+            
+                <li><a href="..&#x2F;modules/CodeGenerator.html">CodeGenerator</a></li>
+            
+                <li><a href="..&#x2F;modules/Event.html">Event</a></li>
+            
+                <li><a href="..&#x2F;modules/Hop.html">Hop</a></li>
+            
+                <li><a href="..&#x2F;modules/Job.html">Job</a></li>
+            
+                <li><a href="..&#x2F;modules/Test.html">Test</a></li>
+            
+                <li><a href="..&#x2F;modules/User.html">User</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: lib&#x2F;test.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x2F;**
+	Testing module
+
+	@module Hop
+	@submodule Test
+**&#x2F;
+var Hop = require(&#x27;.&#x2F;api&#x27;);
+var assert = require(&#x27;assert&#x27;);
+
+Hop.TestCases={};
+
+&#x2F;**
+	Holds testing utility functions
+
+	*All of the functions in this class must be usable with (function).toString() for embedding*
+
+	@class Hop.TestUtils
+**&#x2F;
+Hop.TestUtils={};
+
+&#x2F;**
+	Test to insure that all the input object properties are the same as the output object properties
+
+	* The output object may have more properties then are in the input object
+	* The output object must have all of the same properties, with the same value as the input object
+
+	*This function is designed to be usable with (function).toString() for embedding*
+
+	@param {object} input The input object
+	@param {object} output The output object
+
+	@method Hop.TestUtils.objectCovers
+	@static
+**&#x2F;
+Hop.TestUtils.objectCovers=function(input,output){
+	var recurse=function(input,output){
+		if(typeof input!=typeof output){
+			return false;
+		} else {
+			if(input instanceof Array){
+				for(var i in input){
+					var found=false;
+					for(var j in output){
+						if(recurse(input[i],output[j])){
+							found=true;
+						}
+					}
+					if(!found)
+						return false;			
+				}
+				return true;
+			} else if(typeof input==&quot;object&quot;) {
+				for(var inputProp in input){
+					if(input!=null &amp;&amp; output==null)
+						return false;
+					else if(typeof input[inputProp]!=typeof output[inputProp])
+						return false;
+					if(typeof input[inputProp]==&quot;object&quot;)
+						return recurse(input[inputProp],output[inputProp]);
+					else if(input[inputProp]!==output[inputProp])
+						return false
+				}
+				return true; 
+			} else {
+				return (input==output);
+			}
+		}
+	}
+	return recurse(input,output);	
+}
+
+assert.equal(Hop.TestUtils.objectCovers([1,2,3,4],[1,2,3,4,5]),true);
+assert.equal(Hop.TestUtils.objectCovers([1,2,3,4],[1,2,4,5]),false);
+assert.equal(Hop.TestUtils.objectCovers(&quot;hello&quot;,&quot;hello&quot;),true);
+assert.equal(Hop.TestUtils.objectCovers({a:1},{a:1}),true);
+assert.equal(Hop.TestUtils.objectCovers({a:1},{b:1}),false);
+assert.equal(Hop.TestUtils.objectCovers({a:1,b:1},{a:1,b:1,c:3}),true);
+assert.equal(Hop.TestUtils.objectCovers({a:1, b:{ k:3} },{a:1, b:{ k:3}}),true);
+assert.equal(Hop.TestUtils.objectCovers({a:1, b:{ k:3} },{a:1, b:{ k:8}}),false);
+
+&#x2F;**
+	Test to ensure that the output object has a specific property with a specific value
+
+	*This function is designed to be usable with (function).toString() for embedding*
+
+		@param {Object} output The output object
+		@param {String} propertyName The property to test (supports dotted notation)
+		@param {Object} [propertyValue] The expected object value
+
+		@return bool
+
+	@static
+	@method Hop.TestUtils.inputSameAsOutput
+
+**&#x2F;
+Hop.TestUtils.outputHasProperty=function(output,propertyName,propertyValue){
+	var propertyStack = propertyName.split(&quot;.&quot;);
+	var findProperty=function(output,propertyStack){
+		var prop = propertyStack.shift();
+		if(propertyStack.length==0){
+			return output[prop];
+		} else {
+			if(typeof output[prop]==&quot;object&quot;)
+				return findProperty(output[prop],propertyStack); 
+			else return undefined;
+		}
+	}
+	var value = findProperty(output,propertyStack);
+	if(typeof propertyValue!=&quot;undefined&quot;){
+		return value==propertyValue;
+	} else {
+		return (typeof value!=&quot;undefined&quot;);
+	}
+}
+
+assert.equal(Hop.TestUtils.outputHasProperty({a:1},&quot;a&quot;,1),true);
+assert.equal(Hop.TestUtils.outputHasProperty({a:1},&quot;a&quot;),true);
+assert.equal(Hop.TestUtils.outputHasProperty({a:1},&quot;b&quot;),false);
+assert.equal(Hop.TestUtils.outputHasProperty({a:1, b:1},&quot;b&quot;),true);
+assert.equal(Hop.TestUtils.outputHasProperty({a:1, b:1, c:{d:{e:&quot;hello&quot;}}},&quot;c.d.e&quot;),true);
+assert.equal(Hop.TestUtils.outputHasProperty({a:1, b:1, c:{d:{e:&quot;hello&quot;}}},&quot;c.d.e&quot;,3),false);
+assert.equal(Hop.TestUtils.outputHasProperty({a:1, b:1, c:{d:{e:&quot;hello&quot;}}},&quot;c.k.e&quot;),false);
+
+&#x2F;**
+	Test to ensure that the array contains the specified value
+	
+	*This function is designed to be usable with (function).toString() for embedding*
+
+		@param {Object} array The output array
+		@param {Object value The expected object value
+
+		@return bool
+
+	@static
+	@method Hop.TestUtils.arrayContains
+	
+**&#x2F;
+Hop.TestUtils.arrayContains=function(array,value){
+	for(var i in array){
+		var v=array[i];
+		if(Hop.TestUtils.objectCovers(value,v)){
+			return true;
+		}	
+	}	
+	return false;
+}
+
+assert.equal(Hop.TestUtils.arrayContains([&quot;A&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;],&quot;a&quot;),false);
+assert.equal(Hop.TestUtils.arrayContains([&quot;A&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;],&quot;A&quot;),true);
+assert.equal(Hop.TestUtils.arrayContains([&quot;A&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;, { a: 1, b: 2}],{a:1,b:2}),true);
+assert.equal(Hop.TestUtils.arrayContains([&quot;A&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;, { a: 1, b: 2,c:3}],{a:1,b:2}),true);
+assert.equal(Hop.TestUtils.arrayContains([&quot;A&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;, { a: 1, b: 2}],{a:1,b:2,c:3}),false);
+
+
+&#x2F;**
+	Loads a value for later usage as part of a test
+
+	@static
+	@method Hop.TestUtils.loadValue
+**&#x2F;
+Hop.TestUtils.loadValue=function(name){
+	if(typeof name==&quot;string&quot;){
+		if(typeof Hop.TestUtils!=&quot;undefined&quot; &amp;&amp; typeof Hop.TestUtils._savedValues!=&quot;undefined&quot;){
+			return Hop.TestUtils._savedValues[name];
+		}
+	}
+	else return undefined;
+}
+
+&#x2F;**
+	Clears all saved values, this is called at the completion of a test case
+
+	@static
+	@method Hop.TestUtils.clearValues
+**&#x2F;
+Hop.TestUtils.clearValues=function(){
+	Hop.TestUtils._savedValues={};
+	delete Hop.TestUtils._savedValues;
+}
+
+&#x2F;**
+	Saves a value for later usage as part of a test
+
+	@static
+	@method Hop.TestUtils.saveValue
+**&#x2F;
+Hop.TestUtils.saveValue=function(name,value){
+	if(typeof Hop.TestUtils._savedValues==&quot;undefined&quot;)
+		Hop.TestUtils._savedValues={};
+	Hop.TestUtils._savedValues[name]=value;
+}
+
+
+&#x2F;**
+	Resolve a values within an array or object based upon saved values
+	
+	This function will search for strings matching #{.+#} and replace	
+	the object property or array value with the resolved value from a saved value. 
+
+	Values are resolved like so:
+	@example
+		with(savedValues){
+			return eval(inputString);
+		}	
+
+	@examples
+		#{savedUser.name}
+		#{savedUsers[1].name}
+		#{undefined} &#x2F;&#x2F; will return undefined	
+
+	@static
+	@method Hop.TestUtils.resolve
+**&#x2F;
+Hop.TestUtils.resolve=function(object,checkSavedObjects){
+	if(typeof object==&quot;string&quot; &amp;&amp; checkSavedObjects==true){
+		if(typeof Hop.TestUtils._savedValues!=&quot;undefined&quot; &amp;&amp; typeof Hop.TestUtils._savedValues[object]!=&quot;undefined&quot;){
+			return Hop.TestUtils._savedValues[object];
+		}
+	}
+
+	if(object instanceof Array){
+		return object.map(function(item){
+			return Hop.TestUtils.resolve(item);
+		});	
+	} else if(typeof object==&quot;object&quot;){
+		for(var propName in object){
+			var prop = object[propName];
+			object[propName]=Hop.TestUtils.resolve(prop);
+		}
+		return object;
+	} else if(typeof object==&quot;string&quot;){
+			var m = &#x2F;^\#\{(.+)\}$&#x2F;.exec(object);
+			if(m &amp;&amp; m.length&gt;1){
+				with(Hop.TestUtils._savedValues){
+					return eval(m[1]);
+				}		
+			} else {
+					return object;	
+			}
+	} else return object;
+}
+
+Hop.TestUtils.saveValue(&quot;Foo&quot;,{ a:1, b:2, c:true, d:&quot;Bar&quot;});
+Hop.TestUtils.saveValue(&quot;Foos&quot;,[{ a:1, b:2, c:true, d:&quot;Bar&quot;},&quot;a&quot;]);
+assert.deepEqual(Hop.TestUtils.resolve({ a:&quot;#{Foo.d}&quot;}), {a:&quot;Bar&quot;});
+assert.deepEqual(Hop.TestUtils.resolve({ a:&quot;#{Foo.c}&quot;}), {a:true});
+assert.deepEqual(Hop.TestUtils.resolve({ a:&quot;#{Foo.e}&quot;}), {a:undefined});
+assert.deepEqual(Hop.TestUtils.resolve({ a:&quot;#{Foo.a}&quot;, b:[1,2,3,&quot;#{Foo.b}&quot;]}), {a:1, b:[1,2,3,2]});
+assert.deepEqual(Hop.TestUtils.resolve({ a:&quot;#{Foo.a}&quot;, b:[1,2,3,&quot;#{Foo.b}&quot;], e: { a:{ a: 44, j:[&#x27;a&#x27;,&#x27;b&#x27;,&#x27;c&#x27;,&#x27;d&#x27;]}}}), {a:1, b:[1,2,3,2],e: { a:{ a: 44, j:[&#x27;a&#x27;,&#x27;b&#x27;,&#x27;c&#x27;,&#x27;d&#x27;]}}});
+assert.equal(Hop.TestUtils.resolve(&quot;#{Foo.d}&quot;),&quot;Bar&quot;);
+assert.deepEqual(Hop.TestUtils.resolve(&quot;Foo&quot;,true),{ a:1, b:2, c:true, d:&quot;Bar&quot;});
+assert.equal(Hop.TestUtils.resolve(4),4);
+assert.equal(Hop.TestUtils.resolve(&quot;#{undefined}&quot;),undefined);
+assert.equal(Hop.TestUtils.resolve(&quot;#{Foos[1]}&quot;),&quot;a&quot;);
+assert.deepEqual(Hop.TestUtils.resolve(&quot;#{Foo}&quot;),{ a:1, b:2, c:true, d:&quot;Bar&quot;});
+Hop.TestUtils.clearValues();
+
+
+&#x2F;**
+	Return the value of the named property in the object
+
+	The property name may be in dotted form
+
+	@param {Object} object
+	@param {String} property
+
+	@static
+	@method Hop.TestUtils.getProperty
+**&#x2F;	
+Hop.TestUtils.getProperty=function(object,property){
+	with(object){ 
+		return eval(property);
+	}
+}
+
+
+&#x2F;**
+	Utility function to copy an object, primarly used by .with
+	
+	@static
+	@method Hop.TestUtils.extendTo
+**&#x2F;
+Hop.TestUtils.extendTo=function(toObj,fromObj){
+		var result = JSON.parse(JSON.stringify(toObj));
+		
+		var copyProps = function(toObj,fromObj){
+			for(var propName in fromObj){
+				var prop = fromObj[propName];
+				if(typeof prop == &quot;object&quot; &amp;&amp; typeof toObj[propName]==&quot;object&quot;){
+					copyProps(toObj[propName],fromObj[propName]);	
+				} else {
+					toObj[propName]=prop; 
+				}	
+			}
+		}
+		
+		copyProps(result,fromObj); 
+		return result;
+}
+
+
+&#x2F;**	
+	Define a test case for a specific method
+
+	@param {string} name the name of the method to test, this must be the same as a defined API method, and may also contain a commnet appened after a :
+	@param {function} lambda The lambda defining the test
+
+	@example
+		Hop.defineTestCase(&quot;User.authenticate: Test Authentication&quot;,function(test){
+			var validUser = { email:&quot;test@test.com&quot;, username:&quot;TestUser&quot; };
+			test.do(&quot;User.create&quot;).with(validUser).noError();
+			test.do(&quot;User.authenticate&quot;).with(validUser).noError();
+			test.do(&quot;User.authenticate&quot;).with({password:&quot;BOB&quot;},validUser).containsError(&quot;Permission denied&quot;);
+		});
+		
+	@for Hop
+	@method defineTestCase
+	@static
+**&#x2F;
+Hop.defineTestCase=function(name,onTest){
+	
+	if(name.indexOf(&quot;:&quot;)!=-1){
+		var method=name.split(&quot;:&quot;)[0];
+		method = Hop.Method.findMethod(method);
+	}	else {
+		var method = Hop.Method.findMethod(name);
+	}
+	
+	delete Hop._checksum;
+
+	if(!method)
+		throw &quot;Invalid test case name specified, must be named after a defined method&quot;;
+
+	method.addAfterTemplate(&quot;Doc&quot;,&quot;test&#x2F;postDocMethod.comb&quot;);
+
+	var obj = Hop.Object.findObject(name);
+	obj.addAfterTemplate(&quot;Doc&quot;,&quot;test&#x2F;postDocObject.comb&quot;);
+
+	Hop.addAfterTemplate(&quot;Doc&quot;,&quot;test&#x2F;postDocHop.comb&quot;);
+
+	var test = new Hop.TestCase(name,onTest);
+}
+
+&#x2F;**
+	Used to impelement the .do interface for defineTest
+ 
+	so .do(&quot;MyClass.myFunc&quot;) is implemented by this class 
+
+	@param {string} funcName The name of the function this test should call
+	
+	@class Hop.TestTask
+	@constructor
+**&#x2F;
+Hop.TestTask = function(funcName){
+	this.funcName=funcName;
+	this.inputObject=undefined;
+	this.test=[];
+}
+
+Hop.TestTask.prototype.getInputObject=function(){
+	return this.inputObject;
+}
+
+&#x2F;**
+	Defines the input to be used for the API call
+		
+	This may either be a JavaScript Object or a named value (as created by .saveOutputAs) 
+
+	@example
+		test.do(&quot;Object.method&quot;).with({a:1, b:2});
+	
+	@example
+		test.do(&quot;Object.method&quot;).with(&quot;savedValue&quot;);
+	
+	@example
+		test.do(&quot;Object.method&quot;).with(&quot;savedValue&quot;,{a: 6} );
+	
+
+	@param {Mixed} inputValue The input value to use. Can be an object or string
+	@param {Object} extend The object to extend the input value with. Can be an object or string
+	
+	@chainable
+	@method with
+**&#x2F;
+Hop.TestTask.prototype.with=function(obj,extend){
+	if(typeof obj == &quot;string&quot;){
+		if(typeof extend==&quot;object&quot;){
+			this.inputObjectFunc=&#x27;function(){ return Hop.TestUtils.extendTo(Hop.TestUtils.loadValue(&quot;&#x27;+obj+&#x27;&quot;),&#x27;+JSON.stringify(extend)+&#x27;); }&#x27;;
+		} else {
+			this.inputObjectFunc=&#x27;function(){ return Hop.TestUtils.loadValue(&quot;&#x27;+obj+&#x27;&quot;); }&#x27;;
+		}
+		this.inputObject=obj;
+	} else if(typeof extend!=&quot;undefined&quot;){
+		this.inputObject = Hop.TestUtils.extendTo(obj,extend); 
+	} else {		
+		this.inputObject = obj;
+	}
+	return this;
+}
+
+&#x2F;**
+	Save the output into a name variable for usage later
+
+	@param {string} name The name of the value to save
+
+	@chainable
+	@method saveOutputAs
+**&#x2F;
+Hop.TestTask.saveOutputAs={ pass:&quot;The output was saved&quot;, fail: &quot;The output was not saved&quot; };
+Hop.TestTask.prototype.saveOutputAs=function(value){
+	var testFunc=function(input,err,output,value){ Hop.TestUtils.saveValue(value,output); return true; }
+	this.test.push({ type:&quot;saveOutputAs&quot;, testFunc: testFunc.toString(), value:value});
+	return this;
+}
+
+&#x2F;**
+	Require that the function does not return an error
+
+	*This will not test the result in anyway, since having both a null error and null result is acceptable*
+	
+	@chainable
+	@method noError
+**&#x2F;
+Hop.TestTask.noError={ pass:&quot;No error was recieved&quot;, fail: &quot;An unexpected error was recieved&quot; };
+Hop.TestTask.prototype.noError=function(){
+	var testFunc=function(input,err,output){ return (err==null); }
+	this.test.push({ type:&quot;noError&quot;, testFunc: testFunc.toString()});
+	return this;
+}
+
+&#x2F;**
+	Require that the specified property has been changed from what was in the input
+
+	*This test will also insure that the error is null and that the result is not null*
+
+	@param {String} value The name of the property in the output
+
+	@chainable
+	@method outputPropertyChanged
+**&#x2F;
+Hop.TestTask.outputPropertyChanged={ pass:&quot;The property changed as expected&quot;, fail: &quot;The output property didn&#x27;t change as expected&quot; };
+Hop.TestTask.prototype.outputPropertyChanged=function(value){
+	var testFunc=function(input,err,output,value){ return (err==null &amp;&amp; input!=null &amp;&amp; output!=null &amp;&amp; Hop.TestUtils.getProperty(input,value)!=Hop.TestUtils.getProperty(output,value));	}
+	this.test.push({ type: &quot;outputPropertyChanged&quot;, testFunc: testFunc.toString(), value:value });
+	return this;
+}
+
+&#x2F;**
+	Require that the input object is contained within the output object
+
+	This will test to insure that the output object minially contains all the same parameters as the input object
+
+	@chainable
+	@method inputSameAsOutput
+**&#x2F;
+Hop.TestTask.inputSameAsOutput={ pass:&quot;The output was the same as the input&quot;, fail: &quot;The output was not the same as the input&quot; };
+Hop.TestTask.prototype.inputSameAsOutput=function(){
+	var testFunc=function(input,err,output){ return Hop.TestUtils.objectCovers(input,output);	}
+	this.test.push({ type: &quot;inputSameAsOutput&quot;, testFunc: testFunc.toString() });
+	return this;
+}
+
+&#x2F;**
+	Test to insure the output is null
+	
+	@chainable
+	@method outputIsNull	
+**&#x2F;
+Hop.TestTask.outputIsNull={ pass:&quot;The output was null&quot;, fail: &quot;The output was not null&quot; };
+Hop.TestTask.prototype.outputIsNull=function(){
+	var testFunc=function(input,err,output){ return output==null; }
+	this.test.push({ type:&quot;outputIsNull&quot;, testFunc: testFunc.toString() });
+	return this;
+}
+
+&#x2F;**
+	Test to insure the output is not null
+
+	*This test will also insure that the error is null*
+
+	@chainable
+	@method outputNotNull
+**&#x2F;
+Hop.TestTask.outputNotNull={ pass:&quot;The output was not null&quot;, fail: &quot;The output was null, or there was also an error&quot; };
+Hop.TestTask.prototype.outputNotNull=function(){
+	var testFunc=function(input,err,output){ return (err==null &amp;&amp; output!=null); }; 
+	this.test.push({ type:&quot;outputNotNull&quot;, testFunc: testFunc.toString() });
+	return this;
+}
+
+&#x2F;**
+	Test to insure that the output contains a specific object
+
+	This test will insure that the output is a superset of the specified object
+
+	@param {Object} value The object to compare the output to
+
+	@chainable
+	@method outputContains
+**&#x2F;
+Hop.TestTask.outputContains={ pass:&quot;The output contains the expected value&quot;, fail: &quot;The output did not contain the expected value, or was null&quot; };
+Hop.TestTask.prototype.outputContains=function(value){
+	var testFunc=function(input,err,output,value){ value=Hop.TestUtils.resolve(value,true); return (output!=null &amp;&amp; Hop.TestUtils.objectCovers(value,output)); }; 
+	this.test.push({ type:&quot;outputContains&quot;, value: value, testFunc: testFunc.toString()	});
+	return this;
+}
+
+&#x2F;**
+	Insure the error contains a specific string
+
+	*This will also test to insure the output is null*
+
+	@param {String} value The string to insure the error contains
+
+	@chainable
+	@method errorContains
+**&#x2F;
+Hop.TestTask.errorContains={ pass:&quot;The error contained the expected value&quot;, fail: &quot;The error did not contain the expected value, or unexpectedly had an output&quot; };
+Hop.TestTask.prototype.errorContains=function(value){
+	var testFunc=function(input,err,output,value){ return (err!=null &amp;&amp; output==null &amp;&amp; (typeof err.indexOf==&quot;function&quot;) &amp;&amp; err.indexOf(value)!=-1); }	
+	this.test.push({ type:&quot;errorContains&quot;, value: value, testFunc:testFunc.toString() });
+	return this;
+}
+
+&#x2F;**
+	Insure that the output has a specified property
+
+	This will test for existence of a specific property
+
+	@param {String} property The name of the property
+
+	@chainable
+	@method outputHasProperty
+
+**&#x2F;
+Hop.TestTask.outputHasProperty={ pass:&quot;The output had the expected property&quot;, fail: &quot;The output did not have the expected property, or an error occured&quot; };
+Hop.TestTask.prototype.outputHasProperty=function(value){
+	var testFunc=function(input,err,output,value){ return (err==null &amp;&amp; output!=null &amp;&amp; Hop.TestUtils.outputHasProperty(output,value)); }	
+	this.test.push({ type:&quot;outputHasProperty&quot;, value: value, testFunc:testFunc.toString() });
+	return this;
+}
+
+&#x2F;**
+	Test the output to make sure it is the same as the specified object or saved object
+	
+	@example
+		Test.do(&quot;User.save&quot;).with(user).outputSameAs({ name:&#x27;foo&#x27;, email:&#x27;bar@bar.com&#x27;});
+		Test.do(&quot;User.save&quot;).with(user).outputSameAs(&quot;#{savedUser}&quot;);
+		Test.do(&quot;User.save&quot;).with(user).outputSameAs(&quot;#{savedUsers[1]}&quot;);
+
+	@param {String} savedValue The name of the saved result
+
+	@chainable
+	@method outputSameAs
+**&#x2F;
+Hop.TestTask.outputSameAs={ pass:&quot;The output was the same as expected&quot;, fail: &quot;The output was not the same as expected&quot; };
+Hop.TestTask.prototype.outputSameAs=function(value){
+	var testFunc=function(input,err,output,value){ var value = Hop.TestUtils.resolve(value,true);  return (err==null &amp;&amp; Hop.TestUtils.objectCovers(value,output));	}	
+	this.test.push({ type:&quot;outputSameAs&quot;, value: value, testFunc:testFunc.toString() });
+	return this;
+}
+
+&#x2F;**
+	Test the output to make sure it an array with a specified length
+	
+	@param {String} length The length of the array
+
+	@chainable
+	@method outputIsArrayWithLength
+**&#x2F;
+Hop.TestTask.outputIsArrayWithLength={ pass:&quot;The output was an array with expected length&quot;, fail: &quot;The output was not an array with the expected length, or an error occured&quot; };
+Hop.TestTask.prototype.outputIsArrayWithLength=function(value){
+	var testFunc=function(input,err,output,value){ return (output instanceof Array &amp;&amp; err==null &amp;&amp; output.length==Hop.TestUtils.resolve(value,true));  }	
+	this.test.push({ type:&quot;outputIsArrayWithLength&quot;, value: value, testFunc:testFunc.toString() });
+	return this;
+}
+
+&#x2F;**
+	Test the output to make sure it is an array
+	
+	@chainable
+	@method outputIsArray
+**&#x2F;
+Hop.TestTask.outputIsArray={ pass:&quot;The output was an array&quot;, fail: &quot;The output was not an array, or an error occured&quot; };
+Hop.TestTask.prototype.outputIsArray=function(value){
+	var testFunc=function(input,err,output,value){ return (output instanceof Array &amp;&amp; err==null);	}	
+	this.test.push({ type:&quot;outputIsArray&quot;, value: value, testFunc:testFunc.toString() });
+	return this;
+}
+
+&#x2F;**
+	Test the output array contains
+	
+	@chainable
+	@method outputArrayContains
+**&#x2F;
+Hop.TestTask.outputArrayContains={ pass:&quot;The output array contained the specified value&quot;, fail: &quot;The output array did not contain the specified value, or an error occured&quot; };
+Hop.TestTask.prototype.outputArrayContains=function(value){
+	var testFunc=function(input,err,output,value){ if(output instanceof Array &amp;&amp; err==null){ value = Hop.TestUtils.resolve(value,true); return Hop.TestUtils.arrayContains(output,value); } else return false;	}	
+	this.test.push({ type:&quot;outputArrayContains&quot;, value: value, testFunc:testFunc.toString() });
+	return this;
+}
+
+&#x2F;**
+	TestCase Class
+
+	This is the underlying class which is used in defineTestCase
+	
+	*To construct a new test case use defineTestCase instead*
+	*The name of the case must alway be the name of a method, but may be followed by a description*
+
+	@example
+		Hop.defineTestCase(&quot;Object.Method&quot;,function()...);
+		Hop.defineTestCase(&quot;Object.Method: Do a specific test&quot;,function()...);
+
+
+	@param {String} name The name of the test case, this must always start with the name of a defined method, but may also include a description seperated by a &#x27;:&#x27;
+	@param {Function} onTest The function defining the test case
+
+	@class Hop.TestCase
+	@constructor
+**&#x2F;
+Hop.TestCase=function(name,onTest){
+	this.name=name;
+	this.tasks=[];
+	onTest(this);	
+	
+	Hop.TestCases[name]=this;
+}
+
+&#x2F;**
+	Create a special object to instruct Hop to use a file provide by a URL as a test input value
+
+	@param {String} url url to fetch file from (this should be a url on the local server)
+
+	@static
+	@method fileFromURL
+**&#x2F;
+Hop.TestCase.prototype.fileFromURL=function(url){
+	return { _fileFromURL: url };
+}
+
+Hop.TestCase.standAloneSupport=function(options){
+	return Hop.renderTemplate(&quot;test&#x2F;standalone.comb&quot;)({ supportCode:true });
+}
+
+Hop.TestCase.toStandAlone=function(){
+	var str=&quot;&quot;;
+	str+=Hop.TestCase.standAloneSupport();
+	for(var i in Hop.TestCases){
+		str+=Hop.TestCases[i].toStandAlone();
+	}
+	return str;
+}
+
+Hop.TestCase.prototype.toStandAlone=function(){
+	return Hop.renderTemplate(&quot;test&#x2F;standalone.comb&quot;)(this);
+}
+
+Hop.TestCase.prototype.do=function(apiName){
+	this.tasks.push(new Hop.TestTask(apiName));	
+	return this.tasks[this.tasks.length-1];
+}
+
+Hop.TestCase.prototype.task=function(onTask){
+	this.tasks.push(onTask);	
+	return this.tasks[this.tasks.length-1];
+}
+
+Hop.TestService={
+	wait:function(input,onComplete){
+		setTimeout(function(){
+			return onComplete(null,true);
+		},input.duration*1000);
+	},
+	log:function(input,onComplete){
+		Hop.log(input.msg);
+		return onComplete(null,true);
+	}
+}
+
+Hop.defineClass(&quot;TestService&quot;,Hop.TestService,function(api){
+	api.get(&quot;wait&quot;,&quot;&#x2F;hopjs&#x2F;test&#x2F;wait&quot;).demand(&quot;duration&quot;);
+	api.get(&quot;log&quot;,&quot;&#x2F;hopjs&#x2F;test&#x2F;log&quot;).demand(&quot;msg&quot;);
+});
+
+
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>
