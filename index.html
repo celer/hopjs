@@ -1,36 +1,33 @@
 <!DOCTYPE html>
 <html>
-
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Hopjs : Restful API Framework" />
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
-    <title>Hopjs</title>
+    <title>Hopjs by celer</title>
   </head>
 
   <body>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/celer/hopjs">View on GitHub</a>
+    <header>
+      <div class="container">
+        <h1>Hopjs</h1>
+        <h2>Restful API Framework</h2>
 
-          <h1 id="project_title">Hopjs</h1>
-          <h2 id="project_tagline">Restful API Framework</h2>
+        <section id="downloads">
+          <a href="https://github.com/celer/hopjs/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/celer/hopjs/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/celer/hopjs" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/celer/hopjs/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/celer/hopjs/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
+    <div class="container">
+      <section id="main_content">
         <h1>HopJS</h1>
 
 <p>The RESTful API dynamic web apps crave.</p>
@@ -47,7 +44,9 @@
 <li>Supports intelligent server-side caching of results using Redis</li>
 <li>Supports event based APIs using Socket.io </li>
 <li>Enhanced APIs with optional declarative models</li>
-</ul><p><em>First, we simply define the interface you wish to expose</em>
+</ul><p><a href="http://celer.github.com/hopjs/doc/">API Documentation</a></p>
+
+<p><em>First, we simply define the interface you wish to expose</em>
 (either as static methods on an object or as a proper JavaScript class)</p>
 
 <div class="highlight"><pre>
@@ -103,6 +102,8 @@
   GET /api/api.json
 </pre></div>
 
+<p><a href="http://celer.github.com/hopjs/doc/classes/Hop.Method.html">defineClass documenation</a></p>
+
 <p><em>But we can also define the test cases for our new interface!</em></p>
 
 <div class="highlight"><pre>
@@ -114,6 +115,8 @@
 <span class="p">});</span>
 
 </pre></div>
+
+<p><a href="http://celer.github.com/hopjs/doc/classes/Hop.TestTask.html">defineTestCase documentation</a></p>
 
 <p><em>We can unit test our API using the hopjs utility, which will run all the unit tests from the command line:</em></p>
 
@@ -283,15 +286,6 @@ also allow uploads using the .demandFile or the .optionalFile</p>
       </section>
     </div>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Hopjs maintained by <a href="https://github.com/celer">celer</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
     
-
   </body>
 </html>
