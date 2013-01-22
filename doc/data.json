@@ -214,7 +214,7 @@
             "module": "Hop",
             "namespace": "",
             "file": "lib/test.js",
-            "line": 619,
+            "line": 614,
             "description": "Testing module"
         },
         "User": {
@@ -349,7 +349,7 @@
             "description": "Used to impelement the .do interface for defineTest\n \nso .do(\"MyClass.myFunc\") is implemented by this class",
             "params": [
                 {
-                    "name": "funcName!~YUIDOC_LINE~!",
+                    "name": "funcName",
                     "description": "The name of the function this test should call",
                     "type": "String"
                 }
@@ -368,19 +368,19 @@
             "submodule": "Test",
             "namespace": "",
             "file": "lib/test.js",
-            "line": 619,
+            "line": 614,
             "description": "TestCase Class\n\nThis is the underlying class which is used in defineTestCase\n\n*To construct a new test case use defineTestCase instead*\n*The name of the case must alway be the name of a method, but may be followed by a description*",
             "example": [
                 "\n\tHop.defineTestCase(\"Object.Method\",function()...);\n\tHop.defineTestCase(\"Object.Method: Do a specific test\",function()...);"
             ],
             "params": [
                 {
-                    "name": "name!~YUIDOC_LINE~!",
+                    "name": "name",
                     "description": "The name of the test case, this must always start with the name of a defined method, but may also include a description seperated by a ':'",
                     "type": "String"
                 },
                 {
-                    "name": "onTest!~YUIDOC_LINE~!",
+                    "name": "onTest",
                     "description": "The function defining the test case",
                     "type": "Function"
                 }
@@ -1702,7 +1702,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 374,
+            "line": 373,
             "description": "Defines the input to be used for the API call\n\t\nThis may either be a JavaScript Object or a named value (as created by .saveOutputAs)",
             "example": [
                 "\n\ttest.do(\"Object.method\").with({a:1, b:2});",
@@ -1730,7 +1730,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 411,
+            "line": 410,
             "description": "Save the output into a name variable for usage later",
             "params": [
                 {
@@ -1748,7 +1748,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 426,
+            "line": 425,
             "description": "Require that the function does not return an error\n\n*This will not test the result in anyway, since having both a null error and null result is acceptable*",
             "chainable": 1,
             "itemtype": "method",
@@ -1759,7 +1759,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 441,
+            "line": 440,
             "description": "Require that the specified property has been changed from what was in the input\n\n*This test will also insure that the error is null and that the result is not null*",
             "params": [
                 {
@@ -1777,7 +1777,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 459,
+            "line": 458,
             "description": "Require that the input object is contained within the output object\n\nThis will test to insure that the output object minially contains all the same parameters as the input object",
             "chainable": 1,
             "itemtype": "method",
@@ -1788,7 +1788,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 474,
+            "line": 473,
             "description": "Test to insure the output is null",
             "chainable": 1,
             "itemtype": "method",
@@ -1799,7 +1799,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 487,
+            "line": 486,
             "description": "Test to insure the output is not null\n\n*This test will also insure that the error is null*",
             "chainable": 1,
             "itemtype": "method",
@@ -1810,11 +1810,11 @@
         },
         {
             "file": "lib/test.js",
-            "line": 502,
+            "line": 501,
             "description": "Test to insure that the output contains a specific object\n\nThis test will insure that the output is a superset of the specified object",
             "params": [
                 {
-                    "name": "value!~YUIDOC_LINE~!",
+                    "name": "value",
                     "description": "The object to compare the output to",
                     "type": "Object"
                 }
@@ -1828,7 +1828,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 520,
+            "line": 518,
             "description": "Insure the error contains a specific string\n\n*This will also test to insure the output is null*",
             "params": [
                 {
@@ -1846,11 +1846,11 @@
         },
         {
             "file": "lib/test.js",
-            "line": 537,
+            "line": 535,
             "description": "Insure that the output has a specified property\n\nThis will test for existence of a specific property",
             "params": [
                 {
-                    "name": "property!~YUIDOC_LINE~!",
+                    "name": "property",
                     "description": "The name of the property",
                     "type": "String"
                 }
@@ -1864,14 +1864,14 @@
         },
         {
             "file": "lib/test.js",
-            "line": 556,
+            "line": 553,
             "description": "Test the output to make sure it is the same as the specified object or saved object",
             "example": [
                 "\n\tTest.do(\"User.save\").with(user).outputSameAs({ name:'foo', email:'bar@bar.com'});\n\tTest.do(\"User.save\").with(user).outputSameAs(\"#{savedUser}\");\n\tTest.do(\"User.save\").with(user).outputSameAs(\"#{savedUsers[1]}\");"
             ],
             "params": [
                 {
-                    "name": "savedValue!~YUIDOC_LINE~!",
+                    "name": "savedValue",
                     "description": "The name of the saved result",
                     "type": "String"
                 }
@@ -1885,11 +1885,11 @@
         },
         {
             "file": "lib/test.js",
-            "line": 577,
+            "line": 573,
             "description": "Test the output to make sure it an array with a specified length",
             "params": [
                 {
-                    "name": "length!~YUIDOC_LINE~!",
+                    "name": "length",
                     "description": "The length of the array",
                     "type": "String"
                 }
@@ -1903,7 +1903,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 593,
+            "line": 588,
             "description": "Test the output to make sure it is an array",
             "chainable": 1,
             "itemtype": "method",
@@ -1914,7 +1914,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 606,
+            "line": 601,
             "description": "Test the output array contains",
             "chainable": 1,
             "itemtype": "method",
@@ -1925,12 +1925,12 @@
         },
         {
             "file": "lib/test.js",
-            "line": 648,
+            "line": 641,
             "description": "Create a special object to instruct Hop to use a file provide by a URL as a test input value",
             "params": [
                 {
                     "name": "url",
-                    "description": "",
+                    "description": "url to fetch file from (this should be a url on the local server)",
                     "type": "String"
                 }
             ],

@@ -475,8 +475,7 @@ Hop.defineTestCase=function(name,onTest){
  
 	so .do(&quot;MyClass.myFunc&quot;) is implemented by this class 
 
-	@param {string} funcName
-		The name of the function this test should call
+	@param {string} funcName The name of the function this test should call
 	
 	@class Hop.TestTask
 	@constructor
@@ -624,8 +623,7 @@ Hop.TestTask.prototype.outputNotNull=function(){
 
 	This test will insure that the output is a superset of the specified object
 
-	@param {Object} value
-		The object to compare the output to
+	@param {Object} value The object to compare the output to
 
 	@chainable
 	@method outputContains
@@ -659,8 +657,7 @@ Hop.TestTask.prototype.errorContains=function(value){
 
 	This will test for existence of a specific property
 
-	@param {String} property
-		The name of the property
+	@param {String} property The name of the property
 
 	@chainable
 	@method outputHasProperty
@@ -681,8 +678,7 @@ Hop.TestTask.prototype.outputHasProperty=function(value){
 		Test.do(&quot;User.save&quot;).with(user).outputSameAs(&quot;#{savedUser}&quot;);
 		Test.do(&quot;User.save&quot;).with(user).outputSameAs(&quot;#{savedUsers[1]}&quot;);
 
-	@param {String} savedValue
-		The name of the saved result
+	@param {String} savedValue The name of the saved result
 
 	@chainable
 	@method outputSameAs
@@ -697,8 +693,7 @@ Hop.TestTask.prototype.outputSameAs=function(value){
 &#x2F;**
 	Test the output to make sure it an array with a specified length
 	
-	@param {String} length
-		The length of the array
+	@param {String} length The length of the array
 
 	@chainable
 	@method outputIsArrayWithLength
@@ -749,10 +744,8 @@ Hop.TestTask.prototype.outputArrayContains=function(value){
 		Hop.defineTestCase(&quot;Object.Method: Do a specific test&quot;,function()...);
 
 
-	@param {String} name
-		The name of the test case, this must always start with the name of a defined method, but may also include a description seperated by a &#x27;:&#x27;
-	@param {Function} onTest
-		The function defining the test case
+	@param {String} name The name of the test case, this must always start with the name of a defined method, but may also include a description seperated by a &#x27;:&#x27;
+	@param {Function} onTest The function defining the test case
 
 	@class Hop.TestCase
 	@constructor
@@ -768,7 +761,7 @@ Hop.TestCase=function(name,onTest){
 &#x2F;**
 	Create a special object to instruct Hop to use a file provide by a URL as a test input value
 
-	@param {String} url
+	@param {String} url url to fetch file from (this should be a url on the local server)
 
 	@static
 	@method fileFromURL
