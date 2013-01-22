@@ -63,6 +63,7 @@ So now our web-site has:
   # A JSON definition of our API for client side stub generation
   GET /api/api.json
 ```
+[defineClass documenation](http://celer.github.com/hopjs/doc/classes/Hop.Method.html)
 
 *But we can also define the test cases for our new interface!*
 
@@ -76,6 +77,9 @@ Hop.defineTestCase("UserService.authenticate",function(test){
 });
 
 ```
+[defineTestCase documentation](http://celer.github.com/hopjs/doc/classes/Hop.TestTask.html)
+
+
 *We can unit test our API using the hopjs utility, which will run all the unit tests from the command line:*
 ```shell
 npm install hopjs-remote -g
