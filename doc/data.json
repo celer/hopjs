@@ -813,8 +813,8 @@
             "description": "Describe this method",
             "params": [
                 {
-                    "name": "usage!~YUIDOC_LINE~!",
-                    "description": "A string describing this function for documentation purposes",
+                    "name": "usage",
+                    "description": "text describing the function for documentation purposes",
                     "type": "String"
                 }
             ],
@@ -826,7 +826,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 767,
+            "line": 768,
             "description": "Note that this method can only be called using https",
             "chainable": 1,
             "itemtype": "method",
@@ -836,7 +836,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 783,
+            "line": 784,
             "description": "Include the express CSRF token in the response headers for this method\n\nThe CSRF token is utilized to prevent cross site request forgery attacks, and is a middleware component\nfor express. \n\nSee here for information: http://www.senchalabs.org/connect/middleware-csrf.html\n\nBy default HopJS will attempt to utilize the CSRF functionality in express if it is enabled, but \nsome clients require a means to access the CSRF token, hence this function will will send the csrf token\nin the headers as 'x-crsf-token'\n\nThe primary usage for this function is with secure login functions",
             "example": [
                 "\n\tHop.defineClass(\"UserService\",UserService,function(api){\n\t\tapi.post(\"login\",\"/login\").demands(\"username\",\"password\").sendCSRFToken();\n\t});"
@@ -849,7 +849,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 817,
+            "line": 818,
             "description": "Optional parameter for a call",
             "example": [
                 "\n\tapi.post(\"create\",\"/user/profile/\").optional(\"phoneNumber\",\"Phone Number\");"
@@ -874,7 +874,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 835,
+            "line": 836,
             "description": "Indicate this function performs longPolling",
             "example": [
                 "\n\tapi.get(\"status\",\"/server/:serverID/status\").longPoll();"
@@ -887,7 +887,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 851,
+            "line": 852,
             "description": "Indicate this function should avoid caching",
             "example": [
                 "\n\tapi.post(\"create\",\"/user/profile/\").noCache();"
@@ -900,7 +900,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 890,
+            "line": 891,
             "description": "Demand a file be provided for this method.",
             "example": [
                 "\n\tapi.post(\"create\",\"/user/profile/\").demandFile(\"avatar\",\"Users avatar image\");"
@@ -913,7 +913,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 905,
+            "line": 906,
             "description": "Specify that a file may optionally be provided as an input to this call.",
             "example": [
                 "\n\tapi.post(\"create\",\"/user/profile/\").optionalFile(\"avatar\",\"Users avatar image\");"
@@ -926,7 +926,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 920,
+            "line": 921,
             "description": "Add a function that will be called after this call is completed",
             "params": [
                 {
@@ -977,7 +977,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 974,
+            "line": 975,
             "description": "Add a function that will be called before this call is executed",
             "params": [
                 {
@@ -1024,7 +1024,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 1037,
+            "line": 1038,
             "description": "Indicate that this method call has been depricated",
             "itemtype": "method",
             "name": "depricated",
@@ -1034,7 +1034,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 1049,
+            "line": 1050,
             "description": "Calls the specified method \n\nThis function is provided so that all functionality around a specific call may be utilized.",
             "params": [
                 {
