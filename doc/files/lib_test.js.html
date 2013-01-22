@@ -146,10 +146,8 @@ Hop.TestUtils={};
 
 	*This function is designed to be usable with (function).toString() for embedding*
 
-	@param {object} input
-		The input object
-	@param {object} output
-		The output object
+	@param {object} input The input object
+	@param {object} output The output object
 
 	@method Hop.TestUtils.objectCovers
 	@static
@@ -205,12 +203,9 @@ assert.equal(Hop.TestUtils.objectCovers({a:1, b:{ k:3} },{a:1, b:{ k:8}}),false)
 
 	*This function is designed to be usable with (function).toString() for embedding*
 
-		@param {Object} output
-			The output object
-		@param {String} propertyName
-			The property to test (supports dotted notation)
-		@param {Object} [propertyValue]
-			The expected object value
+		@param {Object} output The output object
+		@param {String} propertyName The property to test (supports dotted notation)
+		@param {Object} [propertyValue] The expected object value
 
 		@return bool
 
@@ -251,10 +246,8 @@ assert.equal(Hop.TestUtils.outputHasProperty({a:1, b:1, c:{d:{e:&quot;hello&quot
 	
 	*This function is designed to be usable with (function).toString() for embedding*
 
-		@param {Object} array
-			The output array
-		@param {Object value
-			The expected object value
+		@param {Object} array The output array
+		@param {Object value The expected object value
 
 		@return bool
 
@@ -429,10 +422,8 @@ Hop.TestUtils.extendTo=function(toObj,fromObj){
 &#x2F;**	
 	Define a test case for a specific method
 
-	@param {string} name 
-		the name of the method to test, this must be the same as a defined API method, and may also contain a commnet appened after a :
-	@param {function} 
-		The lambda defining the test
+	@param {string} name the name of the method to test, this must be the same as a defined API method, and may also contain a commnet appened after a :
+	@param {function} lambda The lambda defining the test
 
 	@example
 		Hop.defineTestCase(&quot;User.authenticate: Test Authentication&quot;,function(test){
