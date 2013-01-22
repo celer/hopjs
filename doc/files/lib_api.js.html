@@ -1095,16 +1095,11 @@ Hop.Method.prototype.addPostCall=function(call,phase){
 &#x2F;**
 Add a function that will be called before this call is executed 
 
-@param {function} call 
-		function to be called prior to when this call is executed , which is passed the following parameters:
-	@param {object} call.request
-		the ExpressJS &#x2F; HTTP request object
-	@param {object} call.input
-		the input parameters to the call
-	@param {function} call.onComplete 
-		to be called if the function wants to short circuit and return a result
-	@param {function} call.next 
-		to be called when the callback is completed, causing the next call back to be called
+@param {function} call function to be called prior to when this call is executed , which is passed the following parameters:
+	@param {object} call.request the ExpressJS &#x2F; HTTP request object
+	@param {object} call.input the input parameters to the call
+	@param {function} call.onComplete to be called if the function wants to short circuit and return a result
+	@param {function} call.next to be called when the callback is completed, causing the next call back to be called
 @param {string} phase the phase in which this function will be called (see below)
 
 *Phases*

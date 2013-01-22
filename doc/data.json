@@ -982,27 +982,27 @@
             "params": [
                 {
                     "name": "call",
-                    "description": "\n\t\tfunction to be called prior to when this call is executed , which is passed the following parameters:",
+                    "description": "function to be called prior to when this call is executed , which is passed the following parameters:",
                     "type": "Function",
                     "props": [
                         {
-                            "name": "request!~YUIDOC_LINE~!",
+                            "name": "request",
                             "description": "the ExpressJS / HTTP request object",
                             "type": "Object"
                         },
                         {
-                            "name": "input!~YUIDOC_LINE~!",
+                            "name": "input",
                             "description": "the input parameters to the call",
                             "type": "Object"
                         },
                         {
                             "name": "onComplete",
-                            "description": "\n\t\tto be called if the function wants to short circuit and return a result",
+                            "description": "to be called if the function wants to short circuit and return a result",
                             "type": "Function"
                         },
                         {
                             "name": "next",
-                            "description": "\n\t\tto be called when the callback is completed, causing the next call back to be called",
+                            "description": "to be called when the callback is completed, causing the next call back to be called",
                             "type": "Function"
                         }
                     ]
@@ -1024,7 +1024,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 1038,
+            "line": 1033,
             "description": "Indicate that this method call has been depricated",
             "itemtype": "method",
             "name": "depricated",
@@ -1034,7 +1034,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 1050,
+            "line": 1045,
             "description": "Calls the specified method \n\nThis function is provided so that all functionality around a specific call may be utilized.",
             "params": [
                 {
