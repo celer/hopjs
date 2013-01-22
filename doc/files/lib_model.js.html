@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lib&#x2F;model.js</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.5.1&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.5.1&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/Hop.html">Hop</a></li>
+            
+                <li><a href="..&#x2F;classes/Hop.CodeGenerator.html">Hop.CodeGenerator</a></li>
+            
+                <li><a href="..&#x2F;classes/Hop.Method.html">Hop.Method</a></li>
+            
+                <li><a href="..&#x2F;classes/Hop.Object.html">Hop.Object</a></li>
+            
+                <li><a href="..&#x2F;classes/Hop.StubRequest.html">Hop.StubRequest</a></li>
+            
+                <li><a href="..&#x2F;classes/Hop.StubResponse.html">Hop.StubResponse</a></li>
+            
+                <li><a href="..&#x2F;classes/Hop.TestCase.html">Hop.TestCase</a></li>
+            
+                <li><a href="..&#x2F;classes/Hop.TestTask.html">Hop.TestTask</a></li>
+            
+                <li><a href="..&#x2F;classes/Hop.TestUtils.html">Hop.TestUtils</a></li>
+            
+                <li><a href="..&#x2F;classes/Hop.User.html">Hop.User</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="..&#x2F;modules/Cache.html">Cache</a></li>
+            
+                <li><a href="..&#x2F;modules/CodeGenerator.html">CodeGenerator</a></li>
+            
+                <li><a href="..&#x2F;modules/Event.html">Event</a></li>
+            
+                <li><a href="..&#x2F;modules/Hop.html">Hop</a></li>
+            
+                <li><a href="..&#x2F;modules/Job.html">Job</a></li>
+            
+                <li><a href="..&#x2F;modules/Test.html">Test</a></li>
+            
+                <li><a href="..&#x2F;modules/User.html">User</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: lib&#x2F;model.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x2F;*
+Provides declarative model functionality
+
+HopJS allows you to define models which can then be associated with various API calls to:
+ * Improve client side stub generation
+ * Reduce duplicate parameter descriptions
+
+@module Hop
+@submodule Model
+*&#x2F;
+var Hop = require(&quot;.&#x2F;api&quot;);
+
+
+Hop.addToJSONHandler(function(obj){
+	obj.Models=Hop.Models;
+});
+
+
+Hop.camelHump=function(name){
+	var fs = [&quot;.&quot;,&quot;_&quot;,&quot;-&quot;];
+	var str = &quot;&quot;;
+	for(var i =0 ; i&lt;name.length;i++){
+		if(i==0){
+			str+=name[i].toUpperCase();	
+		} else if(fs.indexOf(name[i])!=-1){
+			i++;
+			str+=name[i].toUpperCase();	
+		} else {
+			str+=name[i];
+		}	
+	}
+	return str;
+}
+
+Hop.Type = function(){
+}
+
+Hop.Type.prototype.password=function(){
+	if(this.type==undefined) this.string();
+	this.subType=Hop.Type.password;
+	return this;
+}
+
+Hop.Type.prototype.ID=function(){
+	this.subType=Hop.Type.ID;
+	return this;
+}
+
+Hop.Type.prototype.model=function(modelName){
+	this.object();
+	this.model=modelName;
+	return this;
+}
+
+Hop.Type.prototype.object=function(){
+	this.type=&quot;Object&quot;;
+	return this;
+}
+
+Hop.Type.prototype.file=function(){
+	this.type=&quot;File&quot;;
+	return this;
+}
+
+Hop.Type.prototype.getConverterLogic=function(){
+	var str=&quot;if(typeof #VALUE!=\&#x27;undefined\&#x27;){\n&quot;;
+	if(this.converters!=undefined){
+		for(var i in this.converters){
+			str+=&quot;\t&quot;+this.converters[i].convert+&quot;\n&quot;;
+		}
+	}
+	str+=&quot;}&quot;;
+	return str;
+}
+
+Hop.Type.prototype.boolean=function(){
+	this.type=&quot;Boolean&quot;;
+	this.converters=this.converters||[];
+	this.converters.push({ convert: &quot;#VALUE=(#VALUE==&#x27;true&#x27; || #VALUE===true || #VALUE==&#x27;1&#x27; || #VALUE==true|| #VALUE==&#x27;checked&#x27;);&quot;, priority:1 });
+	return this;
+}
+
+Hop.Type.prototype.string=function(){
+	this.type=&quot;String&quot;;
+	return this;
+}
+
+Hop.Type.prototype.double=function(){
+	this.type=&quot;Number&quot;;
+	this.subType=Hop.Type.Float;
+	this.converters=this.converters||[];
+	this.converters.push({ convert: &quot;#VALUE=parseFloat(#VALUE);&quot;, priority:1 });
+	return this;
+}
+
+Hop.Type.prototype.float=function(){
+	this.type=&quot;Number&quot;;
+	this.subType=Hop.Type.Float;
+	this.converters=this.converters||[];
+	this.converters.push({ convert: &quot;#VALUE=parseFloat(#VALUE);&quot;, priority:1 });
+	return this;
+}
+
+Hop.Type.prototype.integer=function(){
+	this.type=&quot;Number&quot;;
+	this.subType=Hop.Type.Integer;
+	this.converters=this.converters||[];
+	this.converters.push({ convert: &quot;#VALUE=parseInt(#VALUE);&quot;, priority:1 });
+	return this;
+}
+
+
+Hop.Type.prototype.date=function(){
+	this.type=&quot;Date&quot;;
+	this.converters=this.converters||[];
+	this.converters.push({ convert: &quot;#VALUE=(&#x2F;[0-9]+&#x2F;.test(#VALUE)?new Date(parseInt(#VALUE)):new Date(#VALUE));&quot;, priority:1 });
+	return this;
+}
+
+
+Hop.Type.prototype.isArray=function(){
+	this.isArray=true;
+	return this;
+}
+
+Hop.ValidatedType = function(){
+}
+
+Hop.ValidatedType.prototype = Object.create(Hop.Type.prototype);
+
+Hop.ValidatedType.prototype.getValidatorLogic=function(){
+	var str=&quot;&quot;;
+	if(this.validators!=undefined){
+		for(var i in this.validators){
+			str+=&quot;\tif(&quot;+this.validators[i].test+&quot;) throw &quot;+JSON.stringify(this.validators[i].msg)+&quot;;\n&quot;;
+		}
+	}
+	if(str.length&gt;0){
+		str=&quot;if(typeof #VALUE!=\&#x27;undefined\&#x27;){\n&quot;+str+&quot;}&quot;;
+	}
+	return str;
+}
+
+Hop.ValidatedType.prototype.regexp=function(regex,regexMsg){
+	this.regex=regex;
+	this.regexMsg=regexMsg;
+	this.validators=this.validators||[];
+	this.validators.push({ test: &quot;(!&quot;+regex.toString()+&quot;.test(#VALUE.toString()))&quot;, msg: (regexMsg||&quot;Invalid value&quot;)});
+	return this;
+}
+
+Hop.ValidatedType.prototype.range=function(min,max){
+	this.range={ min: min, max: max};
+	this.validators=this.validators||[];
+	if(min!=null){
+		this.validators.push({ test: &quot;(#VALUE &lt; &quot;+min.toString()+&quot;)&quot;, msg: &quot;Value must be greater than &quot;+min });
+	}
+	if(max!=null){
+		this.validators.push({ test: &quot;(#VALUE &gt; &quot;+max.toString()+&quot;)&quot;, msg: &quot;Value must be less than &quot;+max });
+	}
+	return this;
+}
+
+Hop.ValidatedType.prototype.values=function(values){
+	this.values=values;
+	
+	this.validators=this.validators||[];
+	if(values instanceof Array){
+		this.validators.push({ test: &quot;(&quot;+JSON.stringify(values)+&quot;.indexOf(#VALUE)==-1)&quot;, msg: &quot;Valid values are: &quot;+values.join(&quot;, &quot;) });
+	} else if(values instanceof Object){
+		this.validators.push({ test: &quot;(&quot;+JSON.stringify(Object.keys(values))+&quot;.indexOf(#VALUE)==-1)&quot;, msg: &quot;Valid values are: &quot;+Object.keys(values).join(&quot;, &quot;) });
+	}
+	return this;
+}
+
+
+Hop.Field=function(name){
+	this.name=name;
+}
+
+Hop.Field.prototype = Object.create(Hop.ValidatedType.prototype);
+
+Hop.Type.JSON=&quot;JSON&quot;;
+Hop.Type.ID=&quot;ID&quot;;
+Hop.Type.Float=&quot;Float&quot;;
+Hop.Type.Integer=&quot;Integer&quot;;
+Hop.Type.Password=&quot;Password&quot;;
+
+Hop.Field.prototype.title=function(name){
+	this.displayName=name;
+	return this;
+}
+
+Hop.Field.prototype.description=function(desc){
+	this.desc=desc;
+	return this;
+}
+
+Hop.Field.prototype.getConverter=function(){
+	var logic = this.getConverterLogic();
+	logic=logic.replace(&#x2F;\#VALUE&#x2F;g,&quot;input.&quot;+this.name);
+	return logic;
+}
+
+Hop.Field.prototype.getValidator=function(){
+	var logic = this.getValidatorLogic();
+	logic=logic.replace(&#x2F;\#VALUE&#x2F;g,&quot;input.&quot;+this.name);
+	return logic;
+}
+
+Hop.Models={};
+Hop.Model=function(name){
+	this.name=name;
+	this.tableName=name.toLowerCase();
+	this.fields={};
+	Hop.Models[name]=this;
+}
+
+Hop.Model.applyToMethod=function(method,model){
+	var validator=&quot;&quot;;
+	var converter=&quot;&quot;;
+	for(var paramName in method.params){
+		if(model.fields[paramName]){
+			if(method.params[paramName].desc==undefined &amp;&amp; model.fields[paramName].desc!=undefined)
+				method.params[paramName].desc=model.fields[paramName].desc;
+
+				validator+=model.fields[paramName].getValidator();	
+				converter+=model.fields[paramName].getConverter();	
+			
+		}	
+	}
+	if(validator!=&quot;&quot;){
+		var func = new Function(&quot;req&quot;,&quot;input&quot;,&quot;onComplete&quot;,&quot;next&quot;,&#x27;try {\n&#x27; +validator +&#x27;\n} catch(e){ return onComplete(e); } next();&#x27;);
+		method.addPreCall(func,&quot;validation&quot;);
+	}	
+	if(converter!=&quot;&quot;){
+		var func = new Function(&quot;req&quot;,&quot;input&quot;,&quot;onComplete&quot;,&quot;next&quot;,&#x27;try {\n&#x27; +converter+&#x27;\n} catch(e){ return onComplete(e); } next();&#x27;);
+		method.addPreCall(func,&quot;conversion&quot;);
+	}	
+	method.addAfterTemplate(&quot;JavaScript&quot;,&quot;model&#x2F;postJSMethod.comb&quot;);
+}
+
+Hop.Model.prototype.field=function(name,title,description){
+	var field = new Hop.Field(name);
+	this.fields[name]=field;
+
+	if(title!=undefined){
+		field.title(title);
+	}
+	
+	if(description!=undefined){
+		field.description(description);
+	}
+
+	return field;
+}
+
+Hop.addBeforeTemplate(&quot;JavaScript&quot;,&quot;model&#x2F;preJSHop.comb&quot;);
+
+Hop.defineModel=function(name,onDefine){
+	var model = new Hop.Model(name);
+	onDefine(model);	
+	return model;
+}
+
+
+
+&#x2F;**
+Use a model for both input and output
+
+Models are used to provide meta data for both UI 
+and api generation 
+
+@param {object} inputObject Input model
+@param {object} [outputModel] Output model
+
+ * Models require a field called _name which specifies the name of the model
+ * Models can have the following fields on types: 
+   * type - The class name of the type, valid values are ( String, Number, Array, Object, Date, Boolean )
+   * subtype - A subtype for the field &quot;ID&quot;, &quot;Float&quot;, &quot;JSON&quot;, &quot;IDRef&quot;, &quot;Tags&quot; 
+   * regex - A regex used to validate the fields
+   * regexMsg - A message which is displayed when the regex is not matched
+   * title - A title for the field, for UI purposes
+   * desc - A description of the field for UI purposes
+   * values - An array or object which contains possible values for this field 
+
+@example
+	Hop.defineModel(&quot;User&quot;,function(model){
+		model.field(&quot;name&quot;).string().regex(&#x2F;[A-Za-z]{3,10}&#x2F;,&quot;Usernames must be between 3 - 10 characters long and can only contain A-Z  and a-z&quot;);
+		model.field(&quot;id&quot;).integer().ID();
+		model.field(&quot;email&quot;).string().title(&quot;Email&quot;);
+	});
+
+	Hop.defineClass(&quot;User&quot;,new User(),function(api){
+		api.post(&quot;create&quot;,&quot;&#x2F;user&quot;).useModel(&quot;User&quot;);
+		api.get(&quot;list&quot;,&quot;&#x2F;user&quot;).inputModel(SearchModel).outputModel(UserModel);
+	});
+ 
+
+@for Hop.Method
+@chainable
+@method model
+**&#x2F;
+Hop.Method.prototype.useModel=function(inputModel,outputModel){
+	if(outputModel==undefined)
+		outputModel=inputModel;
+
+	if(inputModel){
+		if(!Hop.Models[inputModel]){
+			throw &quot;Invalid model specified:&quot;+inputModel;
+		}
+		this.input=new Hop.Type();
+		this.input.model(inputModel);
+		Hop.Model.applyToMethod(this,Hop.Models[inputModel]);
+	}
+	if(outputModel){
+		if(!Hop.Models[outputModel]){
+			throw &quot;Invalid model specified:&quot;+outputModel;
+		}
+		this.output=new Hop.Type();
+		this.output.model(outputModel);
+	}
+	return this;
+}
+
+&#x2F;**
+Use a model for the input 
+
+@param {string} model Name of the model that is used as an input
+@param {class} What the model is inputted as (Array is the only valid value)
+
+@for Hop.Method
+@method inputModel
+@chainable
+**&#x2F;
+Hop.Method.prototype.inputModel=function(inputModel,asWhat){
+	if(inputModel){
+		if(!Hop.Models[inputModel]){
+			throw &quot;Invalid model specified:&quot;+inputModel;
+		}
+		this.input=new Hop.Type();
+		Hop.Model.applyToMethod(this,Hop.Models[inputModel]);
+		this.input.model(inputModel);
+
+		if(asWhat==Array){
+			this.input.isArray();
+		}
+
+	}
+	
+	return this;
+}
+
+
+&#x2F;**
+Use a model for the output
+
+@param {string} model Name of the model that is returned
+@param {class} What the model is returned as (Array is the only valid value)
+
+@example
+	&#x2F;&#x2F;Returns an array of vehicles
+	api.get(&quot;list&quot;,&quot;&#x2F;vehicles&quot;).outputModel(&quot;Vehicle&quot;,Array);
+
+@for Hop.Method
+@method inputModel
+@chainable
+**&#x2F;
+Hop.Method.prototype.outputModel=function(outputModel,asWhat){
+	if(outputModel){
+		if(!Hop.Models[outputModel]){
+			throw &quot;Invalid model specified:&quot;+outputModel;
+		}
+		this.output=new Hop.Type();
+		this.output.model(outputModel);
+		
+		if(asWhat==Array){
+			this.output.isArray();
+		}
+	}
+	return this;
+}
+
+&#x2F;**
+ This call returns a boolean value
+
+@for Hop.Method
+@method returnsBoolean
+@chainable
+*&#x2F;
+Hop.Method.prototype.returnsBoolean=function(){
+	this.output=new Hop.Type();
+	this.output.boolean();
+	return this;
+}
+
+&#x2F;**
+ This call returns a string value
+
+@for Hop.Method
+@method returnsString
+@chainable
+*&#x2F;
+Hop.Method.prototype.returnsString=function(){
+	this.output=new Hop.Type();
+	this.output.string();
+	return this;
+}
+
+&#x2F;**
+ This call returns a file
+
+@for Hop.Method
+@method returnsString
+@chainable
+*&#x2F;
+Hop.Method.prototype.returnsFile =function(){
+	this.output=new Hop.Type();
+	this.output.file();
+	return this;
+}
+
+
+&#x2F;**
+ This call returns a number value
+
+@for Hop.Method
+@method returnsNumber
+@chainable
+*&#x2F;
+Hop.Method.prototype.returnsNumber=function(){
+	this.output=new Hop.Type();
+	this.output.number();
+	return this;
+}
+
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

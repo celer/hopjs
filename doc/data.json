@@ -1,0 +1,2035 @@
+{
+    "project": {},
+    "files": {
+        "lib/api.js": {
+            "name": "lib/api.js",
+            "modules": {
+                "Hop": 1
+            },
+            "classes": {
+                "Hop.StubResponse": 1,
+                "Hop.StubRequest": 1,
+                "Hop.Object": 1,
+                "Hop.Method": 1
+            },
+            "fors": {
+                "Hop": 1,
+                "Hop.Object": 1,
+                "Hop.Method": 1
+            },
+            "namespaces": {}
+        },
+        "lib/cache.js": {
+            "name": "lib/cache.js",
+            "modules": {
+                "Cache": 1
+            },
+            "classes": {},
+            "fors": {
+                "Hop.Method": 1
+            },
+            "namespaces": {}
+        },
+        "lib/codegen.js": {
+            "name": "lib/codegen.js",
+            "modules": {
+                "CodeGenerator": 1
+            },
+            "classes": {
+                "Hop.CodeGenerator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/event.js": {
+            "name": "lib/event.js",
+            "modules": {
+                "Event": 1
+            },
+            "classes": {},
+            "fors": {
+                "Hop.Method": 1
+            },
+            "namespaces": {}
+        },
+        "lib/express.js": {
+            "name": "lib/express.js",
+            "modules": {},
+            "classes": {},
+            "fors": {
+                "Hop": 1
+            },
+            "namespaces": {}
+        },
+        "lib/job.js": {
+            "name": "lib/job.js",
+            "modules": {
+                "Job": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/model.js": {
+            "name": "lib/model.js",
+            "modules": {},
+            "classes": {},
+            "fors": {
+                "Hop.Method": 1
+            },
+            "namespaces": {}
+        },
+        "lib/test.js": {
+            "name": "lib/test.js",
+            "modules": {
+                "Test": 1
+            },
+            "classes": {
+                "Hop.TestUtils": 1,
+                "Hop.TestTask": 1,
+                "Hop.TestCase": 1
+            },
+            "fors": {
+                "Hop": 1
+            },
+            "namespaces": {}
+        },
+        "lib/user.js": {
+            "name": "lib/user.js",
+            "modules": {
+                "User": 1
+            },
+            "classes": {
+                "Hop.User": 1
+            },
+            "fors": {
+                "Hop.Method": 1
+            },
+            "namespaces": {
+                "Hop": 1
+            }
+        }
+    },
+    "modules": {
+        "Hop": {
+            "name": "Hop",
+            "submodules": {
+                "Cache": 1,
+                "CodeGenerator": 1,
+                "Event": 1,
+                "Job": 1,
+                "Test": 1,
+                "User": 1
+            },
+            "classes": {
+                "Hop": 1,
+                "Hop.StubResponse": 1,
+                "Hop.StubRequest": 1,
+                "Hop.Object": 1,
+                "Hop.Method": 1,
+                "Hop.CodeGenerator": 1,
+                "Hop.TestUtils": 1,
+                "Hop.TestTask": 1,
+                "Hop.TestCase": 1,
+                "Hop.User": 1
+            },
+            "fors": {
+                "Hop": 1,
+                "Hop.Object": 1,
+                "Hop.Method": 1
+            },
+            "namespaces": {
+                "Hop": 1
+            },
+            "tag": "module",
+            "file": "lib/user.js",
+            "line": 14,
+            "description": "Hop Core module\n\nThis is the primary impelementation behind Hop"
+        },
+        "Cache": {
+            "name": "Cache",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "Hop",
+            "namespace": "",
+            "file": "lib/cache.js",
+            "line": 1,
+            "description": "Implements server-side and client side caching"
+        },
+        "CodeGenerator": {
+            "name": "CodeGenerator",
+            "submodules": {},
+            "classes": {
+                "Hop.CodeGenerator": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "Hop",
+            "namespace": "",
+            "file": "lib/codegen.js",
+            "line": 51,
+            "description": "Provides generator functionality for generating client stubs for other languauges\n\nHop can utilize its knowledge of your APIs to generate client side stubs for various languages. This module provides the core functionality for generators in such a way that\na new generator can be built with relative ease. \n\n * Implemeneted generators can be found under /gen in the Hop root directory\n\n\n## To use a generator\n\nHop tries to make it easy to generate client side code, to do so we use a command line utilility 'hopjs-gen'\n\nTo generate client side stubs for android for a specific website:\n\n\thopjs-gen --url http://localhost:3000/ android --outputDir output/ --package com.foo\n\nYou might first want to make sure HopJS is installed locally\n\n\tnpm install -g hopjs\n\n\n\n## Creating a new generator\n 1. Create a new directory under /gen - the directory will be the name of your generator\n 2. Create a generator.json (see the android/generator.json for an example)\n 3. Define some number of templates\n\n#### Generators work by:\n * Asking for any required command line options as defiend in generator.json:demand and generator.json:optional\n * Fetching an API definition from URL/_hopjs/api.json\n * Loading any required utility functions as defined in generator.json:required\n * Determining the type of gernerator as specified by generator.json:generates\n\t * If the generator type is 'file' then file pointed to by generator.json:template will be evaluated with { Objects, Models (and options passed in via the commandline ) }\n\t * If the generator type is 'dir' then dir pointed to by generator.json:templateDir will be evaluated \n\t\t\t* Files which have the basename _object will be evaluted one for each defined object with { object (and options passed in via the commandline ) }\n\t\t\t* Files which have the basename _model will be evaluted one for each defined model with { model (and options passed in via the commandline ) }\n\n*generator.json:translatePath can be used for determining how templates get translated into the resulting output directory*"
+        },
+        "Event": {
+            "name": "Event",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "Hop",
+            "namespace": "",
+            "file": "lib/event.js",
+            "line": 1
+        },
+        "Job": {
+            "name": "Job",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "Hop",
+            "namespace": "",
+            "file": "lib/job.js",
+            "line": 1,
+            "description": "Provides generic job functionality",
+            "beta": 1
+        },
+        "Test": {
+            "name": "Test",
+            "submodules": {},
+            "classes": {
+                "Hop.TestUtils": 1,
+                "Hop.TestTask": 1,
+                "Hop.TestCase": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "Hop",
+            "namespace": "",
+            "file": "lib/test.js",
+            "line": 623,
+            "description": "Testing module"
+        },
+        "User": {
+            "name": "User",
+            "submodules": {},
+            "classes": {
+                "Hop.User": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {
+                "Hop": 1
+            },
+            "module": "Hop",
+            "namespace": "",
+            "file": "lib/user.js",
+            "line": 14,
+            "description": "Provides utility functions and DSL implemenations for Methods and Objects.\n\nThis class will look at request.session.user as a base implementation to support the \nHop.User.* functions. These functions are expected to be overrriden if needed."
+        }
+    },
+    "classes": {
+        "Hop": {
+            "name": "Hop",
+            "shortname": "Hop",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Hop",
+            "namespace": ""
+        },
+        "Hop.StubResponse": {
+            "name": "Hop.StubResponse",
+            "shortname": "Hop.StubResponse",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Hop",
+            "namespace": "",
+            "file": "lib/api.js",
+            "line": 82,
+            "description": "Utility class for providing mock response objects"
+        },
+        "Hop.StubRequest": {
+            "name": "Hop.StubRequest",
+            "shortname": "Hop.StubRequest",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Hop",
+            "namespace": "",
+            "file": "lib/api.js",
+            "line": 100,
+            "description": "Utility class for providing mock request objects"
+        },
+        "Hop.Object": {
+            "name": "Hop.Object",
+            "shortname": "Hop.Object",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Hop",
+            "namespace": "",
+            "file": "lib/api.js",
+            "line": 329,
+            "description": "Defines an object\n\nThis object is created by .defineClass"
+        },
+        "Hop.Method": {
+            "name": "Hop.Method",
+            "shortname": "Hop.Method",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Hop",
+            "namespace": "",
+            "file": "lib/api.js",
+            "line": 584,
+            "description": "Class used to define methods",
+            "is_constructor": 1
+        },
+        "Hop.CodeGenerator": {
+            "name": "Hop.CodeGenerator",
+            "shortname": "Hop.CodeGenerator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Hop",
+            "submodule": "CodeGenerator",
+            "namespace": "",
+            "file": "lib/codegen.js",
+            "line": 51
+        },
+        "Hop.TestUtils": {
+            "name": "Hop.TestUtils",
+            "shortname": "Hop.TestUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Hop",
+            "submodule": "Test",
+            "namespace": "",
+            "file": "lib/test.js",
+            "line": 12,
+            "description": "Holds testing utility functions\n\n*All of the functions in this class must be usable with (function).toString() for embedding*"
+        },
+        "Hop.TestTask": {
+            "name": "Hop.TestTask",
+            "shortname": "Hop.TestTask",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Hop",
+            "submodule": "Test",
+            "namespace": "",
+            "file": "lib/test.js",
+            "line": 353,
+            "description": "Used to impelement the .do interface for defineTest\n \nso .do(\"MyClass.myFunc\") is implemented by this class",
+            "params": [
+                {
+                    "name": "funcName!~YUIDOC_LINE~!",
+                    "description": "The name of the function this test should call",
+                    "type": "String"
+                }
+            ],
+            "is_constructor": 1
+        },
+        "Hop.TestCase": {
+            "name": "Hop.TestCase",
+            "shortname": "Hop.TestCase",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Hop",
+            "submodule": "Test",
+            "namespace": "",
+            "file": "lib/test.js",
+            "line": 623,
+            "description": "TestCase Class\n\nThis is the underlying class which is used in defineTestCase\n\n*To construct a new test case use defineTestCase instead*\n*The name of the case must alway be the name of a method, but may be followed by a description*",
+            "example": [
+                "\n\tHop.defineTestCase(\"Object.Method\",function()...);\n\tHop.defineTestCase(\"Object.Method: Do a specific test\",function()...);"
+            ],
+            "params": [
+                {
+                    "name": "name!~YUIDOC_LINE~!",
+                    "description": "The name of the test case, this must always start with the name of a defined method, but may also include a description seperated by a ':'",
+                    "type": "String"
+                },
+                {
+                    "name": "onTest!~YUIDOC_LINE~!",
+                    "description": "The function defining the test case",
+                    "type": "Function"
+                }
+            ],
+            "is_constructor": 1
+        },
+        "Hop.User": {
+            "name": "Hop.User",
+            "shortname": "Hop.User",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Hop",
+            "submodule": "User",
+            "namespace": "Hop",
+            "file": "lib/user.js",
+            "line": 14,
+            "description": "Object for Hop.User"
+        }
+    },
+    "classitems": [
+        {
+            "file": "lib/api.js",
+            "line": 63,
+            "description": "Calculate a checksum for the Hop \n\nThis is used to detect changes in the version of the Hop",
+            "itemtype": "method",
+            "name": "checksum",
+            "static": 1,
+            "class": "Hop",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 185,
+            "description": "Define a new class \n\n* Use #classname to have the class name substituted into the URL",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "the name of the class",
+                    "type": "String"
+                },
+                {
+                    "name": "instance",
+                    "description": "an instance of the object",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "onDefine",
+                    "description": "the lambda used to define the interface",
+                    "type": "Function"
+                }
+            ],
+            "example": [
+                "\n\tHop.defineClass(\"Email\",new Email(),function(api){\n\t\t//define the class \n\t});"
+            ],
+            "itemtype": "method",
+            "name": "defineClass",
+            "static": 1,
+            "class": "Hop",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 211,
+            "description": "Define a new interface\n\n* Use #classname to have the class name substituted into the URL",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "the name of the interface",
+                    "type": "String"
+                },
+                {
+                    "name": "onDefine",
+                    "description": "the lambda used to define the interface",
+                    "type": "Function"
+                }
+            ],
+            "example": [
+                "\n\tHop.defineInterface(\"Notification\",function(api){\n\t\tapi.post(\"send\",\"#classname/send\").usage(\"Sends a message\").demand(\"msg\").demand(\"subject\").demand(\"to\");\n\t}"
+            ],
+            "itemtype": "method",
+            "name": "defineInterface",
+            "static": 1,
+            "class": "Hop",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 288,
+            "description": "Add a call back which will be called when a version of the API must be built from JSON",
+            "params": [
+                {
+                    "name": "onJSON",
+                    "description": "Callback to be called when a json version of Hop is requested",
+                    "type": "Function"
+                },
+                {
+                    "name": "The",
+                    "description": "stub object which is being populated for conversion to JSON",
+                    "type": "Object"
+                }
+            ],
+            "itemtype": "method",
+            "name": "addToJSONHandler",
+            "static": 1,
+            "class": "Hop",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 305,
+            "description": "Add a call back which will be called when a JSON version of the API is requested",
+            "params": [
+                {
+                    "name": "onJSON",
+                    "description": "Callback to be called when a json version of Hop is requested",
+                    "type": "Function"
+                },
+                {
+                    "name": "The",
+                    "description": "stub object which is being populated for conversion to JSON",
+                    "type": "Object"
+                }
+            ],
+            "itemtype": "method",
+            "name": "addToJSONHandler",
+            "static": 1,
+            "class": "Hop",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 343,
+            "description": "Wrap an object so that it may be called localy with all of the functionality that Hop normally provides\n\nThis function will create a wrapped version of a defined object with all of the functionality that Hop would normally provide.",
+            "example": [
+                "\n\tHop.defineClass(\"UserService\",function(api){\n\t\tapi.get(\"load\",\"/user/:userID\").demand(\"userID\").cacheId(\"/user/:userID\");\n\t});\n\n\tvar userService = Hop.Object.wrap(\"UserService\");\n\n\t//This call will now be subject to all of the normal constraints and functionality provided by Hop\n\tuserService.load({ userID:5 },function(err,result){\n\n\t},request);"
+            ],
+            "params": [
+                {
+                    "name": "objectName!~YUIDOC_LINE~!",
+                    "description": "Then name of the object to wrap",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "\n\tAn object with implementations of all the functions defined by the object. \n\tThe returned functions will have the calling signature (input,onComplete,request)",
+                "type": "Object"
+            },
+            "itemtype": "method",
+            "name": "Hop.Object.wrap",
+            "class": "Hop.Object",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 423,
+            "description": "Have this object extend from an interface",
+            "example": [
+                "\n\tHop.defineInterface(\"Notification\",function(api){\n\t\tapi.post(\"send\",\"#classname/send\").usage(\"Sends a message\").demand(\"msg\").demand(\"subject\").demand(\"to\");\n\t}\n\tHop.defineClass(\"Email\",function(api){\n\t\t//This will essentially evaluate the interface defined above against thsi class adding the send function\n\t\tapi.extend(\"Notification\");\n\t});"
+            ],
+            "itemtype": "method",
+            "name": "extend",
+            "class": "Hop.Object",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 448,
+            "description": "Define a HTTP get call on this method",
+            "params": [
+                {
+                    "name": "method!~YUIDOC_LINE~!",
+                    "description": "The name of the method on the associated object",
+                    "type": "String"
+                },
+                {
+                    "name": "path!~YUIDOC_LINE~!",
+                    "description": "The HTTP path that this call can be found on. Variables can be specified as part of the path utilizing ':'",
+                    "type": "String"
+                }
+            ],
+            "example": [
+                "\n\tHop.defineClass(\"UserService\",function(api){\n\t\tapi.get(\"load\",\"/user/:userID\");\n\t\t//..\n\t});"
+            ],
+            "itemtype": "method",
+            "name": "get",
+            "chainable": 1,
+            "class": "Hop.Object",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 471,
+            "description": "Define a HTTP post call on this method",
+            "params": [
+                {
+                    "name": "method!~YUIDOC_LINE~!",
+                    "description": "The name of the method on the associated object",
+                    "type": "String"
+                },
+                {
+                    "name": "path!~YUIDOC_LINE~!",
+                    "description": "The HTTP path that this call can be found on. Variables can be specified as part of the path utilizing ':'",
+                    "type": "String"
+                }
+            ],
+            "example": [
+                "\n\tHop.defineClass(\"UserService\",function(api){\n\t\tapi.post(\"update\",\"/user/:userID\");\n\t\t//..\n\t});"
+            ],
+            "itemtype": "method",
+            "name": "post",
+            "chainable": 1,
+            "class": "Hop.Object",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 494,
+            "description": "Define a HTTP del call on this method",
+            "params": [
+                {
+                    "name": "method!~YUIDOC_LINE~!",
+                    "description": "The name of the method on the associated object",
+                    "type": "String"
+                },
+                {
+                    "name": "path!~YUIDOC_LINE~!",
+                    "description": "The HTTP path that this call can be found on. Variables can be specified as part of the path utilizing ':'",
+                    "type": "String"
+                }
+            ],
+            "example": [
+                "\n\tHop.defineClass(\"UserService\",function(api){\n\t\tapi.del(\"delete\",\"/user/:userID\");\n\t\t//..\n\t});"
+            ],
+            "itemtype": "method",
+            "name": "del",
+            "chainable": 1,
+            "class": "Hop.Object",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 518,
+            "description": "Define a HTTP put call on this method",
+            "params": [
+                {
+                    "name": "method!~YUIDOC_LINE~!",
+                    "description": "The name of the method on the associated object",
+                    "type": "String"
+                },
+                {
+                    "name": "path!~YUIDOC_LINE~!",
+                    "description": "The HTTP path that this call can be found on. Variables can be specified as part of the path utilizing ':'",
+                    "type": "String"
+                }
+            ],
+            "example": [
+                "\n\tHop.defineClass(\"UserService\",function(api){\n\t\tapi.put(\"create\",\"/user/\");\n\t\t//..\n\t});"
+            ],
+            "itemtype": "method",
+            "name": "put",
+            "chainable": 1,
+            "class": "Hop.Object",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 541,
+            "description": "Define the usage for this class",
+            "example": [
+                "\n\tHop.defineClass(\"UserService\",function(api){\n\t\tapi.usage(\"Manages Users\");\n\t\t//..\n\t});"
+            ],
+            "itemtype": "method",
+            "name": "usage",
+            "chainable": 1,
+            "class": "Hop.Object",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 559,
+            "description": "Find an object by name",
+            "return": {
+                "description": "The name of the method",
+                "type": "String"
+            },
+            "example": [
+                "\n\tHop.defineClass(\"UserService\",function(api){\n\t\tapi.get(\"load\",\"/user/:userID\")\n\n\t});\n\tvar method = Hop.Method.findMethod(\"UserService.load\");\n\tHop.log(method.getMethod()); //returns UserService.load"
+            ],
+            "itemtype": "method",
+            "name": "findObject",
+            "static": 1,
+            "class": "Hop.Object",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 616,
+            "description": "Find a method by name",
+            "return": {
+                "description": "The name of the method",
+                "type": "String"
+            },
+            "example": [
+                "\n\tHop.defineClass(\"UserService\",function(api){\n\t\tapi.get(\"load\",\"/user/:userID\")\n\n\t});\n\tvar method = Hop.Method.findMethod(\"UserService.load\");\n\tHop.log(method.getMethod()); //returns UserService.load"
+            ],
+            "itemtype": "method",
+            "name": "findMethod",
+            "static": 1,
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 641,
+            "description": "Get the name of the method\n\nThis will get the name of the method",
+            "return": {
+                "description": "The name of the method",
+                "type": "String"
+            },
+            "example": [
+                "\n\tHop.defineClass(\"UserService\",function(api){\n\t\tapi.get(\"load\",\"/user/:userID\")\n\n\t});\n\tvar method = Hop.Method.findMethod(\"UserService.load\");\n\tHop.log(method.getMethod()); //returns UserService.load"
+            ],
+            "itemtype": "method",
+            "name": "getMethod",
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 667,
+            "description": "Get the full url for the method\n\nThis will get the full path for the url for the method.",
+            "return": {
+                "description": "The URL for the method",
+                "type": "String"
+            },
+            "itemtype": "method",
+            "name": "getPath",
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 686,
+            "description": "Specify the default values for this call\n\nThese values will be copied into the input if no existing value is found.",
+            "params": [
+                {
+                    "name": "defaults",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "itemtype": "method",
+            "name": "defaultValues",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 699,
+            "description": "Specify a number of optionals for  for a call",
+            "example": [
+                "\n\tapi.post(\"create\",\"/user/profile/\").optionals(\"email\",\"name\",\"password\");"
+            ],
+            "params": [
+                {
+                    "name": "name",
+                    "description": "of parameter (+)",
+                    "type": "String"
+                }
+            ],
+            "itemtype": "method",
+            "name": "optionals",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 717,
+            "description": "Specify a number of demands for  for a call",
+            "example": [
+                "\n\tapi.post(\"create\",\"/user/profile/\").demands(\"email\",\"name\",\"password\");"
+            ],
+            "params": [
+                {
+                    "name": "name",
+                    "description": "of parameter (+)",
+                    "type": "String"
+                }
+            ],
+            "itemtype": "method",
+            "name": "demands",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 735,
+            "description": "Demand a parameter for a call",
+            "example": [
+                "\n\tapi.post(\"create\",\"/user/profile/\").demand(\"email\",\"Email address\");"
+            ],
+            "params": [
+                {
+                    "name": "name",
+                    "description": "of parameter",
+                    "type": "String"
+                },
+                {
+                    "name": "desc",
+                    "description": "description of parameter",
+                    "type": "String"
+                }
+            ],
+            "itemtype": "method",
+            "name": "demand",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 753,
+            "description": "Describe this method",
+            "params": [
+                {
+                    "name": "usage!~YUIDOC_LINE~!",
+                    "description": "A string describing this function for documentation purposes",
+                    "type": "String"
+                }
+            ],
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "usage",
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 767,
+            "description": "Note that this method can only be called using https",
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "secure",
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 783,
+            "description": "Include the express CSRF token in the response headers for this method\n\nThe CSRF token is utilized to prevent cross site request forgery attacks, and is a middleware component\nfor express. \n\nSee here for information: http://www.senchalabs.org/connect/middleware-csrf.html\n\nBy default HopJS will attempt to utilize the CSRF functionality in express if it is enabled, but \nsome clients require a means to access the CSRF token, hence this function will will send the csrf token\nin the headers as 'x-crsf-token'\n\nThe primary usage for this function is with secure login functions",
+            "example": [
+                "\n\tHop.defineClass(\"UserService\",UserService,function(api){\n\t\tapi.post(\"login\",\"/login\").demands(\"username\",\"password\").sendCSRFToken();\n\t});"
+            ],
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "sendCSRFToken",
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 817,
+            "description": "Optional parameter for a call",
+            "example": [
+                "\n\tapi.post(\"create\",\"/user/profile/\").optional(\"phoneNumber\",\"Phone Number\");"
+            ],
+            "params": [
+                {
+                    "name": "name",
+                    "description": "of parameter",
+                    "type": "String"
+                },
+                {
+                    "name": "desc",
+                    "description": "description of parameter",
+                    "type": "String"
+                }
+            ],
+            "itemtype": "method",
+            "name": "optional",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 835,
+            "description": "Indicate this function performs longPolling",
+            "example": [
+                "\n\tapi.get(\"status\",\"/server/:serverID/status\").longPoll();"
+            ],
+            "itemtype": "method",
+            "name": "longPoll",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 851,
+            "description": "Indicate this function should avoid caching",
+            "example": [
+                "\n\tapi.post(\"create\",\"/user/profile/\").noCache();"
+            ],
+            "itemtype": "method",
+            "name": "noCache",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 890,
+            "description": "Demand a file be provided for this method.",
+            "example": [
+                "\n\tapi.post(\"create\",\"/user/profile/\").demandFile(\"avatar\",\"Users avatar image\");"
+            ],
+            "itemtype": "method",
+            "name": "demandFile",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 905,
+            "description": "Specify that a file may optionally be provided as an input to this call.",
+            "example": [
+                "\n\tapi.post(\"create\",\"/user/profile/\").optionalFile(\"avatar\",\"Users avatar image\");"
+            ],
+            "itemtype": "method",
+            "name": "optionalFile",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 920,
+            "description": "Add a function that will be called after this call is completed",
+            "params": [
+                {
+                    "name": "call",
+                    "description": "function to be called when this call is completed, which is passed the following parameters:",
+                    "type": "Function",
+                    "props": [
+                        {
+                            "name": "request",
+                            "description": "the ExpressJS / HTTP request object",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "input",
+                            "description": "the input parameters to the call",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "err",
+                            "description": "the resulting err from the call"
+                        },
+                        {
+                            "name": "result",
+                            "description": "- the result of the call",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "next",
+                            "description": "- to be called when the callback is completed, causing the next call back to be called",
+                            "type": "Function"
+                        }
+                    ]
+                },
+                {
+                    "name": "phase",
+                    "description": "the phase in which this function will be called (see below)\n\n*Phases*\n\n\t1. (Pre call phases)\n\t2. **CALL** \t\n\t3. first - called before any other phases\n\t4. data - data processing and conversion\n\t5. event - event emission\n\t6. cache - cache phase \n\t7. last - called last",
+                    "type": "String"
+                }
+            ],
+            "example": [
+                "\n\tapi.get(\"load\",\"/user/:userID\").addPostCall(function(req,input,err,result,next){\n\t\t//Let's caclulate the users age:\n\t\tif(result && result.birthdate){\n\t\t\tresult.age = User.calculateAge(result.birthdate);\n\t\t}\t\n\t\tnext();\n\t},\"data\");"
+            ],
+            "itemtype": "method",
+            "name": "addPostCall",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 974,
+            "description": "Add a function that will be called before this call is executed",
+            "params": [
+                {
+                    "name": "call",
+                    "description": "\n\t\tfunction to be called prior to when this call is executed , which is passed the following parameters:",
+                    "type": "Function",
+                    "props": [
+                        {
+                            "name": "request!~YUIDOC_LINE~!",
+                            "description": "the ExpressJS / HTTP request object",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "input!~YUIDOC_LINE~!",
+                            "description": "the input parameters to the call",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "onComplete",
+                            "description": "\n\t\tto be called if the function wants to short circuit and return a result",
+                            "type": "Function"
+                        },
+                        {
+                            "name": "next",
+                            "description": "\n\t\tto be called when the callback is completed, causing the next call back to be called",
+                            "type": "Function"
+                        }
+                    ]
+                },
+                {
+                    "name": "phase",
+                    "description": "the phase in which this function will be called (see below)\n\n*Phases*\n\n\t1. first - called first\n\t2. demand - verifies that the required parameters are in place \n\t3. conversion - will convert the input types to the expected types\n\t4. validation - input validation \n\t5. auth - authentication phase\n\t6. event - event emission\n\t7. cache - cache phase \n\t8. last - the last set of calls to be called prior to the function call\n\t9. **CALL** \t\n\t10. (post calls)",
+                    "type": "String"
+                }
+            ],
+            "example": [
+                "\n\tapi.get(\"load\",\"/user/:userID\").addPreCall(function(req,input,err,onComplete,next){\n\t\t//If we have a user allow this call to complete\n\t\tif(req && req.session && req.session.user){\n\t\t\tnext();\n\t\t//If not return an error \n\t\t} else {\n\t\t\treturn onComplete(\"Permission denied\");\n\t\t}\n\t},\"auth\");"
+            ],
+            "itemtype": "method",
+            "name": "addPreCall",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 1037,
+            "description": "Indicate that this method call has been depricated",
+            "itemtype": "method",
+            "name": "depricated",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 1049,
+            "description": "Calls the specified method \n\nThis function is provided so that all functionality around a specific call may be utilized.",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Name of the function to call",
+                    "type": "String"
+                },
+                {
+                    "name": "input",
+                    "description": "Input for the call",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "for completion",
+                    "type": "Function",
+                    "props": [
+                        {
+                            "name": "err",
+                            "description": "The error returned from the call"
+                        },
+                        {
+                            "name": "result",
+                            "description": "The result returned from the call"
+                        }
+                    ]
+                },
+                {
+                    "name": "request",
+                    "description": "ExpressJS/HTTP request object",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "example": [
+                "\n\tvar input = { username: \"cfox\", email:\"cfox@gmail.com\"}\n\tHop.call(\"UserService.create\",input,function(err,res){\n\t\tHop.log(err,res);\n\t});"
+            ],
+            "itemtype": "method",
+            "name": "call",
+            "static": 1,
+            "class": "Hop",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/cache.js",
+            "line": 10,
+            "description": "Specifies a cache Id to invalidate.\n\nThis function is used to delete an item from the cache, so for \nexample on an HTTP DEL command it may be desirable to delete\nan associated cache object.\n\nThe specified cache ID will attempt to substitude variables\nin the id with those from the input, or from the user.",
+            "params": [
+                {
+                    "name": "cacheId",
+                    "description": "the id for the cached item",
+                    "type": "String"
+                }
+            ],
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "cacheInvalidate",
+            "class": "Hop.Method",
+            "module": "Hop",
+            "submodule": "Cache"
+        },
+        {
+            "file": "lib/cache.js",
+            "line": 36,
+            "description": "Specifies a cache Id to use for storing the result of this call.\n\nThis funciton is used to specify a cache id for the result\ncausing the result to be associated with the id. \n\nThe specified cache ID will attempt to substitude variables\nin the id with those from the input, or from the user.",
+            "params": [
+                {
+                    "name": "cacheId",
+                    "description": "the id for the cached item",
+                    "type": "String"
+                },
+                {
+                    "name": "duration",
+                    "description": "that the number of seconds result will be cached for",
+                    "type": "Number"
+                },
+                {
+                    "name": "attempt",
+                    "description": "to force the client side to cache the result for the specified duration, this will essentially mean the client side will not request the item again until expiration",
+                    "type": "Force"
+                }
+            ],
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "cacheId",
+            "class": "Hop.Method",
+            "module": "Hop",
+            "submodule": "Cache"
+        },
+        {
+            "file": "lib/cache.js",
+            "line": 67,
+            "description": "Specifies a cache lambda for this call.\n\nThis funciton is used to specify a cache lambda\nwhich will determine how the result is cached.",
+            "params": [
+                {
+                    "name": "cacheFunc",
+                    "description": "",
+                    "type": "Function",
+                    "props": [
+                        {
+                            "name": "when",
+                            "description": "Used to indicate when this cache function was evaluated, valid values are \"before\" and \"after\"",
+                            "type": "Function"
+                        },
+                        {
+                            "name": "cache",
+                            "description": "The cache object, which is used to return an action",
+                            "type": "Function",
+                            "props": [
+                                {
+                                    "name": "id",
+                                    "description": "return the result of this function to specify the result should be cached",
+                                    "type": "Function"
+                                },
+                                {
+                                    "name": "id.id",
+                                    "description": "The cache id",
+                                    "type": "String"
+                                },
+                                {
+                                    "name": "id.duration",
+                                    "description": "The duration in seconds to cache the result for",
+                                    "type": "Number"
+                                },
+                                {
+                                    "name": "invalidate",
+                                    "description": "return the result of this function to specify the result should be invalidated",
+                                    "type": "Function"
+                                },
+                                {
+                                    "name": "invalidate.id",
+                                    "description": "The cache id",
+                                    "type": "String"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "req",
+                            "description": "the Express/HTTP request object",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "input",
+                            "description": "the input parameters for the call",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "error",
+                            "description": "the error as a result of calling this function (only valid after the call)",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "result",
+                            "description": "the result of this function (only valid after the call)",
+                            "type": "Object"
+                        }
+                    ]
+                }
+            ],
+            "example": [
+                "\n\tHop.defineClass(\"Comment\",new Comment(),function(api){\n\t\t//This will cause the list to always attempt to hit the cache\n\t\tapi.get(\"list\",\"/comment\").cacheId(\"/comment/list/:start/:size\").demand(\"start\").demand(\"size\").defaults({start:0, size:25});\n\t\tapi.del(\"delete\",\"/comment/:commentId\").cacheInvalidate(\"/comment/:commentId\").demand(\"commentId\");\n\t\tapi.get(\"load\",\"/comment/:commentId\").cache(function(when,cache,req,input,err,result){\n\t\t\tif(Hop.hasUser(req)){\n\t\t\t\tvar userId = Hop.User.id(req);\n\t\t\t\t//If we have a user, and that user is the one who posted the comment don't show a cached copy\n\t\t\t\tif(userId == input.userId){\n\t\t\t\t\treturn false;\n\t\t\t\t}\n\t\t\t} else return cache.id(\"/comment/:commentId\",60*5);\n\t\t}).demand(\"commentId\");\n\t\tapi.post(\"update\",\"/comment/:commentId\").cacheInvalidate(\"/comment/:commentId\").demand(\"commentId\");\n\t});"
+            ],
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "cache",
+            "class": "Hop.Method",
+            "module": "Hop",
+            "submodule": "Cache"
+        },
+        {
+            "file": "lib/codegen.js",
+            "line": 60,
+            "description": "Lists the various types of generators that exist",
+            "itemtype": "method",
+            "name": "Hop.CodeGenerator.list",
+            "static": 1,
+            "class": "Hop.CodeGenerator",
+            "module": "Hop",
+            "submodule": "CodeGenerator"
+        },
+        {
+            "file": "lib/codegen.js",
+            "line": 72,
+            "description": "Describe the current generator, aka get the generator.json",
+            "itemtype": "method",
+            "name": "Hop.CodeGenerator.describe",
+            "static": 1,
+            "class": "Hop.CodeGenerator",
+            "module": "Hop",
+            "submodule": "CodeGenerator"
+        },
+        {
+            "file": "lib/codegen.js",
+            "line": 141,
+            "description": "For generators that use a directory structure this will compute the output paths\n\n* The translatePath property in generator.json can be used to override this function",
+            "itemtype": "method",
+            "name": "Hop.CodeGenerator.toOutputFile",
+            "static": 1,
+            "class": "Hop.CodeGenerator",
+            "module": "Hop",
+            "submodule": "CodeGenerator"
+        },
+        {
+            "file": "lib/codegen.js",
+            "line": 171,
+            "description": "This will generate the files utilized for unit test for this generator. \n\n* The property 'testTemplate' in generator.json will be used as the input file for unit tests.\n* The properties Objects, TestCases, and Models will be passed into the context of the script\t\t\n* The property 'output' in options will determine what the output file is called.",
+            "itemtype": "method",
+            "name": "Hop.CodeGenerator.generateTest",
+            "static": 1,
+            "class": "Hop.CodeGenerator",
+            "module": "Hop",
+            "submodule": "CodeGenerator"
+        },
+        {
+            "file": "lib/codegen.js",
+            "line": 212,
+            "description": "This will generate the files utilized for the stub api.",
+            "itemtype": "method",
+            "name": "Hop.CodeGenerator.generate",
+            "static": 1,
+            "class": "Hop.CodeGenerator",
+            "module": "Hop",
+            "submodule": "CodeGenerator"
+        },
+        {
+            "file": "lib/event.js",
+            "line": 346,
+            "description": "Emit an event prior to calling this method\n\n* The channel will have variables provided by the input parameters\n\tsubstituted into it.",
+            "params": [
+                {
+                    "name": "channel",
+                    "description": "The channel to emit the event on",
+                    "type": "String"
+                },
+                {
+                    "name": "onEmit",
+                    "description": "The function which determines what is emitted",
+                    "type": "Function",
+                    "props": [
+                        {
+                            "name": "req",
+                            "description": "The Exbeforess/HTTP request object",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "input",
+                            "description": "The input object",
+                            "type": "Object"
+                        }
+                    ]
+                }
+            ],
+            "example": [
+                "\n\tapi.post(\"send\",\"/message/send\").emitBefore(\"/user/:to\",function(req,input){\n\t\t//Emit an event to the specified channel\n\t\tthis.emit({msg: input.msg, from: input.from});\n\t}).demand(\"msg\").demand(\"from\").demand(\"to\");"
+            ],
+            "itemtype": "method",
+            "name": "emitBefore",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop",
+            "submodule": "Event"
+        },
+        {
+            "file": "lib/event.js",
+            "line": 394,
+            "description": "Emit an event after calling this method\n\n* The channel will have variables provided by the input parameters\n\tsubstituted into it.",
+            "params": [
+                {
+                    "name": "channel",
+                    "description": "The channel to emit the event on",
+                    "type": "String"
+                },
+                {
+                    "name": "onEmit",
+                    "description": "The function which determines what is emitted",
+                    "type": "Function",
+                    "props": [
+                        {
+                            "name": "req",
+                            "description": "The Express/HTTP request object",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "input",
+                            "description": "The input object",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "err",
+                            "description": "The error resulting from calling the method",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "result",
+                            "description": "The result of calling the method",
+                            "type": "Object"
+                        }
+                    ]
+                }
+            ],
+            "example": [
+                "\n\tapi.post(\"processFile\",\"/process/\").emitAfter(\"/user/:userId\",function(req,input,err,result){\n\t\t//Emit an event to the specified channel\n\t\tthis.emit({err: err, result:result});\n\t}).demand(\"userId\");"
+            ],
+            "itemtype": "method",
+            "name": "emitAfter",
+            "users": "Hop.Cache",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop",
+            "submodule": "Event"
+        },
+        {
+            "file": "lib/event.js",
+            "line": 444,
+            "description": "Alias to emitAFter",
+            "itemtype": "method",
+            "name": "emit",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop",
+            "submodule": "Event"
+        },
+        {
+            "file": "lib/express.js",
+            "line": 8,
+            "description": "Inserts the Hop calls into express",
+            "params": [
+                {
+                    "name": "basePath",
+                    "description": "\n\tthe path which the Hop will hang off of",
+                    "type": "String"
+                },
+                {
+                    "name": "app",
+                    "description": "\n\tthe express app",
+                    "type": "Object"
+                }
+            ],
+            "itemtype": "method",
+            "name": "apiHook",
+            "class": "Hop",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/express.js",
+            "line": 185,
+            "description": "Render a template using the cumbustion template engine",
+            "params": [
+                {
+                    "name": "filename",
+                    "description": "The filename of the template relative to the \"./static\" path",
+                    "type": "String"
+                },
+                {
+                    "name": "input",
+                    "description": "The inputs to the template",
+                    "type": "Object"
+                }
+            ],
+            "itemtype": "method",
+            "name": "renderTemplate",
+            "class": "Hop",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/model.js",
+            "line": 268,
+            "description": "Use a model for both input and output\n\nModels are used to provide meta data for both UI \nand api generation",
+            "params": [
+                {
+                    "name": "inputObject",
+                    "description": "Input model",
+                    "type": "Object"
+                },
+                {
+                    "name": "outputModel",
+                    "description": "Output model\n\n * Models require a field called _name which specifies the name of the model\n * Models can have the following fields on types: \n   * type - The class name of the type, valid values are ( String, Number, Array, Object, Date, Boolean )\n   * subtype - A subtype for the field \"ID\", \"Float\", \"JSON\", \"IDRef\", \"Tags\" \n   * regex - A regex used to validate the fields\n   * regexMsg - A message which is displayed when the regex is not matched\n   * title - A title for the field, for UI purposes\n   * desc - A description of the field for UI purposes\n   * values - An array or object which contains possible values for this field",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "example": [
+                "\n\tHop.defineModel(\"User\",function(model){\n\t\tmodel.field(\"name\").string().regex(/[A-Za-z]{3,10}/,\"Usernames must be between 3 - 10 characters long and can only contain A-Z  and a-z\");\n\t\tmodel.field(\"id\").integer().ID();\n\t\tmodel.field(\"email\").string().title(\"Email\");\n\t});\n\n\tHop.defineClass(\"User\",new User(),function(api){\n\t\tapi.post(\"create\",\"/user\").useModel(\"User\");\n\t\tapi.get(\"list\",\"/user\").inputModel(SearchModel).outputModel(UserModel);\n\t});"
+            ],
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "model",
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/model.js",
+            "line": 326,
+            "description": "Use a model for the input",
+            "params": [
+                {
+                    "name": "model",
+                    "description": "Name of the model that is used as an input",
+                    "type": "String"
+                },
+                {
+                    "name": "What",
+                    "description": "the model is inputted as (Array is the only valid value)",
+                    "type": "Class"
+                }
+            ],
+            "itemtype": "method",
+            "name": "inputModel",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/model.js",
+            "line": 355,
+            "description": "Use a model for the output",
+            "params": [
+                {
+                    "name": "model",
+                    "description": "Name of the model that is returned",
+                    "type": "String"
+                },
+                {
+                    "name": "What",
+                    "description": "the model is returned as (Array is the only valid value)",
+                    "type": "Class"
+                }
+            ],
+            "example": [
+                "\n\t//Returns an array of vehicles\n\tapi.get(\"list\",\"/vehicles\").outputModel(\"Vehicle\",Array);"
+            ],
+            "itemtype": "method",
+            "name": "inputModel",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/model.js",
+            "line": 384,
+            "description": "This call returns a boolean value",
+            "itemtype": "method",
+            "name": "returnsBoolean",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/model.js",
+            "line": 397,
+            "description": "This call returns a string value",
+            "itemtype": "method",
+            "name": "returnsString",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/model.js",
+            "line": 410,
+            "description": "This call returns a file",
+            "itemtype": "method",
+            "name": "returnsString",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/model.js",
+            "line": 424,
+            "description": "This call returns a number value",
+            "itemtype": "method",
+            "name": "returnsNumber",
+            "chainable": 1,
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 21,
+            "description": "Test to insure that all the input object properties are the same as the output object properties\n\n* The output object may have more properties then are in the input object\n* The output object must have all of the same properties, with the same value as the input object\n\n*This function is designed to be usable with (function).toString() for embedding*",
+            "params": [
+                {
+                    "name": "input!~YUIDOC_LINE~!",
+                    "description": "The input object",
+                    "type": "Object"
+                },
+                {
+                    "name": "output!~YUIDOC_LINE~!",
+                    "description": "The output object",
+                    "type": "Object"
+                }
+            ],
+            "itemtype": "method",
+            "name": "Hop.TestUtils.objectCovers",
+            "static": 1,
+            "class": "Hop.TestUtils",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 83,
+            "description": "Test to ensure that the output object has a specific property with a specific value\n\n*This function is designed to be usable with (function).toString() for embedding*",
+            "params": [
+                {
+                    "name": "output!~YUIDOC_LINE~!",
+                    "description": "The output object",
+                    "type": "Object"
+                },
+                {
+                    "name": "propertyName!~YUIDOC_LINE~!",
+                    "description": "The property to test (supports dotted notation)",
+                    "type": "String"
+                },
+                {
+                    "name": "propertyValue",
+                    "description": "The expected object value",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "bool"
+            },
+            "static": 1,
+            "itemtype": "method",
+            "name": "Hop.TestUtils.inputSameAsOutput",
+            "class": "Hop.TestUtils",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 129,
+            "description": "Test to ensure that the array contains the specified value\n\n*This function is designed to be usable with (function).toString() for embedding*",
+            "params": [
+                {
+                    "name": "array!~YUIDOC_LINE~!",
+                    "description": "The output array",
+                    "type": "Object"
+                },
+                {
+                    "name": "{Object",
+                    "description": "value\n\t\tThe expected object value"
+                }
+            ],
+            "return": {
+                "description": "bool"
+            },
+            "static": 1,
+            "itemtype": "method",
+            "name": "Hop.TestUtils.arrayContains",
+            "class": "Hop.TestUtils",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 162,
+            "description": "Loads a value for later usage as part of a test",
+            "static": 1,
+            "itemtype": "method",
+            "name": "Hop.TestUtils.loadValue",
+            "class": "Hop.TestUtils",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 177,
+            "description": "Clears all saved values, this is called at the completion of a test case",
+            "static": 1,
+            "itemtype": "method",
+            "name": "Hop.TestUtils.clearValues",
+            "class": "Hop.TestUtils",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 188,
+            "description": "Saves a value for later usage as part of a test",
+            "static": 1,
+            "itemtype": "method",
+            "name": "Hop.TestUtils.saveValue",
+            "class": "Hop.TestUtils",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 201,
+            "description": "Resolve a values within an array or object based upon saved values\n\nThis function will search for strings matching #{.+#} and replace\t\nthe object property or array value with the resolved value from a saved value. \n\nValues are resolved like so:",
+            "example": [
+                "\n\twith(savedValues){\n\t\treturn eval(inputString);\n\t}\t"
+            ],
+            "examples": "#{savedUser.name}\n\t#{savedUsers[1].name}\n\t#{undefined} // will return undefined",
+            "static": 1,
+            "itemtype": "method",
+            "name": "Hop.TestUtils.resolve",
+            "class": "Hop.TestUtils",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 266,
+            "description": "Return the value of the named property in the object\n\nThe property name may be in dotted form",
+            "params": [
+                {
+                    "name": "object",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "property",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "static": 1,
+            "itemtype": "method",
+            "name": "Hop.TestUtils.getProperty",
+            "class": "Hop.TestUtils",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 284,
+            "description": "Utility function to copy an object, primarly used by .with",
+            "static": 1,
+            "itemtype": "method",
+            "name": "Hop.TestUtils.extendTo",
+            "class": "Hop.TestUtils",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 309,
+            "description": "Define a test case for a specific method",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "\n\tthe name of the method to test, this must be the same as a defined API method, and may also contain a commnet appened after a :",
+                    "type": "String"
+                },
+                {
+                    "name": "!~YUIDOC_LINE~!",
+                    "description": "The lambda defining the test",
+                    "type": "Function"
+                }
+            ],
+            "example": [
+                "\n\tHop.defineTestCase(\"User.authenticate: Test Authentication\",function(test){\n\t\tvar validUser = { email:\"test@test.com\", username:\"TestUser\" };\n\t\ttest.do(\"User.create\").with(validUser).noError();\n\t\ttest.do(\"User.authenticate\").with(validUser).noError();\n\t\ttest.do(\"User.authenticate\").with({password:\"BOB\"},validUser).containsError(\"Permission denied\");\n\t});"
+            ],
+            "itemtype": "method",
+            "name": "defineTestCase",
+            "static": 1,
+            "class": "Hop",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 374,
+            "description": "Defines the input to be used for the API call\n\t\nThis may either be a JavaScript Object or a named value (as created by .saveOutputAs)",
+            "example": [
+                "\n\ttest.do(\"Object.method\").with({a:1, b:2});",
+                "\n\ttest.do(\"Object.method\").with(\"savedValue\");",
+                "\n\ttest.do(\"Object.method\").with(\"savedValue\",{a: 6} );"
+            ],
+            "params": [
+                {
+                    "name": "inputValue!~YUIDOC_LINE~!",
+                    "description": "The input value to use. Can be an object or string",
+                    "type": "Mixed"
+                },
+                {
+                    "name": "extend!~YUIDOC_LINE~!",
+                    "description": "The object to extend the input value with. Can be an object or string",
+                    "type": "Object"
+                }
+            ],
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "with",
+            "class": "Hop.TestTask",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 413,
+            "description": "Save the output into a name variable for usage later",
+            "params": [
+                {
+                    "name": "name!~YUIDOC_LINE~!",
+                    "description": "The name of the value to save",
+                    "type": "String"
+                }
+            ],
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "Hop.TestTask.prototype.saveOutputAs",
+            "class": "Hop.TestTask",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 429,
+            "description": "Require that the function does not return an error\n\n*This will not test the result in anyway, since having both a null error and null result is acceptable*",
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "noError",
+            "class": "Hop.TestTask",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 444,
+            "description": "Require that the specified property has been changed from what was in the input\n\n*This test will also insure that the error is null and that the result is not null*",
+            "params": [
+                {
+                    "name": "value!~YUIDOC_LINE~!",
+                    "description": "The name of the property in the output",
+                    "type": "String"
+                }
+            ],
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "outputPropertyChanged",
+            "class": "Hop.TestTask",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 462,
+            "description": "Require that the input object is contained within the output object\n\nThis will test to insure that the output object minially contains all the same parameters as the input object",
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "inputSameAsOutput",
+            "class": "Hop.TestTask",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 477,
+            "description": "Test to insure the output is null",
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "outputIsNull",
+            "class": "Hop.TestTask",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 490,
+            "description": "Test to insure the output is not null\n\n*This test will also insure that the error is null*",
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "outputNotNull",
+            "class": "Hop.TestTask",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 505,
+            "description": "Test to insure that the output contains a specific object\n\nThis test will insure that the output is a superset of the specified object",
+            "params": [
+                {
+                    "name": "value!~YUIDOC_LINE~!",
+                    "description": "The object to compare the output to",
+                    "type": "Object"
+                }
+            ],
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "outputContains",
+            "class": "Hop.TestTask",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 523,
+            "description": "Insure the error contains a specific string\n\n*This will also test to insure the output is null*",
+            "params": [
+                {
+                    "name": "value!~YUIDOC_LINE~!",
+                    "description": "The string to insure the error contains",
+                    "type": "String"
+                }
+            ],
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "errorContains",
+            "class": "Hop.TestTask",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 541,
+            "description": "Insure that the output has a specified property\n\nThis will test for existence of a specific property",
+            "params": [
+                {
+                    "name": "property!~YUIDOC_LINE~!",
+                    "description": "The name of the property",
+                    "type": "String"
+                }
+            ],
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "outputHasProperty",
+            "class": "Hop.TestTask",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 560,
+            "description": "Test the output to make sure it is the same as the specified object or saved object",
+            "example": [
+                "\n\tTest.do(\"User.save\").with(user).outputSameAs({ name:'foo', email:'bar@bar.com'});\n\tTest.do(\"User.save\").with(user).outputSameAs(\"#{savedUser}\");\n\tTest.do(\"User.save\").with(user).outputSameAs(\"#{savedUsers[1]}\");"
+            ],
+            "params": [
+                {
+                    "name": "savedValue!~YUIDOC_LINE~!",
+                    "description": "The name of the saved result",
+                    "type": "String"
+                }
+            ],
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "outputSameAs",
+            "class": "Hop.TestTask",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 581,
+            "description": "Test the output to make sure it an array with a specified length",
+            "params": [
+                {
+                    "name": "length!~YUIDOC_LINE~!",
+                    "description": "The length of the array",
+                    "type": "String"
+                }
+            ],
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "outputIsArrayWithLength",
+            "class": "Hop.TestTask",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 597,
+            "description": "Test the output to make sure it is an array",
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "outputIsArray",
+            "class": "Hop.TestTask",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 610,
+            "description": "Test the output array contains",
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "outputArrayContains",
+            "class": "Hop.TestTask",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/test.js",
+            "line": 652,
+            "description": "Create a special object to instruct Hop to use a file provide by a URL as a test input value",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "static": 1,
+            "itemtype": "method",
+            "name": "fileFromURL",
+            "class": "Hop.TestCase",
+            "module": "Hop",
+            "submodule": "Test"
+        },
+        {
+            "file": "lib/user.js",
+            "line": 23,
+            "description": "Returns the name of the user from the HTTP request.",
+            "itemtype": "method",
+            "name": "name",
+            "static": 1,
+            "return": {
+                "description": "name of user",
+                "type": "String"
+            },
+            "class": "Hop.User",
+            "module": "Hop",
+            "submodule": "User",
+            "namespace": "Hop"
+        },
+        {
+            "file": "lib/user.js",
+            "line": 34,
+            "description": "Returns the id of the user from the HTTP request.",
+            "itemtype": "method",
+            "name": "id",
+            "static": 1,
+            "return": {
+                "description": "name of user",
+                "type": "String"
+            },
+            "class": "Hop.User",
+            "module": "Hop",
+            "submodule": "User",
+            "namespace": "Hop"
+        },
+        {
+            "file": "lib/user.js",
+            "line": 45,
+            "description": "Tests to see if this user has a role regarding a specific target",
+            "itemtype": "method",
+            "name": "hasRole",
+            "static": 1,
+            "return": {
+                "description": "name of user",
+                "type": "String"
+            },
+            "class": "Hop.User",
+            "module": "Hop",
+            "submodule": "User",
+            "namespace": "Hop"
+        },
+        {
+            "file": "lib/user.js",
+            "line": 56,
+            "description": "Returns the id of the user from the HTTP request.",
+            "itemtype": "method",
+            "name": "exists",
+            "static": 1,
+            "return": {
+                "description": "name of user",
+                "type": "String"
+            },
+            "class": "Hop.User",
+            "module": "Hop",
+            "submodule": "User",
+            "namespace": "Hop"
+        },
+        {
+            "file": "lib/user.js",
+            "line": 67,
+            "description": "Indicates that a user is required to call this function.",
+            "example": [
+                "\n\tHop.defineClass(\"AccountService\",function(api){\n\t\t//This will cause this function to return \"Permission denied\" unless a user is found via Hop.User.exists();\n\t\tapi.get(\"/account/:accountID\").requireUser();\n\t});\t"
+            ],
+            "itemtype": "method",
+            "name": "requiresUser",
+            "class": "Hop.Method",
+            "module": "Hop",
+            "submodule": "User"
+        },
+        {
+            "file": "lib/user.js",
+            "line": 84,
+            "description": "Indicates that a user is required to call this function.",
+            "example": [
+                "\n\tHop.defineClass(\"UserService\",function(api){\n\t\t//This will cause this function to return \"Permission denied\" unless a user is found via Hop.User.hasRole();\n\t\tapi.get(\"view\",\"/admin/user/:userID\").requireRole(\"admin\");\n\t});\t"
+            ],
+            "itemtype": "method",
+            "name": "requireRole",
+            "class": "Hop.Method",
+            "module": "Hop",
+            "submodule": "User"
+        }
+    ]
+}
