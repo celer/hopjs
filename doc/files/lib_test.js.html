@@ -506,10 +506,8 @@ Hop.TestTask.prototype.getInputObject=function(){
 		test.do(&quot;Object.method&quot;).with(&quot;savedValue&quot;,{a: 6} );
 	
 
-	@param {Mixed} inputValue
-		The input value to use. Can be an object or string
-	@param {Object} extend
-		The object to extend the input value with. Can be an object or string
+	@param {Mixed} inputValue The input value to use. Can be an object or string
+	@param {Object} extend The object to extend the input value with. Can be an object or string
 	
 	@chainable
 	@method with
@@ -533,8 +531,7 @@ Hop.TestTask.prototype.with=function(obj,extend){
 &#x2F;**
 	Save the output into a name variable for usage later
 
-	@param {string} name
-		The name of the value to save
+	@param {string} name The name of the value to save
 
 	@chainable
 	@method Hop.TestTask.prototype.saveOutputAs
@@ -645,8 +642,7 @@ Hop.TestTask.prototype.outputContains=function(value){
 
 	*This will also test to insure the output is null*
 
-	@param {String} value
-		The string to insure the error contains
+	@param {String} value The string to insure the error contains
 
 	@chainable
 	@method errorContains
