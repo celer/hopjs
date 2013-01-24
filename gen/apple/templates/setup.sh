@@ -1,0 +1,2 @@
+gyp --depth=.
+pod install 

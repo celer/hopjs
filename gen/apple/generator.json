@@ -1,0 +1,9 @@
+{ 
+  "desc": "Generators a restful hook for Apple based devices (iOS & MacOSX)",
+  "generates":"dir",
+	"demand":[],
+	"optional":[],
+  "require":[ "apple.js" ],
+  "inputDir":"templates",
+  "translatePath":"Apple.translatePath"
+}
