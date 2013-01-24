@@ -1,6 +1,8 @@
 #!/usr/bin/env node
-
+Hop = require('../lib/api.js');
 require("../lib/codegen");
+
+
 var path=require('path');
 var fs = require('fs');
 

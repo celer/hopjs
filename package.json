@@ -14,10 +14,11 @@
     "Web",
     "Framework"
   ],
-	"scripts":{
-		"test":"./testexamples"
-	},
+  "scripts": {
+    "test": "./testexamples"
+  },
   "dependencies": {
+    "hopjs-remote": ">=0.0.10",
     "tracer": ">= 0.5.1",
     "mocha": ">=1.4.2",
     "should": ">=1.1.0",
