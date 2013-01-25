@@ -15,7 +15,7 @@
     "Framework"
   ],
   "scripts": {
-    "test": "./testexamples"
+    "test": "node testexamples"
   },
   "dependencies": {
     "hopjs-remote": ">=0.0.10",
