@@ -1,4 +1,4 @@
-Android API Generator for HopJS
+Apple API Generator for HopJS
 ===============================
 
-To get started using this api you will need to include Google's GSON jar
+This generator was written for Mac OSX 10.7

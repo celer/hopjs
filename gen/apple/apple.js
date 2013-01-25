@@ -1,7 +1,10 @@
 var path = require('path');
 var fs = require('fs');
+var util = require('hopjs-common');
 
 Apple={};
+
+Apple.webPathJoin=util.webpath.join;
 
 Apple.mkdirpSync=function(base,dir){
   var d = dir.split(path.sep);
@@ -22,6 +25,11 @@ Apple.mkdirpSync=function(base,dir){
 Apple.translatePath=function(genObj,options,inputItem,outputItem){
   var inFilename= path.basename(inputItem);
   var outDir = path.dirname(inputItem);
+
+
+	inFilename = inFilename.replace("_projectName",options.projectName);
+
+	outDir = outDir.replace("_projectName",options.projectName);
 
   Apple.mkdirpSync(options.outputDir,outDir);
 
