@@ -1,6 +1,6 @@
 {
   "name": "hopjs",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "A RESTful declarative API framework, with stub generators for Shell, and Android",
   "main": "index.js",
   "bin": {
@@ -18,7 +18,7 @@
     "test": "node testexamples"
   },
   "dependencies": {
-    "hopjs-remote": ">=0.0.10",
+    "hopjs-remote": ">=0.0.11",
     "tracer": ">= 0.5.1",
     "mocha": ">=1.4.2",
     "should": ">=1.1.0",
