@@ -103,8 +103,9 @@
     
     [self prepareValues:output withInput:_input asField:nil];
     
-   
-    NSURLRequest *request = [httpClient multipartFormRequestWithMethod: methodCall.method path: path parameters:nil constructingBodyWithBlock:
+    NSURLRequest *request=nil;
+    if([methodCall.method isEqualToString:@"POST"] ||[methodCall.method isEqualToString:@"PUT"] ){
+        request = [httpClient multipartFormRequestWithMethod: methodCall.method path: path parameters:nil constructingBodyWithBlock:
                              ^(id<AFMultipartFormData>formData){
                                  [output enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                                 
@@ -113,8 +114,11 @@
                                      [formData appendPartWithFormData:data name:key];
                                  
                                  }];
-                                 
                              }];
+    } else {
+        request = [httpClient requestWithMethod: methodCall.method path: path parameters:_input ];
+        
+    }
     
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc]initWithRequest:request ];
     

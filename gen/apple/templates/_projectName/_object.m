@@ -15,7 +15,7 @@
     
 <% for(var i in object.methods){ %>
 	<% var method = object.methods[i]; %>
-    <%=method.name%> = [[HopMethodCall alloc] init:@"<%=object.name%>.<%=method.name%>" usingA:@"<%=method.method%>" onPath:@"<%=method.fullPath%>" withParams: [self fromJSON: @<%=JSON.stringify(JSON.stringify(method.params))%> ]];
+    <%=method.name%> = [[HopMethodCall alloc] init:@"<%=object.name%>.<%=method.name%>" usingA:@"<%=method.method.toUpperCase()%>" onPath:@"<%=Apple.webPathJoin(api.basePath,method.path)%>" withParams: [self fromJSON: @<%=JSON.stringify(JSON.stringify(method.params))%> ]];
 
 <%}%>
     
