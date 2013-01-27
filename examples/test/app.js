@@ -73,6 +73,12 @@ UnitTestService.testPutOptionalsWithModel=UnitTestService.test;
 UnitTestService.testDeleteOptionalsWithModel=UnitTestService.test;
 UnitTestService.testPostOptionalsWithModel=UnitTestService.test;
 
+UnitTestService.testForm=function(input,onComplete){
+
+	console.log(input);
+
+	return onComplete(null,input);
+}
 
 
 Hop.defineModel("UnitTestService",function(model){
@@ -82,29 +88,32 @@ Hop.defineModel("UnitTestService",function(model){
 	model.field("modelArray").values(["red","blue","green"]).string();
 	model.field("modelObject").values({ R:"Red", B:"Blue", G:"Green" }).string();
 	model.field("modelString").regexp(/[A-Z]+/,"REXP").string();
+	model.field("modelStringArray").string().isArray().values(["A","B","C"]);
 });
 
 Hop.defineClass("UnitTestService",UnitTestService,function(api){
-	
-	api.post("testPost","/ts/").demands("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat").inputModel("UnitTestService");
-	api.get("testGet","/ts/").demands("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat").inputModel("UnitTestService");
-	api.put("testPut","/ts/").demands("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat").inputModel("UnitTestService");
+	api.post("testForm","/form/test").optionals("textValue","selectValue","multipleValue","checkbox1","radio1");
+	api.post("testPost","/ts/").demands("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat","modelStringArray").inputModel("UnitTestService");
+	api.get("testGet","/ts/").demands("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat","modelStringArray").inputModel("UnitTestService");
+	api.put("testPut","/ts/").demands("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat","modelStringArray").inputModel("UnitTestService");
 	api.del("testDelete","/ts/:id");
-	api.post("testPostOptionals","/ts/optionals").optionals("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat").inputModel("UnitTestService");
-	api.get("testGetOptionals","/ts/optionals").optionals("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat").inputModel("UnitTestService");
-	api.put("testPutOptionals","/ts/optionals").optionals("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat").inputModel("UnitTestService");
+	api.post("testPostOptionals","/ts/optionals").optionals("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat","modelStringArray").inputModel("UnitTestService");
+	api.get("testGetOptionals","/ts/optionals").optionals("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat","modelStringArray").inputModel("UnitTestService");
+	api.put("testPutOptionals","/ts/optionals").optionals("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat","modelStringArray").inputModel("UnitTestService");
 });
 
 function basicTest(funcName,test){
 	var d=new Date();
-	var testValue = {string:"string",  number:8, float:3.23, object: { a:1, b:"a", c:true, d:{ e:44} }, date: d, booleanTrue: true, booleanFalse:false, nullValue: null, modelMinMax: 6, modelArray:"red", modelObject:"R", modelString:"ADDFD", modelBool:true, modelFloat: 3.232 };
-	var expectedValue = {string:"string", number:"8", float:"3.23", object: { a:"1", b:"a", c:"true", d:{ e:"44"} }, date: d, booleanTrue: "true", booleanFalse:"false", nullValue: "", modelMinMax: 6, modelBool:true, modelFloat:3.232};
+	var testValue = {modelStringArray:["A","B"], string:"string",  number:8, float:3.23, object: { a:1, b:"a", c:true, d:{ e:44} }, date: d, booleanTrue: true, booleanFalse:false, nullValue: null, modelMinMax: 6, modelArray:"red", modelObject:"R", modelString:"ADDFD", modelBool:true, modelFloat: 3.232 };
+	var expectedValue = {modelStringArray:["A","B"], string:"string", number:"8", float:"3.23", object: { a:"1", b:"a", c:"true", d:{ e:"44"} }, date: d, booleanTrue: "true", booleanFalse:"false", nullValue: "", modelMinMax: 6, modelBool:true, modelFloat:3.232};
 	test.do(funcName).with({}).errorContains("Missing parameter:");
 	test.do(funcName).with(testValue).outputContains(expectedValue);
 	test.do(funcName).with(testValue,{modelMinMax: 2 }).errorContains("Value must be greater than 5");
 	test.do(funcName).with(testValue,{modelArray: 2 }).errorContains("Valid values are: red, blue, green");
 	test.do(funcName).with(testValue,{modelObject: 2 }).errorContains("Valid values are: R, B, G");
 	test.do(funcName).with(testValue,{modelString: 2 }).errorContains("REXP");
+	test.do(funcName).with(testValue,{modelStringArray: 2 }).errorContains("Invalid value");
+	test.do(funcName).with(testValue,{modelStringArray: ['D'] }).errorContains('Valid values are: A, B, C');
 	test.do(funcName+"Optionals").with({ }).noError();
 	test.do(funcName+"Optionals").with(testValue).outputContains(expectedValue);
 }
@@ -124,6 +133,7 @@ Hop.defineTestCase("UnitTestService.testPut: Basic tests",function(test){
 Hop.defineTestCase("UnitTestService.testPost: Basic tests",function(test){
 	basicTest("UnitTestService.testPost",test);
 });
+
 
 
 Hop.apiHook("/api/",app);

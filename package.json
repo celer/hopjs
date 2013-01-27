@@ -30,7 +30,8 @@
     "optimist": ">=0.3.4",
     "querystring": ">=0.1.0",
     "request": ">=2.12.0",
-    "hopjs-common": ">=0.0.6"
+    "hopjs-common": ">=0.0.6",
+    "colors": "~0.6.0-1"
   },
   "engine": "node 0.8.9",
   "repository": {

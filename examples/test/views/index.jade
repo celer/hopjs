@@ -39,6 +39,29 @@ block content
 		| You an also use the API you've defined in your own JavaScript applications! 
 		| Simply open the JavaScript console in your browser and type:
 	div
+		form(action="/api/form/test", method="post")
+			input(type="text", value="textValue", name="textValue")
+			br
+			select(name="selectValue")
+				option(id="v1")	v1
+				option(id="v2")	v2
+				option(id="v3")	v3
+			br
+			select(name="multipleValue",multiple="true")
+				option(id="v1")	v1
+				option(id="v2")	v2
+				option(id="v3")	v3
+			br
+			input(type="checkbox", name="checkbox1", value="c1")
+			input(type="checkbox", name="checkbox1", value="c2")
+			input(type="checkbox", name="checkbox1", value="c3")
+			input(type="checkbox", name="checkbox1", value="c4")
+			br
+			input(type="radio", name="radio1", value="c1")
+			input(type="radio", name="radio1", value="c2")
+			input(type="radio", name="radio1", value="c3")
+			input(type="radio", name="radio1", value="c4")
+			input(type="submit")
 		pre#editor(style="width:80%;height:400px;clear:both;display:block;position:relative;")
 			| //First lets create a user
 			| UserService.create({ name: "user", password:"password", email:"email@email.com" },function(err,user){
