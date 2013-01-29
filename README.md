@@ -97,7 +97,7 @@ hopjs-browser-test --url http://localhost:3000/  --browser firefox
 *Now let's suppose we wanted an Android set of native client stubs for our API in Java:*
 
 ```shell
-hopjs-gen -url http://www.website.com:3000/ android -outputDir ./androidApp -package com.website.www
+hopjs-gen --url http://www.website.com:3000/ android --outputDir ./androidApp --package com.website.www
 ```
 You can see a complete working example at: https://github.com/celer/hopjs/tree/master/examples/intro
 
