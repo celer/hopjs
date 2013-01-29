@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2843" systemVersion="11G63" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1929"/>
+    </dependencies>
+    <scenes>
+        <!--Web Tester View Controller-->
+        <scene sceneID="5">
+            <objects>
+                <viewController id="2" customClass="WebTesterViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3">
+                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0CH-Fu-6xm">
+                                <items>
+                                    <navigationItem title="Hop Web Tester" id="IsA-rz-dgm">
+                                        <barButtonItem key="rightBarButtonItem" title="Log" id="U3D-LQ-eD1"/>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UnN-A1-Vfc">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="210" id="oVA-uk-sU8"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uao-HA-MMO">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="81" id="7Bu-Hj-XE0"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Test">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ga3-rB-wTT">
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="461" id="LeJ-EY-wYU"/>
+                                </constraints>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ga3-rB-wTT" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="DD8-ct-5ho"/>
+                            <constraint firstItem="0CH-Fu-6xm" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="Ejy-3t-K6Z"/>
+                            <constraint firstItem="0CH-Fu-6xm" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="Koa-kB-cg5"/>
+                            <constraint firstItem="ga3-rB-wTT" firstAttribute="top" secondItem="uao-HA-MMO" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="diO-Kf-rAS"/>
+                            <constraint firstItem="UnN-A1-Vfc" firstAttribute="leading" secondItem="uao-HA-MMO" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="ex2-RN-nq3"/>
+                            <constraint firstItem="uao-HA-MMO" firstAttribute="top" secondItem="3" secondAttribute="top" constant="43" id="jPr-DL-KHH"/>
+                            <constraint firstItem="UnN-A1-Vfc" firstAttribute="top" secondItem="3" secondAttribute="top" constant="48" id="qyZ-5n-kIw"/>
+                            <constraint firstItem="uao-HA-MMO" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="13" id="tnI-zN-k7z"/>
+                            <constraint firstItem="ga3-rB-wTT" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="wkI-gA-tG0"/>
+                            <constraint firstItem="0CH-Fu-6xm" firstAttribute="top" secondItem="3" secondAttribute="top" constant="-5" id="yIw-ac-ZnR"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="testButton" destination="uao-HA-MMO" id="4BG-fo-HMl"/>
+                        <outlet property="urlField" destination="UnN-A1-Vfc" id="YpG-G3-noW"/>
+                        <outlet property="webView" destination="ga3-rB-wTT" id="S2B-CK-jp0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="533" y="100"/>
+        </scene>
+    </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

@@ -87,6 +87,7 @@ UserService.load=function(input,onComplete,request){
     return onComplete(null,null);
   }
 }
+UserService.loadByParam=UserService.load;
 
 UserService.advancedCaching=UserService.load;
 
@@ -129,6 +130,7 @@ UserService.logout=function(input,onComplete,request){
 Hop.defineClass("UserService",UserService,function(api){
 	api.usage("Manages users");
 	api.post("create","/user").demand("email","The email address for the user").demand("name","The user's name").demand("password","The password for the user");
+  api.get("loadByParam","/user/param").demand("id").cacheId("/user/:id",60,true);
 	api.post("authenticate","/user/auth").demand("password").demand("name");
 	api.get("list","/user");  
 	api.get("currentUser","/user/current");

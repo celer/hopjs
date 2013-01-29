@@ -1,8 +1,12 @@
 { 
   "desc": "Generators a restful hook for Apple based devices (iOS & MacOSX)",
   "generates":"dir",
-	"demand":{ "projectName": "The name of the project to generate" },
-	"optional":[],
+	"demand":{ 
+		"projectName": "The name of the project to generate",
+		 "type":"Type of project to generate  (library, mactest, iostest)"
+	},
+	"optional":{
+	},
   "require":[ "apple.js" ],
   "inputDir":"templates",
   "translatePath":"Apple.translatePath"

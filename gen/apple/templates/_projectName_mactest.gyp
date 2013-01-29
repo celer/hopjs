@@ -10,6 +10,11 @@
 				'./<%=projectName%>/HopMethodCall.h',
 				'./<%=projectName%>/HopService.m',
 				'./<%=projectName%>/HopMethodCall.m',
+				'./<%=projectName%>/HopWebTester-Prefix.pch',
+				'./<%=projectName%>/WebTesterAppDelegate.h',
+				'./<%=projectName%>/WebTesterAppDelegate.m',
+				'./<%=projectName%>/TestStub.h',
+				'./<%=projectName%>/TestStub.m',
 				'./<%=projectName%>/main.m',
 				<% for(var objectName in api.Objects){	 %>
 				'./<%=projectName%>/<%=Apple.camelHump(objectName)%>.h',
@@ -20,14 +25,22 @@
 				'SDKROOT': 'macosx10.8',
 				'OTHER_CFLAGS':['-fobjc-arc'],
 				'MACOSX_DEPLOYMENT_TARGET':'10.7',
-				'ARCHS':'$(ARCHS_STANDARD_64_BIT)'
+				'ARCHS':'$(ARCHS_STANDARD_64_BIT)',
+				'INFOPLIST_FILE':'<%=projectName%>/HopWebTester-Info.plist'
 			},
 			'mac_bundle_resources': [
+				'<%=projectName%>/index.js',
+				'<%=projectName%>/index.html',
+				'<%=projectName%>/en.lproj/Credits.rtf',
+				'<%=projectName%>/en.lproj/InfoPlist.strings',
+				'<%=projectName%>/en.lproj/MainMenu.xib'
 			],
 			'link_settings': {
 				'libraries': [
+					'$(SDKROOT)/System/Library/Frameworks/Cocoa.framework',
 					'$(SDKROOT)/System/Library/Frameworks/Foundation.framework',
 					'$(SDKROOT)/System/Library/Frameworks/AppKit.framework',
+					'$(SDKROOT)/System/Library/Frameworks/WebKit.framework',
 				],
 			},
 		}

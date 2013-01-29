@@ -26,10 +26,23 @@ Apple.translatePath=function(genObj,options,inputItem,outputItem){
   var inFilename= path.basename(inputItem);
   var outDir = path.dirname(inputItem);
 
-
-	inFilename = inFilename.replace("_projectName",options.projectName);
-
-	outDir = outDir.replace("_projectName",options.projectName);
+	var match = /_projectName(_([a-z]+))?/.exec(inFilename);
+	if(match!=null && match[2]!=undefined){
+		var type = match[2];
+		if(options.type != type){
+			return false;
+		}
+	}
+	inFilename = inFilename.replace(/_projectName(_([a-z]+))?/,options.projectName);
+	var match = /_projectName(_([a-z]+))?/.exec(outDir);
+	if(match!=null && match[2]!=undefined){
+		var type = match[2];
+		if(options.type != type){
+			return false;
+		}
+	}
+	outDir = outDir.replace(/_projectName(_([a-z]+))?/,options.projectName);
+	
 
   Apple.mkdirpSync(options.outputDir,outDir);
 
