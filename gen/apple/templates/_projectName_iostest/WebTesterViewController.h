@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TestStub.h"
 
 @interface WebTesterViewController : UIViewController
     @property IBOutlet UIWebView *webView;
     @property IBOutlet UIButton *testButton;
     @property IBOutlet UITextField *urlField;
+    @property TestStub *testStub;
 
 
     - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType;

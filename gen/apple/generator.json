@@ -1,5 +1,6 @@
 { 
   "desc": "Generators a restful hook for Apple based devices (iOS & MacOSX)",
+	"binaryExts":[".png",".plist", ".storyboard"],
   "generates":"dir",
 	"demand":{ 
 		"projectName": "The name of the project to generate",
