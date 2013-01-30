@@ -28,21 +28,47 @@
 
 + (NSString *) toJSON: (NSDictionary *) dict {
     @try {
-        NSError *error;
+        NSError *error=nil;
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict
                                                            options:NSJSONWritingPrettyPrinted
-                                                             error:nil];
+                                                             error:&error];
+        
+        if(error!=nil){
+            NSLog(@"Error encoding JSON Object: %@",error);
+            return nil;
+        }
+        
         NSString* aStr;
         aStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         return aStr;
     } @catch(NSException *e){
+        NSLog(@"Error encoding JSON Object: %@",e);
         return nil;
     }
 }
 
+- (NSMutableArray *) convertArray: (NSArray *)input  {
+    NSMutableArray *outputArray=[[NSMutableArray alloc] init];
+    for(id arrayValue in input){
+        if([arrayValue isKindOfClass:[NSString class]]){
+            [outputArray addObject: arrayValue];
+        } else if([arrayValue isKindOfClass:[NSNumber class]]){
+            [outputArray addObject: [arrayValue stringValue]];
+        } else if([arrayValue isKindOfClass:[NSDictionary class]]){
+            NSMutableDictionary *arrayDict = [[NSMutableDictionary alloc] init];
+            [self prepareValues:arrayDict withInput: arrayValue asField: nil];
+            [outputArray addObject: arrayDict];
+        } else if([arrayValue isKindOfClass: [NSArray class]]){
+            NSMutableArray *arrayArray = [self convertArray: input];
+            [outputArray addObject: arrayArray];
+        }
+    }
+    return outputArray;
+}
+
 
 - (bool) prepareValues:(NSMutableDictionary *)output withInput:(NSDictionary *)input asField:(NSString *)fieldName {
-    NSLog(@"OUTPUT %@",output);
+    //NSLog(@"OUTPUT %@",output);
     bool hasData=false;
     for(NSString *valueName in input){
         id value = [input objectForKey: valueName];
@@ -58,31 +84,45 @@
              hasData=true;
         } else if([value isKindOfClass:[NSDictionary class]]){
             hasData=[self prepareValues: output withInput: value asField: p];
-            NSLog(@"Recurse %@",output);
+            //NSLog(@"Recurse %@",output);
         } else if([value isKindOfClass: [NSNumber class]]){
-            NSLog(@"Number %@ %@",p,[value stringValue]);
+            //NSLog(@"Number %@ %@",p,[value stringValue]);
             
             [output setValue: [value stringValue] forKey: p];
             hasData=true;
+        } else if([value isKindOfClass: [NSArray class]]){
+            hasData=true;
+            [output setValue: [self convertArray: value] forKey: p];
         } else {
-            NSLog(@"Other %@",p);
+            //NSLog(@"Other %@",p);
             [output setValue: [value stringValue]forKey: p];
             hasData=true;
         }
         
     }
-    NSLog(@"Done Recurse %@",output);
+    //NSLog(@"Done Recurse %@",output);
     return hasData;
+}
+
+- (void) addData:(id)inputValue withName: (NSString *)name toFormUsing: (void (^)(NSString *name, NSData *data)) addToForm {
+    if([inputValue isKindOfClass:[NSArray class]]){
+        for(id arrayValue in inputValue){
+            [self addData: arrayValue withName: name toFormUsing: addToForm];
+        }
+    } else {
+        NSData *data = [ inputValue dataUsingEncoding:NSUTF8StringEncoding ];
+        addToForm(name,data);
+    }
 }
 
 - (id) doRequest:
 (HopMethodCall *) methodCall
          withInput: (NSDictionary *) input
       whenComplete: (void (^)(NSString *error, id result)) onComplete {
-    NSLog(@"Making call with input %@",input);
-    NSLog(methodCall.name);
+    //NSLog(@"Making call with input %@",input);
+    //NSLog(methodCall.name);
     __block NSMutableString *path = [[NSMutableString alloc] initWithCapacity: 2048];
-    NSLog(@"jsonObject=%@",methodCall.params);
+    //NSLog(@"jsonObject=%@",methodCall.params);
 
     
     __block NSMutableString *error=nil;
@@ -94,7 +134,7 @@
         id value = [ input objectForKey: paramName];
         if([paramData objectForKey: @"demand"]!=nil){
             if(value==nil){
-                NSLog(@"Missing %@",paramName);
+                //NSLog(@"Missing %@",paramName);
                 
                 error=[[NSMutableString alloc]initWithFormat:@"Missing parameter:%@",paramName];
                 *stop=1;
@@ -110,7 +150,7 @@
         } else {
         
         [_input setValue:value forKey:paramName];
-         NSLog(@"Param %@ Value %@",paramName,value);
+         //NSLog(@"Param %@ Value %@",paramName,value);
         }
        
         
@@ -123,7 +163,7 @@
         return;
     }
     
-    NSLog(@"Using path %@",path);
+    //NSLog(@"Using path %@",path);
     
     NSMutableDictionary *output = [[NSMutableDictionary alloc]init];
     
@@ -134,11 +174,9 @@
         request = [httpClient multipartFormRequestWithMethod: methodCall.method path: path parameters:nil constructingBodyWithBlock:
                              ^(id<AFMultipartFormData>formData){
                                  [output enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-                                
-                                     NSLog(@"Setting param %@ to %@",key,obj);
-                                     NSData *data = [ obj dataUsingEncoding:NSUTF8StringEncoding ];
-                                     [formData appendPartWithFormData:data name:key];
-                                 
+                                     [self addData:obj withName:key toFormUsing:^(NSString *name, NSData *data) {
+                                         [formData appendPartWithFormData:data name:name];
+                                     }];
                                  }];
                              }];
     } else {
@@ -149,9 +187,9 @@
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc]initWithRequest:request ];
     
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"Done");
+        //NSLog(@"Done");
         if(responseObject!=nil){
-            NSLog(@"Response %@",operation.responseString);
+            //NSLog(@"Response %@",operation.responseString);
             NSError *error;
             
             NSData *JSONData = [operation.responseString dataUsingEncoding:operation.responseStringEncoding];
@@ -159,17 +197,17 @@
             
             if(error==nil){
             
-                NSLog(@"JSON %@",responseJSON);
+                //NSLog(@"JSON %@",responseJSON);
                 onComplete(nil,responseJSON);
                 
             } else {
-                NSLog(@"STRIN %@",operation.responseString);
+                //NSLog(@"STRIN %@",operation.responseString);
                 onComplete(nil,operation.responseString);
             }
         }
      
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error %@",error);
+        //NSLog(@"Error %@",error);
        
         if([operation.response statusCode]==404){
             onComplete(nil,nil);

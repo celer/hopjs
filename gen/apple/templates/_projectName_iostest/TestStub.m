@@ -99,6 +99,8 @@
                 onCompleteEval = [onCompleteEval stringByReplacingOccurrencesOfString:@"#{ERROR}" withString:@"null"];
             }
             
+            NSLog(@"Done with %@",onCompleteEval);
+            
             if(result!=nil){
                 NSString *resultStr=nil;
                 if([result isKindOfClass:[NSString class]]){
@@ -107,7 +109,11 @@
                     resultStr=[result stringRepresentation];
                 } else if([result isKindOfClass:[NSDictionary class]]){
                     resultStr = [HopService toJSON:result];
+                } else if([result isKindOfClass:[NSArray class]]){
+                    resultStr = [HopService toJSON:result];
                 }
+                
+                
                 onCompleteEval = [onCompleteEval stringByReplacingOccurrencesOfString:@"#{OUTPUT}" withString:resultStr];
             } else {
                  onCompleteEval = [onCompleteEval stringByReplacingOccurrencesOfString:@"#{OUTPUT}" withString:@"null"];

@@ -15,6 +15,8 @@
 {
     AFHTTPClient *httpClient;
 }
+- (void) addData:(id)inputValue withName: (NSString *)name toFormUsing: (void (^)(NSString *name, NSData *data)) addToForm;
+- (NSMutableArray *) convertArray: (NSArray *)input;
 - (bool) prepareValues: (NSMutableDictionary *) output withInput: (NSDictionary *) input asField: (NSString *)fieldName;
 - (id) initWithBaseUrl: (NSString *) baseURL;
 + (NSDictionary *) fromJSON: (NSString *) json;
