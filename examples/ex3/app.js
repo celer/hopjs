@@ -44,7 +44,7 @@ app.configure('development', function(){
 
 
 app.get("/",function(req,res){
-	res.render("index");
+	res.render("index",{Hop: Hop});
 });
 
 app.get("/test",function(req,res){

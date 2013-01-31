@@ -1,4 +1,4 @@
-Hop  = require('./lib/api');
+var Hop  = require('./lib/api');
 
 Hop.enableCaching=function(options){
   

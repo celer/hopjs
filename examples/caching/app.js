@@ -25,7 +25,7 @@ Hop.Cache.clear();
 app.engine("jade",require('jade').__express);
 
 app.get("/",function(req,res){
-	res.render("index");
+	res.render("index",{Hop: Hop});
 });
 
 var users={};

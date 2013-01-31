@@ -41,7 +41,7 @@ app.configure(function(){
 app.engine("jade",require('jade').__express);
 
 app.get("/",function(req,res){
-	res.render("index",{ _csrf: req.session._csrf, hostname: os.hostname() });
+	res.render("index",{ Hop:Hop, _csrf: req.session._csrf, hostname: os.hostname() });
 });
 
 SecureService={	
