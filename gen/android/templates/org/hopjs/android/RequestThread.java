@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,9 +41,11 @@ import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 
 public class RequestThread extends Thread {
 	/**
@@ -67,25 +70,35 @@ public class RequestThread extends Thread {
 			String reason = bundle.getString(RESTService.REASON);
 			if(resultCode==200){
 				if(contentType.toLowerCase().contains("json")){
-				    JsonParser parser = new JsonParser();
-				    JsonElement element = parser.parse(new InputStreamReader(in));
+			
+				    InputStreamReader inReader = new InputStreamReader(in);
+				    StringBuffer responseString = new StringBuffer();
+				    int data = inReader.read();
+				    while(data != -1){
+				    	responseString.append((char)data);
+				    	data = inReader.read();
+				    }
+				    String finalResponse = responseString.toString();
+				    
+				    JSONObject element = (JSONObject)new JSONTokener(finalResponse).nextValue();
 				    Log.d("XXXX",element.toString());				
 					 
 				    String outputType = call.getOutputClass();
 				    if(outputType.equals("String")){
-				    	String s = element.getAsString();
-				    	bundle.putString(RESTService.RESULT,s);
+				    	bundle.putString(RESTService.RESULT,finalResponse);
 				    } else if(outputType.equals("Double")){
-				    	Double s = element.getAsDouble();
-				    	bundle.putDouble(RESTService.RESULT,s);
+				    	bundle.putDouble(RESTService.RESULT,Double.parseDouble(finalResponse));
 				    } else if(outputType.equals("Boolean")){
-				    	Boolean s = element.getAsBoolean();
-				    	bundle.putBoolean(RESTService.RESULT,s);
+				    	bundle.putBoolean(RESTService.RESULT,Boolean.parseBoolean(finalResponse));
 				    } else if(outputType.equals("Integer")){
-				    	Integer s = element.getAsInt();
-				    	bundle.putInt(RESTService.RESULT,s);
+				    	bundle.putInt(RESTService.RESULT,Integer.parseInt(finalResponse));
 				    } else if(outputType.startsWith("List<")){
-				    	if(element.isJsonArray()){
+				    	Log.d("XXXX","inside LIST");
+				    	//JSONArray array = element.getJSONArray("result");
+				    	
+				    	
+				    	
+				    	/*if(element.isJsonArray()){
 				    		String objType = outputType.replace("List<","").replace(">","");
 				    		Log.d("XXXX","TYPE "+objType);
 				    		LinkedList list = new LinkedList();
@@ -97,7 +110,7 @@ public class RequestThread extends Thread {
 				    		bundle.putSerializable(RESTService.RESULT, list);
 				    	} else {
 				    		bundle.putString(RESTService.ERROR,"API Specification requires a return type of array, yet returned JSON element was not an array.");
-				    	}
+				    	}*/
 				    	
 				    } else {
 				    	JSObject obj = JSObject.newObjectFromJson(call.getOutputClass(), element);

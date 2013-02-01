@@ -114,7 +114,6 @@ public class RESTStub extends HttpHelper {
     	
     	if(listener!=null){
     		mListeners.put(requestUUID.toString(),listener);
-    		
     	}
 	    try {
 	        mService.send(msg);

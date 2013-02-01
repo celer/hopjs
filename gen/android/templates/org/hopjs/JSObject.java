@@ -3,11 +3,12 @@ package org.hopjs;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Map;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class JSObject implements Serializable  {
 	protected Hashtable<String,Object> data=new Hashtable<String,Object>();
@@ -32,33 +33,43 @@ public class JSObject implements Serializable  {
 		data.put(name, value);
 	}
 	
-	public void addToJsonObject(JsonObject jobj){
+	public void addToJsonObject(JSONObject jobj){
 		for(String key:data.keySet()){
 			Object val = data.get(key);
 			if(val!=null){
-				if(val instanceof JSObject){
-					JsonObject obj = new JsonObject();
-					((JSObject) val).addToJsonObject(obj);
-					jobj.add(key,obj);
-				} else {
-					if(val instanceof Boolean){
-						jobj.addProperty(key, (Boolean) val); 
-					} else if(val instanceof String){
-						jobj.addProperty(key,(String) val);
-					} else if(val instanceof Number){
-						jobj.addProperty(key,(Number) val);						
+				try {
+					if(val instanceof JSObject){
+						JSONObject obj = new JSONObject();
+						((JSObject) val).addToJsonObject(obj);
+						jobj.put(key,obj);
 					} else {
-						jobj.addProperty(key, val.toString());
+						if(val instanceof Boolean){
+							jobj.put(key, (Boolean) val); 
+						} else if(val instanceof String){
+							jobj.put(key,(String) val);
+						} else if(val instanceof Number){
+							jobj.put(key,(Number) val);						
+						} else {
+							jobj.put(key, val.toString());
+						}
 					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			} else {
-				jobj.add(key,JsonNull.INSTANCE);
+				try {
+					jobj.put(key,JSONObject.NULL);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}
 	
 	public String toJSON(){
-		JsonObject json = new JsonObject();
+		JSONObject json = new JSONObject();
 		
 		this.addToJsonObject(json);
 		
@@ -72,7 +83,7 @@ public class JSObject implements Serializable  {
 	public static JSObject newObject(String typeName){
 		try {
 			String pkg = JSObject.class.getPackage().getName();
-			Class c = Class.forName(pkg+"."+typeName);
+			Class c = Class.forName("TestApp.hopjs.api" +"."+typeName);
 			return (JSObject) c.newInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -80,7 +91,7 @@ public class JSObject implements Serializable  {
 		}
 	}
 
-	public static JSObject newObjectFromJson(String typeName,JsonElement element){
+	public static JSObject newObjectFromJson(String typeName,JSONObject element){
 		JSObject obj = newObject(typeName);
 		if(obj!=null){
 			obj.readJson(element);
@@ -88,50 +99,47 @@ public class JSObject implements Serializable  {
 		} else return null;
 	}
 	
-	public void readJson(JsonElement element){
-		if(element.isJsonObject()){
-			JsonObject jobj = (JsonObject) element;
-			for(Map.Entry<String,JsonElement> item: jobj.entrySet()){
-				JsonElement e = item.getValue();
-				if(e.isJsonPrimitive()){
-					Class c = this.getFieldType(item.getKey());
-					if(c!=null){
-						if(c.equals(String.class)) {
-							this.put(item.getKey(),e.getAsString());
-						} else if(c.equals(Float.class)){
-							this.put(item.getKey(),e.getAsFloat());
-						} else if(c.equals(Integer.class)){
-							this.put(item.getKey(),e.getAsInt());
-						} else if(c.equals(Double.class)){
-							this.put(item.getKey(),e.getAsDouble());
-						} else if(c.equals(Boolean.class)){
-							this.put(item.getKey(),e.getAsBoolean());
-						} else if(c.equals(Date.class)){
-							//FIXME
-							this.put(item.getKey(),new Date(e.getAsString()));
-						}
-					} else {
-						this.put(item.getKey(),e.getAsString());
-					}
-				} else if(e.isJsonNull()){
-					this.put(item.getKey(),null);
-				} else {
-					Class c = this.getFieldType(item.getKey());
+	public void readJson(JSONObject element){
+		try {
+			JSONObject jobj = element;
+			Iterator keys = jobj.keys();
+			while(keys.hasNext()){
+				String currentKey = (String) keys.next();
+				Object e = jobj.get(currentKey);
+				String currentValueClass = e.getClass().getName();
+				if(currentValueClass.equals(JSONObject.class.getName())){
+					JSONObject currentValue;
+					currentValue = jobj.getJSONObject(currentKey);
+					Class c = this.getFieldType(currentKey);
 					if(c!=null){
 						if(c.equals(JSObject.class)){
 							JSObject jsObj = new JSObject();
-							jsObj.readJson(item.getValue());
+							jsObj.readJson(currentValue);
+							//McD - Not sure but I think this should be saved
+							this.put(currentKey,  jsObj);
+							
 						} else if(c.equals(Date.class)){
 							//FIXME
-							this.put(item.getKey(),new Date(e.getAsString()));
+							this.put(currentKey,new Date(jobj.getString(currentKey)));
 						}
 					}
-					
+				}else if(currentValueClass.equals(String.class.getName())){
+					this.put(currentKey, jobj.getString(currentKey));
+				}else if(currentValueClass.equals(Integer.class.getName())){
+					this.put(currentKey, jobj.getInt(currentKey));
+				}else if(currentValueClass.equals(Double.class.getName())){
+					this.put(currentKey, jobj.getDouble(currentKey));
+				}else if(currentValueClass.equals(Long.class.getName())){
+					this.put(currentKey, jobj.getLong(currentKey));
+				}else if(currentValueClass.equals(Boolean.class.getName())){
+					this.put(currentKey, jobj.getBoolean(currentKey));
+				}else if(currentValueClass.equals(JSONObject.NULL.getClass().getName())){
+					this.put(currentKey,  null);
 				}
 			}
-			
+		} catch (JSONException e1) {
+			//FIXME Yeah, this needs real error handling
+			e1.printStackTrace();
 		}
 	}
-
-	
 }
