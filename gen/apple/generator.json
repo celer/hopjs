@@ -4,7 +4,7 @@
   "generates":"dir",
 	"demand":{ 
 		"projectName": "The name of the project to generate",
-		 "type":"Type of project to generate  (library, mactest, iostest)"
+		 "type":"Type of project to generate  (macframework, iosframework, mactest, iostest)"
 	},
 	"optional":{
 	},

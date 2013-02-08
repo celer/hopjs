@@ -22,30 +22,32 @@
           if(typeof Hop!="undefined"){
               Hop.TestCase.callbackId=0;
               Hop.TestCase.callbacks={};
-              
+             
+							//Implement Hop.TestCase.prototype.do to call the native calls 
               Hop.TestCase.prototype.do=function(method,inputValue,onComplete){
-              inputValue=inputValue||{};
-              onComplete=onComplete||{};
+								inputValue=inputValue||{};
+								onComplete=onComplete||{};
+								
+								
+								Hop.TestCase.callbacks[Hop.TestCase.callbackId]=onComplete;
+								
+								var what = {
+										input: inputValue,
+										method: method,
+										onComplete:"(Hop.TestCase.callbacks["+Hop.TestCase.callbackId+"])(#{ERROR},#{OUTPUT})"
+								}
+															
+								var iframe = document.createElement("IFRAME");
+								
+								iframe.setAttribute("src", "api:" + JSON.stringify(what));
+								document.documentElement.appendChild(iframe);
+								iframe.parentNode.removeChild(iframe);
+								iframe = null;
               
-              
-              Hop.TestCase.callbacks[Hop.TestCase.callbackId]=onComplete;
-              
-              var what = {
-                  input: inputValue,
-                  method: method,
-                  onComplete:"(Hop.TestCase.callbacks["+Hop.TestCase.callbackId+"])(#{ERROR},#{OUTPUT})"
               }
-                            
-              var iframe = document.createElement("IFRAME");
-                  iframe.setAttribute("src", "api:" + JSON.stringify(what));
-                  document.documentElement.appendChild(iframe);
-                  iframe.parentNode.removeChild(iframe);
-                  iframe = null;
-              
-              
-              
-              }
-              
+
+
+							//Implement Hop.TestCase.prototype.testResult to capture the results of the test
               Hop.TestCase.prototype.testResult=function(taskIndex,method,inputValue,err,outputValue,testType,result){
               
                   if(Hop.TestCase.lastTaskIndex!=taskIndex){
@@ -56,25 +58,25 @@
                       
                       Hop.TestCase.lastTaskIndex=taskIndex
                       $(Hop.TestCase.resultSelector).append("<div class='testDetails' id='testResult_"+Hop.TestCase.resultIndex+"' style='display:none'><h4>Input</h4><div class='testInput'>"+JSON.stringify(inputValue)+"</div><h4>Error</h4><div class='testResultError'>"+err+"</div><h4>Result</h4><div class='testResult'>"+JSON.stringify(outputValue)+"</div><br></div>");
-              }
+              		}
               
-              var what = Hop.Tests[testType];
-              if(what){
+              		var what = Hop.Tests[testType];
+              		if(what){
                       if(result==false)
                         $(Hop.TestCase.resultSelector).append("<div style='color:red'>"+what.fail+"</div>");
                       else
                         $(Hop.TestCase.resultSelector).append("<div style='color:green'>"+what.pass+"</div>");
-                      } else {
+                   } else {
                         if(result==false)
                             $(Hop.TestCase.resultSelector).append("<div style='color:red'>"+testType+"</div>");
                         else
                             $(Hop.TestCase.resultSelector).append("<div style='color:green'>"+testType+"</div>");
-                      }
-                      if(result==true){
+                   }
+                   if(result==true){
                         Hop.TestCase.results.pass++
-                      } else {
+                   } else {
                         Hop.TestCase.results.fail++;
-                      }
+                   }
               }
               
               

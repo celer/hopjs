@@ -1,10 +1,9 @@
-//
-//  HopMethodCall.m
-//  HopJSCLI
-//
-//  Created by celer on 1/22/13.
-//  Copyright (c) 2013 hopjs.org. All rights reserved.
-//
+/*
+
+	This file is generated as part of the hopjs code generator for Apple(tm) related products and is licensed
+	under an MIT License, see http://github.com/celer/hopjs for more details.
+
+*/
 
 #import "HopMethodCall.h"
 
@@ -17,7 +16,6 @@
 @synthesize options;
 
 -(id) initWithOptions:(NSString *)_name usingA:(NSString *)_method onPath:(NSString *)_path withParams:(NSDictionary *)_params andOptions: (NSDictionary *) _options {
-   
     self = [super init];
     
     name=_name;
@@ -26,9 +24,7 @@
     params=_params;
     options=_options;
     
-    
     return self;
-    
 }
 
 -(id) init:(NSString *)_name usingA:(NSString *)_method onPath:(NSString *)_path withParams:(NSDictionary *)_params  {

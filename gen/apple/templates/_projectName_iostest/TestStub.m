@@ -1,10 +1,9 @@
-//
-//  TestStub.m
-//  HopWebTester
-//
-//  Created by celer on 1/24/13.
-//
-//
+/*
+
+	This file is generated as part of the hopjs code generator for Apple(tm) related products and is licensed
+	under an MIT License, see http://github.com/celer/hopjs for more details.
+
+*/
 
 #import "TestStub.h"
 #import "HopService.h"
@@ -23,9 +22,40 @@
     return self;
 }
 
-+ (NSString *) doOnComplete: (NSString *) onCompleteString withError: (NSString *)errorString withOutput: (id) dict forWebView: (UIWebView *) webView {
-       
-    
++ (NSString *) doOnComplete: (NSString *) onCompleteString withError: (NSString *)error withOutput: (id) result forWebView: (UIWebView *) webView {
+		NSLog(@"Call complete %@ %@",error,result);
+		
+		NSString *onCompleteEval = [NSString stringWithString: onCompleteString];
+		if(error!=nil){
+				onCompleteEval = [onCompleteEval stringByReplacingOccurrencesOfString:@"#{ERROR}" withString:[NSString stringWithFormat:@"\"%@\"", error]];
+		} else {
+				onCompleteEval = [onCompleteEval stringByReplacingOccurrencesOfString:@"#{ERROR}" withString:@"null"];
+		}
+		
+		NSLog(@"Done with %@",onCompleteEval);
+		
+		if(result!=nil){
+				NSString *resultStr=nil;
+				if([result isKindOfClass:[NSString class]]){
+						resultStr=[NSString stringWithFormat:@"\"%@\"",result];
+				} else if([result isKindOfClass:[NSNumber class]]){
+						resultStr=[result stringRepresentation];
+				} else if([result isKindOfClass:[NSDictionary class]]){
+						resultStr = [HopService toJSON:result];
+				} else if([result isKindOfClass:[NSArray class]]){
+						resultStr = [HopService toJSON:result];
+				}
+				
+				
+			onCompleteEval = [onCompleteEval stringByReplacingOccurrencesOfString:@"#{OUTPUT}" withString:resultStr];
+		} else {
+	 		onCompleteEval = [onCompleteEval stringByReplacingOccurrencesOfString:@"#{OUTPUT}" withString:@"null"];
+		}
+		
+	
+		NSLog(@"%@ %@",webView, onCompleteEval);
+		
+		return [webView stringByEvaluatingJavaScriptFromString:onCompleteEval];
 }
 
 - (void) runMethod: (NSDictionary *) obj {
@@ -39,14 +69,13 @@
     NSString *data = [obj valueForKey:@"input"];
     __block NSString *onComplete = [obj valueForKey:@"onComplete"];
        
-        NSLog(@"DATA %@",data);
-        NSLog(@"onComplete %@",onComplete);
+    NSLog(@"DATA %@",data);
+    NSLog(@"onComplete %@",onComplete);
     
     NSLog(@"Method inputs: %@ %@",method,data);
     
     if(onComplete==nil){
         NSLog(@"onComplete is null for %@",obj);
-        
         return;
     }
         
@@ -85,10 +114,6 @@
         
         SEL selector = NSSelectorFromString(method);
         
-     
-        
-       
-        
         [api performSelector: selector withObject:data withObject:^(NSString *error, id result){
             NSLog(@"Call complete %@ %@",error,result);
             
@@ -116,7 +141,7 @@
                 
                 onCompleteEval = [onCompleteEval stringByReplacingOccurrencesOfString:@"#{OUTPUT}" withString:resultStr];
             } else {
-                 onCompleteEval = [onCompleteEval stringByReplacingOccurrencesOfString:@"#{OUTPUT}" withString:@"null"];
+                onCompleteEval = [onCompleteEval stringByReplacingOccurrencesOfString:@"#{OUTPUT}" withString:@"null"];
             }
             
           

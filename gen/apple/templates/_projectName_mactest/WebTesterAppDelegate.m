@@ -1,10 +1,9 @@
-//
-//  WebTesterAppDelegate.m
-//  HopWebTester
-//
-//  Created by celer on 1/24/13.
-//  Copyright (c) 2013 hopjs.org. All rights reserved.
-//
+/*
+
+	This file is generated as part of the hopjs code generator for Apple(tm) related products and is licensed
+	under an MIT License, see http://github.com/celer/hopjs for more details.
+
+*/
 
 #import "WebTesterAppDelegate.h"
 
@@ -18,18 +17,14 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Insert code here to initialize your application
-   
     
     [webView setUIDelegate:self];
-	[webView setFrameLoadDelegate:self];
-	[webView setResourceLoadDelegate:self];
+		[webView setFrameLoadDelegate:self];
+		[webView setResourceLoadDelegate:self];
     
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
-
     
     [url setStringValue:@"http://localhost:3000/"];
-
 }
 
 
@@ -53,50 +48,50 @@
 }
 
 - (void)info:(NSString *) msg{
-    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString: [[NSString alloc]initWithFormat:@"%@\n",msg]];
-	NSTextStorage *storage = [textView textStorage];
-    [string addAttribute:NSForegroundColorAttributeName value:[NSColor blueColor] range:NSMakeRange(0, [string length])];
-    
-	[storage beginEditing];
-	[storage appendAttributedString:string];
-	[storage endEditing];
+		NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString: [[NSString alloc]initWithFormat:@"%@\n",msg]];
+		NSTextStorage *storage = [textView textStorage];
+		[string addAttribute:NSForegroundColorAttributeName value:[NSColor blueColor] range:NSMakeRange(0, [string length])];
+			
+		[storage beginEditing];
+		[storage appendAttributedString:string];
+		[storage endEditing];
 }
 - (void)log:(NSString *) msg{
-    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString: [[NSString alloc]initWithFormat:@"%@\n",msg]];
-	NSTextStorage *storage = [textView textStorage];
-    [string addAttribute:NSForegroundColorAttributeName value:[NSColor grayColor] range:NSMakeRange(0, [string length])];
-    
-	[storage beginEditing];
-	[storage appendAttributedString:string];
-	[storage endEditing];
+		NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString: [[NSString alloc]initWithFormat:@"%@\n",msg]];
+		NSTextStorage *storage = [textView textStorage];
+		[string addAttribute:NSForegroundColorAttributeName value:[NSColor grayColor] range:NSMakeRange(0, [string length])];
+			
+		[storage beginEditing];
+		[storage appendAttributedString:string];
+		[storage endEditing];
 }
 - (void)warn:(NSString *) msg{
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString: [[NSString alloc]initWithFormat:@"%@\n",msg]];
-	NSTextStorage *storage = [textView textStorage];
+		NSTextStorage *storage = [textView textStorage];
     [string addAttribute:NSForegroundColorAttributeName value:[NSColor orangeColor] range:NSMakeRange(0, [string length])];
     
-	[storage beginEditing];
-	[storage appendAttributedString:string];
-	[storage endEditing];
+		[storage beginEditing];
+		[storage appendAttributedString:string];
+		[storage endEditing];
 }
 - (void)error:(NSString *) msg{
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString: [[NSString alloc]initWithFormat:@"%@\n",msg]];
-	NSTextStorage *storage = [textView textStorage];
+		NSTextStorage *storage = [textView textStorage];
     [string addAttribute:NSForegroundColorAttributeName value:[NSColor redColor] range:NSMakeRange(0, [string length])];
     
-	[storage beginEditing];
-	[storage appendAttributedString:string];
-	[storage endEditing];
+		[storage beginEditing];
+		[storage appendAttributedString:string];
+		[storage endEditing];
 }
 
 
 - (void) webView:(WebView*)webView addMessageToConsole:(NSDictionary*)message
 {
-	NSLog(@"bm %@",message);
-    if (![message isKindOfClass:[NSDictionary class]]) {
-		return;
-	}
-	NSString *msgLevel = [message valueForKey:@"MessageLevel"];
+		NSLog(@"bm %@",message);
+			if (![message isKindOfClass:[NSDictionary class]]) {
+			return;
+		}
+		NSString *msgLevel = [message valueForKey:@"MessageLevel"];
     if([msgLevel isEqualToString:@"LogMessageLevel"]){
         [self log:[[NSString alloc]initWithFormat:@"%@:%@ %@",[message valueForKey:@"sourceURL"],[message valueForKey:@"lineNumber"],[message valueForKey:@"message"]]];
     } else if([msgLevel isEqualToString:@"ErrorMessageLevel"]){
@@ -132,8 +127,6 @@
         [self error:[[NSString alloc]initWithFormat:@"Error loading index.js: %@",[error localizedDescription]]];
     } else {
     
-        
-    
         testStub = [[TestStub alloc]initWithUrl:[url stringValue] andWebScriptObject:wso];
     
         [wso setValue:testStub forKey:@"TestStub"];
@@ -144,16 +137,6 @@
         [wso evaluateWebScript:@"console.log('foo')"];
         [wso evaluateWebScript:@"console.warn('foo')"];
         [wso evaluateWebScript:@"console.error('foo')"];
-        
-        
-        
-        /*
-        NSLog(@"RES2 %@",[wso evaluateWebScript:@"TestStub.cb({ data: {a:true}})"]);
-    
-    NSLog(@"RES2 %@",[wso evaluateWebScript:@"location.href"]);
-    NSLog(@"RES2 %@",[wso evaluateWebScript:@"console.error('foo')"]);
-    NSLog(@"RES2 %@",[wso evaluateWebScript:@"TestStub.runMethod({ method: 'UserService.create',input: JSON.stringify({ name:'bob',password:'foo',email:'bar'}),onComplete: function(err,result){ TestStub.log(err);TestStub.log(result); }})"]);*/
-    
     }
     
 }

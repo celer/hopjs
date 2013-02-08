@@ -1,7 +1,13 @@
 <% if(type=="mactest"){ %>
 platform :osx, "10.7"
 pod 'AFNetworking', '~>1.1.0'
+<% } else if(type=="macframework"){ %>
+platform :osx, "10.7"
+pod 'AFNetworking', '~>1.1.0'
 <% } else if(type=="iostest"){ %>
+platform :ios, "6.0"
+pod 'AFNetworking', '~>1.1.0'
+<% } else if(type=="iosframework"){ %>
 platform :ios, "6.0"
 pod 'AFNetworking', '~>1.1.0'
 <% }%>
