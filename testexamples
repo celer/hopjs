@@ -6,148 +6,154 @@ var cp=require('child_process');
 var path=require('path');
 var optimist=require('optimist');
 var colors=require('colors');
+var common=require('hopjs-common');
 
-optimist=optimist.describe("url","url to use for testing");
-optimist=optimist.describe("log","log file");
+common.requireOnDemand(['hopjs-remote'],function(){
 
-var args = optimist.argv;
+	optimist=optimist.describe("url","url to use for testing");
+	optimist=optimist.describe("log","log file");
 
-var url = args.url||"http://localhost:3000/";
+	var args = optimist.argv;
 
-var results={};
+	var url = args.url||"http://localhost:3000/";
 
-var testExample=function(example,onComplete){
-  var dir = path.join("./examples",example);
+	var results={};
 
-  console.log("Testing example",example);  
-  cp.exec("(cd "+dir+" && rm -rf node_modules && npm install .)",function(err,stdout,stderr){
-    if(err) return onComplete("Error installing package:"+err);
+	var testExample=function(example,onComplete){
+		var dir = path.join("./examples",example);
 
-    var exited=false; 
-    var testNumber=0;
+		console.log("Testing example",example);  
+		cp.exec("(cd "+dir+" && rm -rf node_modules && npm install .)",function(err,stdout,stderr){
+			if(err) return onComplete("Error installing package:"+err);
 
-    var appRunning=true;
- 
-    console.log("Starting application"); 
-    var app = cp.spawn("node",["./app.js"],{ cwd: dir }); 
-    
-    app.on("exit",function(code,data){
-      console.log("Example application exited with:",code);
-      appRunning=false;
-    });
-   
-    var appOut="";
- 
-    app.on("close",function(code,data){
-      //console.log("A",arguments);
-    });
+			var exited=false; 
+			var testNumber=0;
 
-    app.stderr.on("data",function(data){
-      appOut+=data;
-    }); 
-    
-    app.stdout.on("data",function(data){
-      appOut+=data;
-    }); 
-    
-    setTimeout(function(){
+			var appRunning=true;
+	 
+			console.log("Starting application"); 
+			var app = cp.spawn("node",["./app.js"],{ cwd: dir }); 
+			
+			app.on("exit",function(code,data){
+				console.log("Example application exited with:",code);
+				appRunning=false;
+			});
+		 
+			var appOut="";
+	 
+			app.on("close",function(code,data){
+				//console.log("A",arguments);
+			});
+
+			app.stderr.on("data",function(data){
+				appOut+=data;
+			}); 
+			
+			app.stdout.on("data",function(data){
+				appOut+=data;
+			}); 
+			
+			setTimeout(function(){
 
 
 
 
-      if(!appRunning){
-        console.error(appOut);
-        return onComplete("Application quit before being tested");
-      }
-
-      var unitTest = cp.exec("hopjs --url "+url+" --unitTest --testDetails");
-      
-      var unitTestErr="";
-      var unitTestOut="";      
-
-      unitTest.on("close",function(code,data){
-      
-        if(args.log){
-          fs.appendFileSync(args.log,"\n"+example+": ########################################################\n");
-          fs.appendFileSync(args.log,"\n"+example+": APP OUT ---------------------------------------------\n");
-          fs.appendFileSync(args.log,appOut);
-          fs.appendFileSync(args.log,"\n"+example+": TEST STDOUT ---------------------------------------------\n");
-          fs.appendFileSync(args.log,unitTestOut);
-          fs.appendFileSync(args.log,"\n"+example+": TEST STDERR ---------------------------------------------\n");
-          fs.appendFileSync(args.log,unitTestErr);
-        }
-        app.kill();
-        console.log("Unit test exited with",code);
-        results[example]={ exitCode:code } 
-
-        var m = /^Pass.*$/gm.exec(unitTestOut);
-        if(m){
-          results[example].results=m[0];
-        }
-            
-        app.kill("SIGKILL");
-        cp.exec("kill -9 "+app.pid);
-  
-        var waitForAppExit=function(){
-          if(appRunning){
-            setTimeout(waitForAppExit,200);
-          } else {
-            return onComplete();  
-          }
-        }
-        waitForAppExit();
-      });
-      
-      unitTest.stderr.on("data",function(data){
-        console.log(data.toString());
-      }); 
-      
-      unitTest.stdout.on("data",function(data){
-        console.log(data);
-        unitTestOut+=data; 
-        var m = /^#([0-9]+)/gm.exec(data);
-        if(m){
-          testNumber=m[1];
-        }
-      }); 
-
-    },3000);
-    
- 
-  });
-
-}
-
-fs.readdir("./examples",function(err,examples){
-  var run=function(){
-    if(examples.length>0){
-      var example = examples.shift();
-      testExample(example,function(err,res){
-        if(err){
-          console.error(err,example);
-          process.exit();
-        }
-        run();
-      })
-    } else {
-      console.log("--------------------------");
-			var str="";
-      for(var i in results){
-        console.log(i+":");
-				str+="#"+i+":\n";
-        if(results[i].results){
-          	console.log("\t",results[i].results);
-						str+="\t"+results[i].results.toString()+"\n";
-				} else { 
-					console.log("\t exited with",results[i].exitCode)
-					str+=("\t exited with "+results[i].exitCode+"\n");
+				if(!appRunning){
+					console.error(appOut);
+					return onComplete("Application quit before being tested");
 				}
-      }	
-			fs.writeFileSync("testresults.md",str);
-      process.exit();
-    }
-  }
-  run();
+
+				var hopjsPath = path.join(__dirname,"node_modules","hopjs-remote","bin","hopjs");
+
+				var unitTest = cp.exec(hopjsPath+" --url "+url+" --unitTest --testDetails");
+				
+				var unitTestErr="";
+				var unitTestOut="";      
+
+				unitTest.on("close",function(code,data){
+				
+					if(args.log){
+						fs.appendFileSync(args.log,"\n"+example+": ########################################################\n");
+						fs.appendFileSync(args.log,"\n"+example+": APP OUT ---------------------------------------------\n");
+						fs.appendFileSync(args.log,appOut);
+						fs.appendFileSync(args.log,"\n"+example+": TEST STDOUT ---------------------------------------------\n");
+						fs.appendFileSync(args.log,unitTestOut);
+						fs.appendFileSync(args.log,"\n"+example+": TEST STDERR ---------------------------------------------\n");
+						fs.appendFileSync(args.log,unitTestErr);
+					}
+					app.kill();
+					console.log("Unit test exited with",code);
+					results[example]={ exitCode:code } 
+
+					var m = /^Pass.*$/gm.exec(unitTestOut);
+					if(m){
+						results[example].results=m[0];
+					}
+							
+					app.kill("SIGKILL");
+					cp.exec("kill -9 "+app.pid);
+		
+					var waitForAppExit=function(){
+						if(appRunning){
+							setTimeout(waitForAppExit,200);
+						} else {
+							return onComplete();  
+						}
+					}
+					waitForAppExit();
+				});
+				
+				unitTest.stderr.on("data",function(data){
+					console.log(data.toString());
+				}); 
+				
+				unitTest.stdout.on("data",function(data){
+					console.log(data);
+					unitTestOut+=data; 
+					var m = /^#([0-9]+)/gm.exec(data);
+					if(m){
+						testNumber=m[1];
+					}
+				}); 
+
+			},3000);
+			
+	 
+		});
+
+	}
+
+	fs.readdir("./examples",function(err,examples){
+		var run=function(){
+			if(examples.length>0){
+				var example = examples.shift();
+				testExample(example,function(err,res){
+					if(err){
+						console.error(err,example);
+						process.exit();
+					}
+					run();
+				})
+			} else {
+				console.log("--------------------------");
+				var str="";
+				for(var i in results){
+					console.log(i+":");
+					str+="#"+i+":\n";
+					if(results[i].results){
+							console.log("\t",results[i].results);
+							str+="\t"+results[i].results.toString()+"\n";
+					} else { 
+						console.log("\t exited with",results[i].exitCode)
+						str+=("\t exited with "+results[i].exitCode+"\n");
+					}
+				}	
+				fs.writeFileSync("testresults.md",str);
+				process.exit();
+			}
+		}
+		run();
+
+	});
 
 });
-
