@@ -12,10 +12,13 @@ common.requireOnDemand(['hopjs-remote'],function(){
 
 	optimist=optimist.describe("url","url to use for testing");
 	optimist=optimist.describe("log","log file");
+	optimist=optimist.describe("hopjs","path to hopjs command to use");
+
 
 	var args = optimist.argv;
 
 	var url = args.url||"http://localhost:3000/";
+	
 
 	var results={};
 
@@ -63,7 +66,7 @@ common.requireOnDemand(['hopjs-remote'],function(){
 					return onComplete("Application quit before being tested");
 				}
 
-				var hopjsPath = path.join(__dirname,"node_modules","hopjs-remote","bin","hopjs");
+				var hopjsPath = args.hopjs||path.join(__dirname,"node_modules","hopjs-remote","bin","hopjs");
 
 				var unitTest = cp.exec(hopjsPath+" --url "+url+" --unitTest --testDetails");
 				

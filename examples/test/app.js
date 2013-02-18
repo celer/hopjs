@@ -50,6 +50,7 @@ UnitTestService.test=function(input,onComplete){
 	for(var i in input){
 		output[i]=input[i];
 	}
+	console.log(output);
 	return onComplete(null,output);
 }
 
@@ -102,10 +103,14 @@ Hop.defineClass("UnitTestService",UnitTestService,function(api){
 	api.put("testPutOptionals","/ts/optionals").optionals("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat","modelStringArray").inputModel("UnitTestService");
 });
 
-function basicTest(funcName,test){
+function basicTest(method, funcName,test){
 	var d=new Date();
-	var testValue = {modelStringArray:["A","B"], string:"string",  number:8, float:3.23, object: { a:1, b:"a", c:true, d:{ e:44} }, complexArray:["a",3,{"a":4, "b":[1,3,4,"t"]}], date: d, booleanTrue: true, booleanFalse:false, nullValue: null, modelMinMax: 6, modelArray:"red", modelObject:"R", modelString:"ADDFD", modelBool:true, modelFloat: 3.232 };
-	var expectedValue = {modelStringArray:["A","B"], string:"string", number:"8", float:"3.23", object: { a:"1", b:"a", c:"true", d:{ e:"44"} }, complexArray:["a",3,{"a":4, "b":[1,3,4,"t"]}], date: d, booleanTrue: "true", booleanFalse:"false", nullValue: "", modelMinMax: 6, modelBool:true, modelFloat:3.232};
+	var testValue = {modelStringArray:["A","B"], string:"string",  number:8, float:3.23, object: { a:1, b:"a", c:true, d:{ e:44} },  date: d, booleanTrue: true, booleanFalse:false, nullValue: null, modelMinMax: 6, modelArray:"red", modelObject:"R", modelString:"ADDFD", modelBool:true, modelFloat: 3.232 };
+	if(method=="get"){
+		var expectedValue = {modelStringArray:["A","B"], string:"string", number:"8", float:"3.23", object: { a:"1", b:"a", c:"true", d:{ e:"44"} },  date: d, booleanTrue: "true", booleanFalse:"false", nullValue: "", modelMinMax: 6, modelBool:true, modelFloat:3.232};
+	} else {
+		var expectedValue = {modelStringArray:["A","B"], string:"string", number:8, float:3.23, object: { a:1, b:"a", c:true, d:{ e:44} },  date: d, booleanTrue:true, booleanFalse:false, nullValue: null, modelMinMax: 6, modelBool:true, modelFloat:3.232};
+	}
 	test.do(funcName).with({}).errorContains("Missing parameter:");
 	test.do(funcName).with(testValue).outputContains(expectedValue);
 	test.do(funcName).with(testValue,{modelMinMax: 2 }).errorContains("Value must be greater than 5");
@@ -119,7 +124,7 @@ function basicTest(funcName,test){
 }
 
 Hop.defineTestCase("UnitTestService.testGet: Basic tests",function(test){
-	basicTest("UnitTestService.testGet",test);
+	basicTest("get","UnitTestService.testGet",test);
 });
 
 Hop.defineTestCase("UnitTestService.testDelete: Basic tests",function(test){
@@ -127,11 +132,11 @@ Hop.defineTestCase("UnitTestService.testDelete: Basic tests",function(test){
 });
 
 Hop.defineTestCase("UnitTestService.testPut: Basic tests",function(test){
-	basicTest("UnitTestService.testPut",test);
+	basicTest("put","UnitTestService.testPut",test);
 });
 
 Hop.defineTestCase("UnitTestService.testPost: Basic tests",function(test){
-	basicTest("UnitTestService.testPost",test);
+	basicTest("post","UnitTestService.testPost",test);
 });
 
 

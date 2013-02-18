@@ -242,7 +242,7 @@ Hop.patchURL=function(input,url,params){
 		return url;
 	}
 
-Hop.appendForm=<%= Hop.appendForm.toString() %>
+Hop.DataEncoder=<%= Hop.DataEncoder.toString() %>
 
 Hop.remoteExec=function(methodName,type,url,options,params,input,onComplete){
 		var noCache=false;
@@ -272,13 +272,17 @@ Hop.remoteExec=function(methodName,type,url,options,params,input,onComplete){
 				input._csrf=_csrf;
 			}
 		}
-		if(type=="post" && typeof FormData!="undefined"){	
+			
+		var de = new Hop.DataEncoder();
+		
+		de.encode(input);
+		
+		if((!de.canEncodeAsJSON() && de.canEncodeAsForm()) &&type=="post" && typeof FormData!="undefined"){	
 			var xhr = new XMLHttpRequest();
 			var form = new FormData();
-			var hasData=false;
-
-
-			hasData=Hop.appendForm(form,input);
+		
+			de = new Hop.DataEncoder(form);
+			var hasData=de.encode(input);
 
 			xhr.open(type,url);
 			xhr.responseType="text";	
@@ -307,13 +311,25 @@ Hop.remoteExec=function(methodName,type,url,options,params,input,onComplete){
 			if(noCache==true){
 				input._t=Date.now();
 			}	
-			$.ajax(url,{
+			
+			var params = {
 				type:type,
-				data:input,
 				dataType:"json",
 				success: function(data, textStatus, jqXHR){ Hop.onAJAXSuccess(data, textStatus, jqXHR,onComplete,methodName); },
 				error: function(jqXHR, textStatus, errorThrown){ Hop.onAJAXError(jqXHR, textStatus, errorThrown,onComplete,methodName); },
-			});
+			};
+			if(type=="post" || type=="put"){
+				try { 
+					var json = JSON.stringify(input);
+					params.data =json;
+					params.contentType='application/json';
+				} catch (e){
+
+				}
+			} else {
+				params.data=input;	
+			}
+			$.ajax(url,params);
 		}
 
 	}

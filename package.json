@@ -1,6 +1,6 @@
 {
   "name": "hopjs",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "A RESTful declarative API framework, with stub generators for Shell, and Android",
   "main": "index.js",
   "bin": {
@@ -28,7 +28,7 @@
     "socket.io": ">=0.9.10",
     "optimist": ">=0.3.4",
     "querystring": ">=0.1.0",
-    "hopjs-common": ">=0.0.6",
+    "hopjs-common": ">=0.0.7",
     "colors": "~0.6.0-1"
   },
   "engine": "node 0.8.9",

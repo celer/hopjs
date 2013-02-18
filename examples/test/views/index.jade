@@ -39,6 +39,12 @@ block content
 		| You an also use the API you've defined in your own JavaScript applications! 
 		| Simply open the JavaScript console in your browser and type:
 	div
+		form(action="/api/form/test",method="post")
+			select(multiple="true")
+				option(id="v1")	v1
+				option(id="v2")	v2
+				option(id="v3")	v3
+			input(type="submit")
 		form(action="/api/form/test", method="post")
 			input(type="text", value="textValue", name="textValue")
 			br
