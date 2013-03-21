@@ -114,6 +114,7 @@ open IOSTest.xcworkspace
 # If this fails in the project view select *.storyboard and delete the references from the project and re-add them. 
 # After that it should just work! 
 ```
+![Image of iphone showing IOSTest][iphone]
 You can read more about Objective-C APIs here: https://github.com/celer/hopjs/tree/master/gen/apple
 
 You can see a complete working example at: https://github.com/celer/hopjs/tree/master/examples/intro
@@ -269,4 +270,5 @@ You can see a complete working example at: https://github.com/celer/hopjs/tree/m
  - Need to add dev key support
 
 [logo]: https://raw.github.com/celer/hopjs/master/static/logo-200.png 
+[iphone]: https://raw.github.com/celer/hopjs/master/static/iphone-small.png
 
