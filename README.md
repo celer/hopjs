@@ -101,6 +101,21 @@ hopjs-browser-test --url http://localhost:3000/  --browser firefox
 ```shell
 hopjs-gen --url http://www.website.com:3000/ android --outputDir ./androidApp --package com.website.www
 ```
+
+
+*Now let's assume we wanted a native version of the APIs for iOS, and you have OSX and XCode installed:*
+
+```shell
+hopjs-gen --url http://localhost:3000/ apple --type iostest --outputDir IOSTest --projectName IOSTest
+cd IOSTest
+make
+open IOSTest.xcworkspace
+# On the top left of xcode select "IOSTest > iPhone X Simulator" and click the 'Run' button
+# If this fails in the project view select *.storyboard and delete the references from the project and re-add them. 
+# After that it should just work! 
+```
+You can read more about Objective-C APIs here: https://github.com/celer/hopjs/tree/master/gen/apple
+
 You can see a complete working example at: https://github.com/celer/hopjs/tree/master/examples/intro
 
 ## Intelligent server-side caching of results
@@ -246,6 +261,7 @@ You can see a complete working example at: https://github.com/celer/hopjs/tree/m
  * Per specification HTTP delete does not allow passing of parameters beyond what are specified in the path
 
 # Known Issues / Todo
+ - iPhone API generation works but needs further testing
  - Android API is non-functional after major re-factor
  - A bug in combination-stream, which is utilized by request and form-data prevents the unit tests for expirements/test from passing, see my fork of combination-stream for a fix
  - Curl can't save session cookies so some shell tests won't wor
