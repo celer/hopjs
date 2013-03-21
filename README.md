@@ -123,6 +123,8 @@ open IOSTest.xcworkspace
 
 You can read more about Objective-C APIs here: https://github.com/celer/hopjs/tree/master/gen/apple
 
+### Running the example
+
 You can see a complete working example at: https://github.com/celer/hopjs/tree/master/examples/intro
 
 ## Intelligent server-side caching of results
