@@ -83,6 +83,7 @@ Hop.defineTestCase("UserService.authenticate",function(test){
 ```
 [defineTestCase documentation](http://celer.github.com/hopjs/doc/classes/Hop.TestTask.html)
 
+### Testing from the command line
 
 *We can unit test our API using the hopjs utility, which will run all the unit tests from the command line:*
 ```shell
@@ -95,6 +96,9 @@ hopjs --url http://localhost:3000/ --unitTest
 hopjs-browser-test --url http://localhost:3000/  --browser firefox
 ```
 
+### Generating native Android APIs 
+
+(This is still a work in progress)
 
 *Now let's suppose we wanted an Android set of native client stubs for our API in Java:*
 
@@ -102,6 +106,7 @@ hopjs-browser-test --url http://localhost:3000/  --browser firefox
 hopjs-gen --url http://www.website.com:3000/ android --outputDir ./androidApp --package com.website.www
 ```
 
+### Generating native iOS APIs
 
 *Now let's assume we wanted a native version of the APIs for iOS, and you have OSX and XCode installed:*
 
