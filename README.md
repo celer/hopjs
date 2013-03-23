@@ -1,5 +1,7 @@
 ![alt text][logo]
 
+[![Build Status](https://travis-ci.org/celer/hopjs.png)](https://travis-ci.org/celer/hopjs)
+
 # HopJS 
 
 The RESTful API dynamic web apps crave.
@@ -268,6 +270,7 @@ You can see a complete working example at: https://github.com/celer/hopjs/tree/m
 
  * Our implementation of REST is designed to be used with forms and does not support null values or special types, all values are converted to strings (null=="")
  * Per specification HTTP delete does not allow passing of parameters beyond what are specified in the path
+
 
 # Known Issues / Todo
  - iPhone API generation works but needs further testing
