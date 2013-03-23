@@ -4,6 +4,7 @@ var express= require('express');
 var path = require('path');
 
 var Hop = require("./../../index");
+var HopRemote = require('hopjs-remote');
 
 /*
   This is express boiler plate, see http://expressjs.com/guide.html
@@ -81,6 +82,31 @@ UnitTestService.testForm=function(input,onComplete){
 	return onComplete(null,input);
 }
 
+UnitTestService.sendTemplate=function(input,onComplete){
+	return onComplete(null,Hop.render("test",{Title:"Title"}));
+}
+
+UnitTestService.sendHeaders=function(input,onComplete,req){
+	HopRemote.remoteAPI("http://localhost:3000/",function(err,api){
+		if(err) return onComplete(err);
+		if(api){
+			api.UnitTestService.testHeaders({},function(err,res){
+				return onComplete(err,res);
+			},{ headers: { cookie: "foo=3", authorization:"kittens=true"}, ip: req.ip});
+		}	else return onComplete("No error and no API");
+	});
+}
+
+UnitTestService.testHeaders=function(input,onComplete,req){
+	if(!req.cookies['foo']==3)
+		return onComplete("Missing foo cookie");
+	if(!req.headers['authorization']=='kittens=true')
+		return onComplete("Missing authorization header");
+	if(!req.headers['x-forwarded-for'])
+		return onComplete("Missing X Forwarded For Header");
+	return onComplete(null, true);
+}
+
 
 Hop.defineModel("UnitTestService",function(model){
 	model.field("modelFloat").float();
@@ -93,6 +119,9 @@ Hop.defineModel("UnitTestService",function(model){
 });
 
 Hop.defineClass("UnitTestService",UnitTestService,function(api){
+	api.get("sendTemplate","/template");
+	api.post("testHeaders","/testHeaders");
+	api.post("sendHeaders","/sendHeaders");
 	api.post("testForm","/form/test").optionals("textValue","selectValue","multipleValue","checkbox1","radio1");
 	api.post("testPost","/ts/").demands("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat","modelStringArray").inputModel("UnitTestService");
 	api.get("testGet","/ts/").demands("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat","modelStringArray").inputModel("UnitTestService");
@@ -122,6 +151,14 @@ function basicTest(method, funcName,test){
 	test.do(funcName+"Optionals").with({ }).noError();
 	test.do(funcName+"Optionals").with(testValue).outputContains(expectedValue);
 }
+
+Hop.defineTestCase("UnitTestService.sendTemplate",function(test){
+	test.do("UnitTestService.sendTemplate").with({}).outputContains("<h1>Template Title</h1>").noError();
+});
+
+Hop.defineTestCase("UnitTestService.sendHeaders",function(test){
+	test.do("UnitTestService.sendHeaders").with({}).noError();
+});
 
 Hop.defineTestCase("UnitTestService.testGet: Basic tests",function(test){
 	basicTest("get","UnitTestService.testGet",test);
