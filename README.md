@@ -1,6 +1,6 @@
 ![alt text][logo]
 
-[![Build Status](https://travis-ci.org/celer/hopjs.png)](https://travis-ci.org/celer/hopjs)
+Build Status: [![Build Status](https://travis-ci.org/celer/hopjs.png)](https://travis-ci.org/celer/hopjs)
 
 # HopJS 
 
