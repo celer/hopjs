@@ -24,7 +24,6 @@ Java.translatePath=function(genObj,options,inputItem,outputItem){
   var outDir = path.dirname(inputItem);
 
   var packageDir = (options.package.replace(/\./g,path.sep ));
-	console.log("Package:", packageDir);
     
   if(/_package/.test(outDir)){
       var _outDir = outDir.replace("_package",packageDir);

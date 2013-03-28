@@ -83,7 +83,7 @@ public class JSObject implements Serializable  {
 	public static JSObject newObject(String typeName){
 		try {
 			String pkg = JSObject.class.getPackage().getName();
-			Class c = Class.forName("TestApp.hopjs.api" +"."+typeName);
+			Class c = Class.forName("<%=package%>" +"."+typeName);
 			return (JSObject) c.newInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
