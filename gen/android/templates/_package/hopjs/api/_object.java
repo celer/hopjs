@@ -2,7 +2,7 @@ package <%=package%>.hopjs.api;
 
 import org.hopjs.*;
 import java.util.*;
-import com.google.gson.JsonElement;
+import org.json.JSONObject;
 
 public class <%=Java.camelHump(object.name)%> {
 

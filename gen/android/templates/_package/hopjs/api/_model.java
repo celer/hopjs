@@ -2,7 +2,7 @@ package <%=package%>.hopjs.api;
 
 import org.hopjs.*;
 import java.util.*;
-import com.google.gson.JsonElement;
+import org.json.JSONObject;
 
 public class <%=Java.camelHump(model.name)%> extends JSObject {
 
@@ -33,7 +33,7 @@ public class <%=Java.camelHump(model.name)%> extends JSObject {
 		return null;
 	}
 
-	public static <%=Java.camelHump(model.name)%> fromJson(JsonElement element){
+	public static <%=Java.camelHump(model.name)%> fromJson(JSONObject element){
 		<%=Java.camelHump(model.name)%> val = new <%=Java.camelHump(model.name)%>();
 		val.readJson(element);
 		return val;
