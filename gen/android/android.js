@@ -23,7 +23,7 @@ Java.translatePath=function(genObj,options,inputItem,outputItem){
   var inFilename= path.basename(inputItem);
   var outDir = path.dirname(inputItem);
 
-  var packageDir = (options.package.replace(".",path.sep));
+  var packageDir = (options.package.replace(/\./g,path.sep ));
     
   if(/_package/.test(outDir)){
       var _outDir = outDir.replace("_package",packageDir);

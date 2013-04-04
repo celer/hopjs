@@ -105,7 +105,7 @@ hopjs-browser-test --url http://localhost:3000/  --browser firefox
 *Now let's suppose we wanted an Android set of native client stubs for our API in Java:*
 
 ```shell
-hopjs-gen --url http://www.website.com:3000/ android --outputDir ./androidApp --package com.website.www
+hopjs-gen --url http://www.website.com:3000/ android --outputDir ./androidApp --package com.website.www --apiVersion 1.0
 ```
 
 ### Generating native iOS APIs
@@ -274,7 +274,7 @@ You can see a complete working example at: https://github.com/celer/hopjs/tree/m
 
 # Known Issues / Todo
  - iPhone API generation works but needs further testing
- - Android API is non-functional after major re-factor
+ - Android API generation works, testing and validation on it does not
  - A bug in combination-stream, which is utilized by request and form-data prevents the unit tests for expirements/test from passing, see my fork of combination-stream for a fix
  - Curl can't save session cookies so some shell tests won't wor
  - Need to add SSL support
