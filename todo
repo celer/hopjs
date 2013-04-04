@@ -1,0 +1,23 @@
+
+hopjs can't run the tests when they are hidden by the front end
+pull in the changes to cjade
+make cjade delay a little bit
+hopjs needs to be able to use remote apis from other services
+java code generator for hopjs
+ruby code generator for hopjs
+needs to apply a mutator to a bunch of API calls
+self documenting mutators
+
+api.requiresUser().noCache():
+api.get("/view/:product");
+
+
+Fix erorr handling in hopjs-remote to look for error in responseHandlder first
+Make it so that you can have multiple APIs loaded without conflict (i.e. detect versions and instantiate one per version!?!?)
+Make it so you can send back a template
+sub apis, aka ca fleet sub apis
+hopjs-remote cannot upload files :(
+leverage APIs from other services in the testing
+make sure Hop.remoteAPI ... passes on the request session cookies?
+
+
