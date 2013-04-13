@@ -78,6 +78,8 @@ var patchTestCases=function(){
 patchTestCases();
 Hop.TestCase.resultSelector=null;
 Hop.TestCase.runInDialog=function(what,selector){
+  	
+	$(selector).modal('show'); 
   Hop.TestCase.resultSelector=selector+" > .modal-body";
   Hop.TestCase.resultIndex=0;
   Hop.TestCase.lastTaskIndex=-1;
@@ -114,7 +116,6 @@ Hop.TestCase.runInDialog=function(what,selector){
 
       }
     }
-  	$(selector).modal('show'); 
    	run();
   }
 

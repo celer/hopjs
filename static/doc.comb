@@ -13,9 +13,9 @@
 		<script src="<%=Hop.testURL%>"></script>
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-static-top">
+		<div class="navbar navbar-inverse navbar-fixed-top">
 			<div class="navbar-inner">
-				<a class="brand" href="#">Restful API</a>
+				<a class="brand" href="#">&nbsp;Restful API</a>
 				<ul class="nav">
 					<li><a href="#introduction">Introduction</a></li>
 					<li><a href="#notes">Notes</a></li>
@@ -23,9 +23,9 @@
 				</ul>
 			</div>
 		</div>
-		<div class="container">
+		<div class="container" style="padding-top: 50px;">
 			<!-- Introduction --> 
-			<div id="#introduction" class="row">
+			<div id="introduction" class="row">
 				<div class="span9">
 					<h2>Introduction</h2>
 					<hr>
@@ -44,7 +44,7 @@
 				</div>
 			</div>
 			<!-- Notes --> 
-			<div id="#notes" class="row">
+			<div id="notes" class="row">
 				<div class="span9">
 					<br><br>
 					<h2>Notes</h2>
@@ -60,7 +60,7 @@
 				</div>
 			</div>
 			<!-- API -->
-			<div id="#api" class="row">
+			<div id="api" class="row">
 				<%= Hop.renderBeforeTemplates("Doc") %>	
 				<div class="span9">
 					<br><br>
@@ -136,6 +136,13 @@
 				</div>
 				<%= Hop.renderAfterTemplates("Doc") %>	
 			</div>	
+			<div class="row">
+				<div class="span9">
+					<br><br><br>
+					<img src="/_hopjs/img/logo.png"><br>
+					Powered by HopJS
+				</div>
+			</div>
 		</div>
 	</body>
 </html>
