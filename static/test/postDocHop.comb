@@ -1,1 +1,16 @@
-<div><button onClick='Hop.TestCase.runInDialog("","#dialog")'/>Run all test cases</button></div>
+<div class="span9">
+	<button onClick='Hop.TestCase.runInDialog("","#testModal")'/>Run all test cases</button>
+</div>
+<div class="span9">
+	<div id="testModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalTestLabel" aria-hidden="true">
+		<div class="modal-header">
+			<h3 id="modalTestLabel">Running Tests</h3>
+		</div>
+		<div id="testModalContents" class="modal-body">
+			This is a bunch of crap
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+	</div>
+</div>

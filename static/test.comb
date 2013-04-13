@@ -78,15 +78,11 @@ var patchTestCases=function(){
 patchTestCases();
 Hop.TestCase.resultSelector=null;
 Hop.TestCase.runInDialog=function(what,selector){
-  Hop.TestCase.resultSelector=selector;
+  Hop.TestCase.resultSelector=selector+" > .modal-body";
   Hop.TestCase.resultIndex=0;
   Hop.TestCase.lastTaskIndex=-1;
   Hop.TestCase.results={ pass:0, fail:0 };
-  $(selector).empty();
-  $(selector).dialog({
-    title: "Running test case:"+what,
-    width:740
-  }); 
+	$(Hop.TestCase.resultSelector).empty();
 
   if(Hop.TestCases[what]){
     Hop.TestCase.run(what); 
@@ -118,7 +114,8 @@ Hop.TestCase.runInDialog=function(what,selector){
 
       }
     }
-    run();
+  	$(selector).modal('show'); 
+   	run();
   }
 
 

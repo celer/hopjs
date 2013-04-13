@@ -1,12 +1,15 @@
-<div>
-  <% if(typeof testControl=="undefined") testControl=0; testControl++; %>
-  <select id="testControl_<%=testControl%>">
-  <option value="<%=method.getMethod()%>">All for <%=method.getMethod()%></option>
-  <% for(var testCaseName in Hop.TestCases){ %>
-    <% if(testCaseName.indexOf(method.getMethod())==0){ %>
-      <option value="<%=testCaseName%>"><%=testCaseName%></option>
-    <% } %>
-  <% } %>
-  </select>
-  <button onClick='Hop.TestCase.runInDialog($("#testControl_<%=testControl%>").val(),"#dialog")'/>Run</button>
+<div class="offset1 span8">
+	<h5>Test</h5>
+	<div class="form-inline" onclick="false">
+			<% if(typeof testControl=="undefined") testControl=0; testControl++; %>
+			<select id="testControl_<%=testControl%>">
+			<option value="<%=method.getMethod()%>">All for <%=method.getMethod()%></option>
+			<% for(var testCaseName in Hop.TestCases){ %>
+				<% if(testCaseName.indexOf(method.getMethod())==0){ %>
+					<option value="<%=testCaseName%>"><%=testCaseName%></option>
+				<% } %>
+			<% } %>
+			</select>
+			<button class="btn" onClick='Hop.TestCase.runInDialog($("#testControl_<%=testControl%>").val(),"#testModal")'/>Run</button>
+	</div>
 </div>

@@ -1,128 +1,141 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 	<head>
 		<title>RESTful API Documentation</title>
-	</head>
-	<body>
-		
-		<link rel="stylesheet" href="/_hopjs/css/reset.css" />
-		<link rel="stylesheet" href="/_hopjs/css/jquery-ui.css" />
-		<link rel="stylesheet" href="/_hopjs/css/doc.css" />
+		<meta name="viewport" content="Width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="/_hopjs/css/bootstrap.css" />
+		<link rel="stylesheet" href="/_hopjs/css/bootstrap-responsive.css" />
 		<script src="/_hopjs/js/jquery.js"></script>
-		<script src="/_hopjs/js/jquery-ui.min.js"></script>
+		<script src="/_hopjs/js/bootstrap.min.js"></script>
 		<script>_csrf=<%=JSON.stringify(_csrf)%>;</script>
 		<script src="/_hopjs/apitest.js"></script>
 		<script src="<%=Hop.apiURL%>"></script>
 		<script src="<%=Hop.testURL%>"></script>
-		<!--[if gte IE 9]>
-			<style type="text/css">
-				.gradient {
-					 filter: none;
-				}
-			</style>
-		<![endif]-->
-		<div class="header">
-			<span>RESTful API</span>
-			&nbsp;&nbsp;
-			&nbsp;&nbsp;
-			<a href="#introduction">Introduction</a>
-			&nbsp;|&nbsp;
-			<a href="#notes">Notes</a>
-			&nbsp;|&nbsp;
-			<a href="#notes">API</a>
-		</div>	
-		<br/>
-		<h1>Introdution</h1>
-		<div id="introduction" class="section">
-			<div>
-			The API documented below is a RESTful API for use with this website. 
+	</head>
+	<body>
+		<div class="navbar navbar-inverse navbar-static-top">
+			<div class="navbar-inner">
+				<a class="brand" href="#">Restful API</a>
+				<ul class="nav">
+					<li><a href="#introduction">Introduction</a></li>
+					<li><a href="#notes">Notes</a></li>
+					<li><a href="#api">API</a></li>
+				</ul>
 			</div>
-			<h2>Calling methodology</h2>
-			<div>
-			<p>This API is focused on ease of integration with existing browsers and expects parameters to either be passed
-			as regular HTTP query parameters in the case of GET based queries, and form encoding in the case of PUT and POST 
-			parameters. Responses to API calls are provided in JSON.</p>
-			<p>Each call documented below has some number of required or optional parameters, they are noted as such.</p>
-			</div>
-			<h2>Client side JavaScript API</h2>
-			<div>
-			There is a generated client-side API for use in the browser available at <a href="<%=Hop.apiURL%>"><%=Hop.apiURL%></a>
-			</div>	
-			<h2>Authentication</h2>
-			<div>
-			Authentication is managed via cookie based sessions upon authentication.
-			</div>	
 		</div>
-		<h1 id="notes">Notes</h1>
-		<div class="section">
-			<%if(typeof _csrf!="undefined"){%>
-			<h2>Cross Site Request Forgery</h2>
-			<div>
-				This site utilizies CSRF protection and requires a special field called _csrf to be included in
-				all POST and PUT queries. This is handled by default in the JavaScript API, but the field still must be defined in client
-				side pages that use the JavaScript API.  
-			<div>
-			<%}%>
-		</div>
-		<%= Hop.renderBeforeTemplates("Doc") %>	
-		<h1>API</h1>
-		<div class="apiIndex">
-			<h4>Classes</h4>
-			<% for(var objName in Hop.Objects){ %>
-					<% var obj = Hop.Objects[objName]; %>
-					<a href="#<%=obj.name%>"><%=obj.name%></a><%if(obj.desc){%>&nbsp;-&nbsp;<span class="objUsage"><%=obj.desc%></span><%}%><br>
-			<% } %>	
-		</div>
-		<div class="api">
-			<% for(var objName in Hop.Objects){ %>
-				<div class="object">
-					<div class="header">
-					<% var obj = Hop.Objects[objName]; %>
-					<h2 id="<%=obj.name%>"><%= obj.name %><%if(obj.desc){%>&nbsp;-&nbsp;<span class="objUsage"><%=obj.desc%></span><%}%></h2>
+		<div class="container">
+			<!-- Introduction --> 
+			<div id="#introduction" class="row">
+				<div class="span9">
+					<h2>Introduction</h2>
+					<hr>
+					<div>
+						The API documented below is a RESTful API for use with this website. 
 					</div>
-				
-					<%= obj.renderBeforeTemplates("Doc", { object: obj }) %>	
-
-						
-					<% for(var methodName in obj.methods){ %>
-						<% var method = obj.methods[methodName]; %>
-						<div class="apiMethod">
-						<%var params = []; %>
-						<%for(var paramName in method.params) {%>
-							<%var param = method.params[paramName]; %>
-							<%params.push(paramName+(param.demand?"*":""))%>
-						<% } %>
-						<%params.sort(function(a,b){ if(a.indexOf("*")==-1) return 1;  }) %>
-						<h3><%= obj.name %>.<%= method.name %>&nbsp;<span class="methodParams">({<%= params.join(", ") %>},onComplete)</span></h3>
-							<%= (method.desc?method.desc:"") %>
-						<div class="paramBlock">
-							<u>Input Parameters</u><br>
-							<%for(var i in params) {%>
-								<%var paramName = params[i]; %>
-								<%var origParamName = paramName.replace("*",""); %>
-								<span>&nbsp;<%=(paramName)%></span><% if(method.params[origParamName].desc){ %> - <span><%=method.params[origParamName].desc%><% } %><br>
-							<% } %>
-						</div>
-						<br>
-						<%= (method.secure==true?"<i>This method can only be called via https</i>":"") %>
-						<div class="postMethodBlock">
-							 <%= method.renderAfterTemplates("Doc", { method: method}) %> 
-						</div>
-					</div>
-					<br>
-				<% } %>
-				
-				<%= obj.renderAfterTemplates("Doc", { object: obj }) %>	
-				
-				
+					<h4>Calling methodology</h4>
+						<p>This API is focused on ease of integration with existing browsers and expects parameters to either be passed
+						as regular HTTP query parameters in the case of GET based queries, and form encoding in the case of PUT and POST 
+						parameters. Responses to API calls are provided in JSON.</p>
+						<p>Each call documented below has some number of required or optional parameters, they are noted as such.</p>
+					<h4>Client side JavaScript API</h4>
+					There is a generated client-side API for use in the browser available at <a href="<%=Hop.apiURL%>"><%=Hop.apiURL%></a>
+					<h4>Authentication</h4>
+					Authentication is managed via cookie based sessions upon authentication.
 				</div>
+			</div>
+			<!-- Notes --> 
+			<div id="#notes" class="row">
+				<div class="span9">
+					<br><br>
+					<h2>Notes</h2>
+					<hr>
+					<%if(typeof _csrf!="undefined"){%>
+						<h2>Cross Site Request Forgery</h2>
+							<div>
+								This site utilizies CSRF protection and requires a special field called _csrf to be included in
+								all POST and PUT queries. This is handled by default in the JavaScript API, but the field still must be defined in client
+								side pages that use the JavaScript API.  
+						<div>
+					<%}%>
+				</div>
+			</div>
+			<!-- API -->
+			<div id="#api" class="row">
+				<%= Hop.renderBeforeTemplates("Doc") %>	
+				<div class="span9">
+					<br><br>
+					<h2>API</h2>
+					<hr>
+					<% for(var objName in Hop.Objects){ 
+							var obj = Hop.Objects[objName];
+					%>
 
-			<% } %>
-			<span class="methodParams">* - Required parameter</span>
+						<!-- Object name --> 
+						<div class="row">
+								<div class="span4">
+									<h3><%=obj.name%></h3>
+									<%=(obj.desc?obj.desc:"")%>
+								</div> 
+								<%= obj.renderBeforeTemplates("Doc", { object: obj }) %>	
+						</div> 
+						<!-- Methods -->
+						<div class="row">
+							<div class="span9">
+								<% for(var methodName in obj.methods){ 
+									var method = obj.methods[methodName]; 
+									var params = Object.keys(method.params).map(function(paramName){ return method.params[paramName].demand?paramName+"*":paramName; });
+								%>
+									<div class="row">
+										<div class="span9">
+										<h4>
+										<b><%=obj.name%>.<%=method.name%></b>(<%=params.join(", ")%>)<br><br>
+										</h4>
+										</div>
+										<div class="row">
+							 				<%= method.renderBeforeTemplates("Doc", { method: method}) %> 
+										</div>
+										<div class="offset1 span8" id="<%=obj.name%>.<%=method.name%>.overview">
+											<% if(method.desc){ %>
+												<u>Overview</u>
+												<p><%=(method.desc?method.desc:"")%></p>
+											<% } %>
+											<% if(params.length>0){ %>
+											<u>Parameters</u>
+											<table class="table">
+												<%for(var paramName in method.params){
+													var param = method.params[paramName];
+												%>
+													<tr><td><%=paramName%></td><td width="80%"><%=(param.desc?param.desc:"")%></td><td><%if(param.demand){ %><span class="label label-info">Required</span><%}%></td><td><td><tr>
+												<%}%>
+											</table>
+											<%}%>
+										</div>
+										<div class="offset1 span8" id="<%=obj.name%>.<%=method.name%>.usage">
+											<h5>Javascript</h5>
+											<div class="well well-small">
+												<%=obj.name%>.<%=method.name%>(input,onComplete)
+											</div>
+											<h5>HTTP</h5>
+											<div class="well well-small">
+												<span class="label"><%=method.method%></span>&nbsp;<%=method.fullPath%></p>
+											</div>
+											<%if(method.secore){%><span class="label label-important">secure</span><% } %>
+										</div>
+									</div>
+									<div class="row">
+							 			<%= method.renderAfterTemplates("Doc", { method: method}) %> 
+									</div>
+									<br><br>
+								<% } %>
+							</div>
+						</div>
+						<div class="row">	
+							<%= obj.renderAfterTemplates("Doc", { object: obj }) %>	
+						</div>
+					<% } %>	
+				</div>
+				<%= Hop.renderAfterTemplates("Doc") %>	
+			</div>	
 		</div>
-		<div id="dialog"></div>
-		
-		<%= Hop.renderAfterTemplates("Doc") %>	
-		
 	</body>
 </html>
