@@ -112,6 +112,10 @@ UnitTestService.dualComplete=function(input,onComplete){
 	onComplete(null,true);
 }
 
+UnitTestService.customError=function(input,onComplete){
+	return onComplete("INTERNAL ERROR");
+}
+
 
 Hop.defineModel("UnitTestService",function(model){
 	model.field("modelFloat").float();
@@ -128,6 +132,7 @@ Hop.defineClass("UnitTestService",UnitTestService,function(api){
 	api.post("testHeaders","/testHeaders");
 	api.post("sendHeaders","/sendHeaders");
 	api.get("dualComplete","/dualComplete");
+	api.get("customError","/customError");
 	api.post("testForm","/form/test").optionals("textValue","selectValue","multipleValue","checkbox1","radio1");
 	api.post("testPost","/ts/").demands("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat","modelStringArray").inputModel("UnitTestService");
 	api.get("testGet","/ts/").demands("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat","modelStringArray").inputModel("UnitTestService");
@@ -136,6 +141,13 @@ Hop.defineClass("UnitTestService",UnitTestService,function(api){
 	api.post("testPostOptionals","/ts/optionals").optionals("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat","modelStringArray").inputModel("UnitTestService");
 	api.get("testGetOptionals","/ts/optionals").optionals("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat","modelStringArray").inputModel("UnitTestService");
 	api.put("testPutOptionals","/ts/optionals").optionals("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat","modelStringArray").inputModel("UnitTestService");
+
+	api.errorHandler(function(method,request,input,error,stack){
+		if(error=="INTERNAL ERROR"){
+			return "Error";
+		} else return null;
+	});
+
 });
 
 function basicTest(method, funcName,test){
@@ -157,6 +169,10 @@ function basicTest(method, funcName,test){
 	test.do(funcName+"Optionals").with({ }).noError();
 	test.do(funcName+"Optionals").with(testValue).outputContains(expectedValue);
 }
+
+Hop.defineTestCase("UnitTestService.customError",function(test){
+	test.do("UnitTestService.customError").with({}).errorContains("Error");
+});
 
 Hop.defineTestCase("UnitTestService.sendTemplate",function(test){
 	test.do("UnitTestService.sendTemplate").with({}).outputContains("<h1>Template Title</h1>").noError();

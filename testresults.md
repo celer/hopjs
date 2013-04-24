@@ -11,6 +11,6 @@
 #ex3:
 	Pass 3 Fail 0 100.00%
 #test:
-	Pass 34 Fail 0 100.00%
+	Pass 35 Fail 0 100.00%
 #intro:
 	Pass 18 Fail 0 100.00%
