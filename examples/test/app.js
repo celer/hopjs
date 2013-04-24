@@ -107,6 +107,11 @@ UnitTestService.testHeaders=function(input,onComplete,req){
 	return onComplete(null, true);
 }
 
+UnitTestService.dualComplete=function(input,onComplete){
+	onComplete(null,false);
+	onComplete(null,true);
+}
+
 
 Hop.defineModel("UnitTestService",function(model){
 	model.field("modelFloat").float();
@@ -122,6 +127,7 @@ Hop.defineClass("UnitTestService",UnitTestService,function(api){
 	api.get("sendTemplate","/template");
 	api.post("testHeaders","/testHeaders");
 	api.post("sendHeaders","/sendHeaders");
+	api.get("dualComplete","/dualComplete");
 	api.post("testForm","/form/test").optionals("textValue","selectValue","multipleValue","checkbox1","radio1");
 	api.post("testPost","/ts/").demands("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat","modelStringArray").inputModel("UnitTestService");
 	api.get("testGet","/ts/").demands("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat","modelStringArray").inputModel("UnitTestService");
