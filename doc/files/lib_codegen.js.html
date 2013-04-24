@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib&#x2F;codegen.js</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.5.1&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
-    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.5.1&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <title>lib/codegen.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+                <h1><img src="../assets/css/logo.png" title=""></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -41,43 +41,43 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="..&#x2F;classes/Hop.html">Hop</a></li>
+                <li><a href="../classes/Hop.html">Hop</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.CodeGenerator.html">Hop.CodeGenerator</a></li>
+                <li><a href="../classes/Hop.CodeGenerator.html">Hop.CodeGenerator</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.Method.html">Hop.Method</a></li>
+                <li><a href="../classes/Hop.Method.html">Hop.Method</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.Object.html">Hop.Object</a></li>
+                <li><a href="../classes/Hop.Object.html">Hop.Object</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.StubRequest.html">Hop.StubRequest</a></li>
+                <li><a href="../classes/Hop.StubRequest.html">Hop.StubRequest</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.StubResponse.html">Hop.StubResponse</a></li>
+                <li><a href="../classes/Hop.StubResponse.html">Hop.StubResponse</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestCase.html">Hop.TestCase</a></li>
+                <li><a href="../classes/Hop.TestCase.html">Hop.TestCase</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestTask.html">Hop.TestTask</a></li>
+                <li><a href="../classes/Hop.TestTask.html">Hop.TestTask</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestUtils.html">Hop.TestUtils</a></li>
+                <li><a href="../classes/Hop.TestUtils.html">Hop.TestUtils</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.User.html">Hop.User</a></li>
+                <li><a href="../classes/Hop.User.html">Hop.User</a></li>
             
             </ul>
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a href="..&#x2F;modules/Cache.html">Cache</a></li>
+                <li><a href="../modules/Cache.html">Cache</a></li>
             
-                <li><a href="..&#x2F;modules/CodeGenerator.html">CodeGenerator</a></li>
+                <li><a href="../modules/CodeGenerator.html">CodeGenerator</a></li>
             
-                <li><a href="..&#x2F;modules/Event.html">Event</a></li>
+                <li><a href="../modules/Event.html">Event</a></li>
             
-                <li><a href="..&#x2F;modules/Hop.html">Hop</a></li>
+                <li><a href="../modules/Hop.html">Hop</a></li>
             
-                <li><a href="..&#x2F;modules/Job.html">Job</a></li>
+                <li><a href="../modules/Job.html">Job</a></li>
             
-                <li><a href="..&#x2F;modules/Test.html">Test</a></li>
+                <li><a href="../modules/Test.html">Test</a></li>
             
-                <li><a href="..&#x2F;modules/User.html">User</a></li>
+                <li><a href="../modules/User.html">User</a></li>
             
             </ul>
         </div>
@@ -114,17 +114,17 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: lib&#x2F;codegen.js</h1>
+                        <h1 class="file-heading">File: lib/codegen.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-&#x2F;**
+/**
 Provides generator functionality for generating client stubs for other languauges
 
 Hop can utilize its knowledge of your APIs to generate client side stubs for various languages. This module provides the core functionality for generators in such a way that
 a new generator can be built with relative ease. 
 
- * Implemeneted generators can be found under &#x2F;gen in the Hop root directory
+ * Implemeneted generators can be found under /gen in the Hop root directory
 
 
 ## To use a generator
@@ -133,7 +133,7 @@ Hop tries to make it easy to generate client side code, to do so we use a comman
 
 To generate client side stubs for android for a specific website:
 
-	hopjs-gen --url http:&#x2F;&#x2F;localhost:3000&#x2F; android --outputDir output&#x2F; --package com.foo
+	hopjs-gen --url http://localhost:3000/ android --outputDir output/ --package com.foo
 
 You might first want to make sure HopJS is installed locally
 
@@ -142,13 +142,13 @@ You might first want to make sure HopJS is installed locally
 
 
 ## Creating a new generator
- 1. Create a new directory under &#x2F;gen - the directory will be the name of your generator
- 2. Create a generator.json (see the android&#x2F;generator.json for an example)
+ 1. Create a new directory under /gen - the directory will be the name of your generator
+ 2. Create a generator.json (see the android/generator.json for an example)
  3. Define some number of templates
 
 #### Generators work by:
  * Asking for any required command line options as defiend in generator.json:demand and generator.json:optional
- * Fetching an API definition from URL&#x2F;_hopjs&#x2F;api.json
+ * Fetching an API definition from URL/_hopjs/api.json
  * Loading any required utility functions as defined in generator.json:required
  * Determining the type of gernerator as specified by generator.json:generates
 	 * If the generator type is &#x27;file&#x27; then file pointed to by generator.json:template will be evaluated with { Objects, Models (and options passed in via the commandline ) }
@@ -160,41 +160,40 @@ You might first want to make sure HopJS is installed locally
 
 @module Hop
 @submodule CodeGenerator
-**&#x2F;
-var Hop = require(&#x27;.&#x2F;api&#x27;);
-require(&quot;.&#x2F;express&quot;);
-require(&#x27;.&#x2F;remote&#x27;);
+**/
+var HopRemote = require(&#x27;hopjs-remote&#x27;);
+var Hop = require(&#x27;../lib/express&#x27;);
 var fs = require(&#x27;fs&#x27;);
 var path = require(&#x27;path&#x27;);
 var util = require(&#x27;hopjs-common&#x27;);
 
-&#x2F;**
+/**
 	@class Hop.CodeGenerator
-*&#x2F;
+*/
 Hop.CodeGenerator = { };
 
-Hop.CodeGenerator.genDir = path.join(path.dirname(module.filename),&quot;..&#x2F;gen&quot;);
+Hop.CodeGenerator.genDir = path.join(path.dirname(module.filename),&quot;../gen&quot;);
 
 
 
-&#x2F;** 
+/** 
 	Lists the various types of generators that exist
 
 	@method Hop.CodeGenerator.list
 	@static
-*&#x2F;
+*/
 Hop.CodeGenerator.list = function(onComplete){
 	fs.readdir(Hop.CodeGenerator.genDir,function(err,res){
 		return onComplete(err,res);
 	}); 
 }
 
-&#x2F;** 
+/** 
 	Describe the current generator, aka get the generator.json
 	
 	@method Hop.CodeGenerator.describe
 	@static
-*&#x2F;
+*/
 Hop.CodeGenerator.describe=function(generator,onComplete){
 
 		fs.readFile(path.join(Hop.CodeGenerator.genDir,generator,&quot;generator.json&quot;),function(err,_gen){
@@ -258,7 +257,7 @@ Hop.CodeGenerator.walkDir=function(baseDir,dir,onItem,onAllComplete){
 	}); 
 }
 
-&#x2F;** 
+/** 
 	For generators that use a directory structure this will compute the output paths
 	
 	* The translatePath property in generator.json can be used to override this function
@@ -266,7 +265,7 @@ Hop.CodeGenerator.walkDir=function(baseDir,dir,onItem,onAllComplete){
 	@method Hop.CodeGenerator.toOutputFile 
 	@static
 
-*&#x2F;
+*/
 Hop.CodeGenerator.toOutputFile=function(genObj,options,inputItem,outputItem){
 	if(genObj.translatePath){
 		if(eval(genObj.translatePath)){
@@ -288,7 +287,7 @@ Hop.CodeGenerator.toOutputFile=function(genObj,options,inputItem,outputItem){
 	}
 } 
 
-&#x2F;** 
+/** 
 	This will generate the files utilized for unit test for this generator. 
 
 	* The property &#x27;testTemplate&#x27; in generator.json will be used as the input file for unit tests.
@@ -298,12 +297,12 @@ Hop.CodeGenerator.toOutputFile=function(genObj,options,inputItem,outputItem){
 
 	@method Hop.CodeGenerator.generateTest
 	@static
-*&#x2F;
+*/
 Hop.CodeGenerator.generateTest=function(url,generator,options,onComplete){
 	var errors = [];
 	Hop.CodeGenerator.describe(generator,function(err,_gen){
 				if(err) return onComplete(err);
-			 Hop.remoteAPI(url,function(err,api){
+			 HopRemote.remoteAPI(url,function(err,api){
 					
 					if(err) return onComplete(err);
 
@@ -312,11 +311,11 @@ Hop.CodeGenerator.generateTest=function(url,generator,options,onComplete){
 					}
 					options.api = api._json; 
 					
-					Hop.remoteAPITest(url,function(err,apiTest){
+					HopRemote.remoteAPITest(url,function(err,apiTest){
 						if(typeof _gen.testTemplate!=&quot;string&quot;)
 							return onComplete(&quot;generator.json must contain a &#x27;testTemplate&#x27; property&quot;);
 						
-						var templateDir = path.join(&quot;..&#x2F;gen&quot;,generator,(_gen.inputDir||&quot;&quot;));
+						var templateDir = path.join(&quot;../gen&quot;,generator,(_gen.inputDir||&quot;&quot;));
 						var outputFile = options.output;
 						options.TestCases=apiTest;
 						options.Objects=options.api.Objects; 
@@ -329,18 +328,18 @@ Hop.CodeGenerator.generateTest=function(url,generator,options,onComplete){
 }
 
 
-&#x2F;** 
+/** 
 	This will generate the files utilized for the stub api. 
 
 
 	@method Hop.CodeGenerator.generate
 	@static
-*&#x2F;
+*/
 Hop.CodeGenerator.generate=function(url,generator,options,onComplete){
 	var errors = [];
 	Hop.CodeGenerator.describe(generator,function(err,_gen){
 					if(err) return onComplete(err);
-					Hop.remoteAPI(url,function(err,api){
+					HopRemote.remoteAPI(url,function(err,api){
 						if(err) return onComplete(err);
 
 						for(var i in _gen.require){
@@ -352,12 +351,12 @@ Hop.CodeGenerator.generate=function(url,generator,options,onComplete){
 						if(_gen.generates==&quot;dir&quot;){
 						
 							var inputDir = path.join(Hop.CodeGenerator.genDir,generator,(_gen.inputDir||&quot;&quot;));
-							var templateDir = path.join(&quot;..&#x2F;gen&quot;,generator,(_gen.inputDir||&quot;&quot;));
+							var templateDir = path.join(&quot;../gen&quot;,generator,(_gen.inputDir||&quot;&quot;));
 							
 							fs.mkdir(options.outputDir,function(err){
 								Hop.CodeGenerator.walkDir(inputDir,&quot;.&quot;,function(item,stat,onDone){
 										if(stat.isFile()){
-											if(&#x2F;^\_object.*&#x2F;.test(path.basename(item))){
+											if(/^\_object.*/.test(path.basename(item))){
 												for(var i in api._json.Objects){
 													options.object= api._json.Objects[i];
 													try { 
@@ -371,7 +370,7 @@ Hop.CodeGenerator.generate=function(url,generator,options,onComplete){
 												}
 												delete options.object;
 												onDone();
-											} else if(&#x2F;^\_model.*&#x2F;.test(path.basename(item))){
+											} else if(/^\_model.*/.test(path.basename(item))){
 												for(var i in api._json.Models){
 													options.model = api._json.Models[i];
 													try { 
@@ -387,10 +386,17 @@ Hop.CodeGenerator.generate=function(url,generator,options,onComplete){
 												onDone();
 											} else {
 												try { 
-													var s = Hop.renderTemplate(path.join(templateDir,item))(options);
-													var outFile = Hop.CodeGenerator.toOutputFile(_gen,options,item);
-													if(typeof outFile==&quot;string&quot;)
-														fs.writeFileSync(outFile,s.toString());
+													if(_gen.binaryExts &amp;&amp; _gen.binaryExts.indexOf(path.extname(item))!=-1){
+														var dataIn = fs.readFileSync(path.join(&quot;gen&quot;,templateDir,item));
+														var outFile = Hop.CodeGenerator.toOutputFile(_gen,options,item);
+														if(typeof outFile==&quot;string&quot;)
+															fs.writeFileSync(outFile,dataIn);	
+													} else {
+														var s = Hop.renderTemplate(path.join(templateDir,item))(options);
+														var outFile = Hop.CodeGenerator.toOutputFile(_gen,options,item);
+														if(typeof outFile==&quot;string&quot;)
+															fs.writeFileSync(outFile,s.toString());
+													}
 												} catch(e){
 													errors.push(path.join(templateDir,item)+&quot;: &quot;+e);
 												}
@@ -416,7 +422,7 @@ Hop.CodeGenerator.generate=function(url,generator,options,onComplete){
 						} else {
 							if(typeof _gen.template!=&quot;string&quot;)
 								return onComplete(&quot;generator.json must contain a &#x27;template&#x27; property&quot;);
-							var templateDir = path.join(&quot;..&#x2F;gen&quot;,generator,(_gen.inputDir||&quot;&quot;));
+							var templateDir = path.join(&quot;../gen&quot;,generator,(_gen.inputDir||&quot;&quot;));
 							var outputFile = options.output;
 							options.Objects=options.api.Objects; 
 							options.Models=options.api.Models; 
@@ -428,6 +434,8 @@ Hop.CodeGenerator.generate=function(url,generator,options,onComplete){
 	});
 }
 
+module.exports=Hop;
+
 
     </pre>
 </div>
@@ -438,13 +446,13 @@ Hop.CodeGenerator.generate=function(url,generator,options,onComplete){
         </div>
     </div>
 </div>
-<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
 <script>prettyPrint();</script>
-<script src="..&#x2F;assets/js/yui-prettify.js"></script>
-<script src="..&#x2F;assets/../api.js"></script>
-<script src="..&#x2F;assets/js/api-filter.js"></script>
-<script src="..&#x2F;assets/js/api-list.js"></script>
-<script src="..&#x2F;assets/js/api-search.js"></script>
-<script src="..&#x2F;assets/js/apidocs.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
 </body>
 </html>

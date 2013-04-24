@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib&#x2F;job.js</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.5.1&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
-    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.5.1&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <title>lib/job.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+                <h1><img src="../assets/css/logo.png" title=""></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -41,43 +41,43 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="..&#x2F;classes/Hop.html">Hop</a></li>
+                <li><a href="../classes/Hop.html">Hop</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.CodeGenerator.html">Hop.CodeGenerator</a></li>
+                <li><a href="../classes/Hop.CodeGenerator.html">Hop.CodeGenerator</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.Method.html">Hop.Method</a></li>
+                <li><a href="../classes/Hop.Method.html">Hop.Method</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.Object.html">Hop.Object</a></li>
+                <li><a href="../classes/Hop.Object.html">Hop.Object</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.StubRequest.html">Hop.StubRequest</a></li>
+                <li><a href="../classes/Hop.StubRequest.html">Hop.StubRequest</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.StubResponse.html">Hop.StubResponse</a></li>
+                <li><a href="../classes/Hop.StubResponse.html">Hop.StubResponse</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestCase.html">Hop.TestCase</a></li>
+                <li><a href="../classes/Hop.TestCase.html">Hop.TestCase</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestTask.html">Hop.TestTask</a></li>
+                <li><a href="../classes/Hop.TestTask.html">Hop.TestTask</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestUtils.html">Hop.TestUtils</a></li>
+                <li><a href="../classes/Hop.TestUtils.html">Hop.TestUtils</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.User.html">Hop.User</a></li>
+                <li><a href="../classes/Hop.User.html">Hop.User</a></li>
             
             </ul>
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a href="..&#x2F;modules/Cache.html">Cache</a></li>
+                <li><a href="../modules/Cache.html">Cache</a></li>
             
-                <li><a href="..&#x2F;modules/CodeGenerator.html">CodeGenerator</a></li>
+                <li><a href="../modules/CodeGenerator.html">CodeGenerator</a></li>
             
-                <li><a href="..&#x2F;modules/Event.html">Event</a></li>
+                <li><a href="../modules/Event.html">Event</a></li>
             
-                <li><a href="..&#x2F;modules/Hop.html">Hop</a></li>
+                <li><a href="../modules/Hop.html">Hop</a></li>
             
-                <li><a href="..&#x2F;modules/Job.html">Job</a></li>
+                <li><a href="../modules/Job.html">Job</a></li>
             
-                <li><a href="..&#x2F;modules/Test.html">Test</a></li>
+                <li><a href="../modules/Test.html">Test</a></li>
             
-                <li><a href="..&#x2F;modules/User.html">User</a></li>
+                <li><a href="../modules/User.html">User</a></li>
             
             </ul>
         </div>
@@ -114,19 +114,19 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: lib&#x2F;job.js</h1>
+                        <h1 class="file-heading">File: lib/job.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-&#x2F;**
+/**
 	Provides generic job functionality
 
 	@beta
 
 	@module Hop
 	@submodule Job
-**&#x2F;
-var Hop = require(&#x27;.&#x2F;api&#x27;);
+**/
+var Hop = require(&#x27;./api&#x27;);
 var crypto = require(&#x27;crypto&#x27;);
 
 var JobStatus = function(){
@@ -174,12 +174,12 @@ JobStatus.load=function(input,onComplete){
 
 
 Hop.defineClass(&quot;JobStatus&quot;,JobStatus,function(api){
-	api.get(&quot;wait&quot;,&quot;&#x2F;_job&#x2F;wait&#x2F;:jobID&quot;).demand(&quot;jobID&quot;);
-	api.get(&quot;listen&quot;,&quot;&#x2F;_job&#x2F;listen&#x2F;:jobID&quot;).demand(&quot;jobID&quot;);
-	api.get(&quot;load&quot;,&quot;&#x2F;_job&#x2F;:jobID&quot;).demand(&quot;jobID&quot;);
+	api.get(&quot;wait&quot;,&quot;/_job/wait/:jobID&quot;).demand(&quot;jobID&quot;);
+	api.get(&quot;listen&quot;,&quot;/_job/listen/:jobID&quot;).demand(&quot;jobID&quot;);
+	api.get(&quot;load&quot;,&quot;/_job/:jobID&quot;).demand(&quot;jobID&quot;);
 });
 
-Hop.addBeforeTemplate(&quot;JavaScript&quot;,&quot;job&#x2F;preJSHop.comb&quot;);
+Hop.addBeforeTemplate(&quot;JavaScript&quot;,&quot;job/preJSHop.comb&quot;);
 
 Hop.Method.prototype.jobMaxStall=function(duration){
 	if(!this.job)
@@ -206,7 +206,7 @@ Hop.Method.prototype.trackJob=function(jobPath,duration,allowRepeatIfFinished){
 	duration=duration||(24*60*60);
 	var self=this;
 
-	self.addAfterTemplate(&quot;JavaScript&quot;,&quot;job&#x2F;postJSMethod.comb&quot;);
+	self.addAfterTemplate(&quot;JavaScript&quot;,&quot;job/postJSMethod.comb&quot;);
 
 	self.addPreCall(function(req,input,onComplete,next){
 		
@@ -218,7 +218,7 @@ Hop.Method.prototype.trackJob=function(jobPath,duration,allowRepeatIfFinished){
 				if(job){
 					var forceNew = false;
 					if(job.started &amp;&amp; !job.finished){
-						var jobDuration = Math.ceil(((new Date()).getTime()-job.started)&#x2F;1000.0);
+						var jobDuration = Math.ceil(((new Date()).getTime()-job.started)/1000.0);
 						if(self.job &amp;&amp; self.job.maxDuration){
 							if(jobDuration &gt; self.job.maxDuration)
 								forceNew = true;
@@ -226,7 +226,7 @@ Hop.Method.prototype.trackJob=function(jobPath,duration,allowRepeatIfFinished){
 						Hop.log(&quot;jobDuration&quot;,jobDuration);
 					}
 					if(job.updated &amp;&amp; !job.finished){
-						var jobStall = Math.ceil(((new Date()).getTime()-job.updated)&#x2F;1000.0);
+						var jobStall = Math.ceil(((new Date()).getTime()-job.updated)/1000.0);
 						if(self.job &amp;&amp; self.job.maxStall){
 							if(jobStall &gt; self.job.maxStall)
 								forceNew = true;
@@ -254,9 +254,9 @@ Hop.Method.prototype.trackJob=function(jobPath,duration,allowRepeatIfFinished){
 								req.getResponse().set(&quot;Job-ID&quot;,job.jobID);
 								return onComplete(job.err,job.result);
 						} else {
-							&#x2F;&#x2F;FIXME we have issue here, what if the job is actually dead?
-							&#x2F;&#x2F; we need some metrics to determine at what point the job should 
-							&#x2F;&#x2F; be considererd dead.
+							//FIXME we have issue here, what if the job is actually dead?
+							// we need some metrics to determine at what point the job should 
+							// be considererd dead.
 							if(forceNew){
 								var jobID = Hop.Job.id();
 								req.getResponse().set(&quot;Job-ID&quot;,jobID);
@@ -336,7 +336,7 @@ Hop.Job.id=function(){
 
 Hop.Job.resolvePath=function(path,req,input){
 	var request=req;
-	return path.replace(&#x2F;:([^\&#x2F;]+)&#x2F;g,function(m,s){
+	return path.replace(/:([^\/]+)/g,function(m,s){
 		if(s){
 			try {
 				with(input){
@@ -409,6 +409,7 @@ Hop.Job.prototype.getStatus=function(onComplete){
 	});
 }
 
+module.exports=Hop;
 
     </pre>
 </div>
@@ -419,13 +420,13 @@ Hop.Job.prototype.getStatus=function(onComplete){
         </div>
     </div>
 </div>
-<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
 <script>prettyPrint();</script>
-<script src="..&#x2F;assets/js/yui-prettify.js"></script>
-<script src="..&#x2F;assets/../api.js"></script>
-<script src="..&#x2F;assets/js/api-filter.js"></script>
-<script src="..&#x2F;assets/js/api-list.js"></script>
-<script src="..&#x2F;assets/js/api-search.js"></script>
-<script src="..&#x2F;assets/js/apidocs.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
 </body>
 </html>

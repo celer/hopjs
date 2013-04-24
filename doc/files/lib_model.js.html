@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib&#x2F;model.js</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.5.1&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
-    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.5.1&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <title>lib/model.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+                <h1><img src="../assets/css/logo.png" title=""></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -41,43 +41,43 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="..&#x2F;classes/Hop.html">Hop</a></li>
+                <li><a href="../classes/Hop.html">Hop</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.CodeGenerator.html">Hop.CodeGenerator</a></li>
+                <li><a href="../classes/Hop.CodeGenerator.html">Hop.CodeGenerator</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.Method.html">Hop.Method</a></li>
+                <li><a href="../classes/Hop.Method.html">Hop.Method</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.Object.html">Hop.Object</a></li>
+                <li><a href="../classes/Hop.Object.html">Hop.Object</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.StubRequest.html">Hop.StubRequest</a></li>
+                <li><a href="../classes/Hop.StubRequest.html">Hop.StubRequest</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.StubResponse.html">Hop.StubResponse</a></li>
+                <li><a href="../classes/Hop.StubResponse.html">Hop.StubResponse</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestCase.html">Hop.TestCase</a></li>
+                <li><a href="../classes/Hop.TestCase.html">Hop.TestCase</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestTask.html">Hop.TestTask</a></li>
+                <li><a href="../classes/Hop.TestTask.html">Hop.TestTask</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestUtils.html">Hop.TestUtils</a></li>
+                <li><a href="../classes/Hop.TestUtils.html">Hop.TestUtils</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.User.html">Hop.User</a></li>
+                <li><a href="../classes/Hop.User.html">Hop.User</a></li>
             
             </ul>
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a href="..&#x2F;modules/Cache.html">Cache</a></li>
+                <li><a href="../modules/Cache.html">Cache</a></li>
             
-                <li><a href="..&#x2F;modules/CodeGenerator.html">CodeGenerator</a></li>
+                <li><a href="../modules/CodeGenerator.html">CodeGenerator</a></li>
             
-                <li><a href="..&#x2F;modules/Event.html">Event</a></li>
+                <li><a href="../modules/Event.html">Event</a></li>
             
-                <li><a href="..&#x2F;modules/Hop.html">Hop</a></li>
+                <li><a href="../modules/Hop.html">Hop</a></li>
             
-                <li><a href="..&#x2F;modules/Job.html">Job</a></li>
+                <li><a href="../modules/Job.html">Job</a></li>
             
-                <li><a href="..&#x2F;modules/Test.html">Test</a></li>
+                <li><a href="../modules/Test.html">Test</a></li>
             
-                <li><a href="..&#x2F;modules/User.html">User</a></li>
+                <li><a href="../modules/User.html">User</a></li>
             
             </ul>
         </div>
@@ -114,11 +114,11 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: lib&#x2F;model.js</h1>
+                        <h1 class="file-heading">File: lib/model.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-&#x2F;*
+/*
 Provides declarative model functionality
 
 HopJS allows you to define models which can then be associated with various API calls to:
@@ -127,8 +127,8 @@ HopJS allows you to define models which can then be associated with various API 
 
 @module Hop
 @submodule Model
-*&#x2F;
-var Hop = require(&quot;.&#x2F;api&quot;);
+*/
+var Hop = require(&quot;./api&quot;);
 
 
 Hop.addToJSONHandler(function(obj){
@@ -233,7 +233,7 @@ Hop.Type.prototype.integer=function(){
 Hop.Type.prototype.date=function(){
 	this.type=&quot;Date&quot;;
 	this.converters=this.converters||[];
-	this.converters.push({ convert: &quot;#VALUE=(&#x2F;[0-9]+&#x2F;.test(#VALUE)?new Date(parseInt(#VALUE)):new Date(#VALUE));&quot;, priority:1 });
+	this.converters.push({ convert: &quot;#VALUE=(/[0-9]+/.test(#VALUE)?new Date(parseInt(#VALUE)):new Date(#VALUE));&quot;, priority:1 });
 	return this;
 }
 
@@ -250,11 +250,30 @@ Hop.ValidatedType.prototype = Object.create(Hop.Type.prototype);
 
 Hop.ValidatedType.prototype.getValidatorLogic=function(){
 	var str=&quot;&quot;;
-	if(this.validators!=undefined){
-		for(var i in this.validators){
-			str+=&quot;\tif(&quot;+this.validators[i].test+&quot;) throw &quot;+JSON.stringify(this.validators[i].msg)+&quot;;\n&quot;;
+	var preStr=&quot;&quot;;
+	var t=&quot;\t&quot;;
+	if(this.isArray===true){
+		preStr+=&quot;\tif(!(#VALUE instanceof Array)) throw &#x27;Invalid value: #VALUENAME&#x27;;\n&quot;;
+		if(this.validators!=undefined &amp;&amp; this.validators.length&gt;0){
+			preStr+=&quot;\tfor(var i in #VALUE){\n&quot;;
+			preStr+=&quot;\t\tvar _val = #VALUE[i];\n&quot;;
+			t=&quot;\t\t&quot;;
 		}
 	}
+	if(this.validators!=undefined){
+		for(var i in this.validators){
+			str+=t+&quot;if(&quot;+this.validators[i].test+&quot;) throw &quot;+JSON.stringify(this.validators[i].msg)+&quot;;\n&quot;;
+		}
+	}
+
+	if(this.isArray===true){ 
+		str=str.replace(&quot;#VALUE&quot;,&quot;_val&quot;);
+		str=preStr+str;
+		if(this.validators!=undefined &amp;&amp; this.validators.length&gt;0){
+			str+=&quot;\t}\n&quot;;
+		}
+	}
+
 	if(str.length&gt;0){
 		str=&quot;if(typeof #VALUE!=\&#x27;undefined\&#x27;){\n&quot;+str+&quot;}&quot;;
 	}
@@ -265,7 +284,7 @@ Hop.ValidatedType.prototype.regexp=function(regex,regexMsg){
 	this.regex=regex;
 	this.regexMsg=regexMsg;
 	this.validators=this.validators||[];
-	this.validators.push({ test: &quot;(!&quot;+regex.toString()+&quot;.test(#VALUE.toString()))&quot;, msg: (regexMsg||&quot;Invalid value&quot;)});
+	this.validators.push({ test: &quot;(!&quot;+regex.toString()+&quot;.test(#VALUE.toString()))&quot;, msg: ((regexMsg||&quot;Invalid value&quot;)+&quot;: #VALUENAME&quot;)});
 	return this;
 }
 
@@ -273,10 +292,10 @@ Hop.ValidatedType.prototype.range=function(min,max){
 	this.range={ min: min, max: max};
 	this.validators=this.validators||[];
 	if(min!=null){
-		this.validators.push({ test: &quot;(#VALUE &lt; &quot;+min.toString()+&quot;)&quot;, msg: &quot;Value must be greater than &quot;+min });
+		this.validators.push({ test: &quot;(#VALUE &lt; &quot;+min.toString()+&quot;)&quot;, msg: &quot;Value must be greater than &quot;+min+&quot;: #VALUENAME&quot; });
 	}
 	if(max!=null){
-		this.validators.push({ test: &quot;(#VALUE &gt; &quot;+max.toString()+&quot;)&quot;, msg: &quot;Value must be less than &quot;+max });
+		this.validators.push({ test: &quot;(#VALUE &gt; &quot;+max.toString()+&quot;)&quot;, msg: &quot;Value must be less than &quot;+max+&quot;: #VALUENAME&quot; });
 	}
 	return this;
 }
@@ -286,12 +305,13 @@ Hop.ValidatedType.prototype.values=function(values){
 	
 	this.validators=this.validators||[];
 	if(values instanceof Array){
-		this.validators.push({ test: &quot;(&quot;+JSON.stringify(values)+&quot;.indexOf(#VALUE)==-1)&quot;, msg: &quot;Valid values are: &quot;+values.join(&quot;, &quot;) });
+		this.validators.push({ test: &quot;(&quot;+JSON.stringify(values)+&quot;.indexOf(#VALUE)==-1)&quot;, msg: &quot;Valid values are: &quot;+values.join(&quot;, &quot;)+&quot;: #VALUENAME&quot; });
 	} else if(values instanceof Object){
-		this.validators.push({ test: &quot;(&quot;+JSON.stringify(Object.keys(values))+&quot;.indexOf(#VALUE)==-1)&quot;, msg: &quot;Valid values are: &quot;+Object.keys(values).join(&quot;, &quot;) });
+		this.validators.push({ test: &quot;(&quot;+JSON.stringify(Object.keys(values))+&quot;.indexOf(#VALUE)==-1)&quot;, msg: &quot;Valid values are: &quot;+Object.keys(values).join(&quot;, &quot;)+&quot;: #VALUENAME&quot; });
 	}
 	return this;
 }
+
 
 
 Hop.Field=function(name){
@@ -318,13 +338,14 @@ Hop.Field.prototype.description=function(desc){
 
 Hop.Field.prototype.getConverter=function(){
 	var logic = this.getConverterLogic();
-	logic=logic.replace(&#x2F;\#VALUE&#x2F;g,&quot;input.&quot;+this.name);
+	logic=logic.replace(/\#VALUE/g,&quot;input.&quot;+this.name);
 	return logic;
 }
 
 Hop.Field.prototype.getValidator=function(){
 	var logic = this.getValidatorLogic();
-	logic=logic.replace(&#x2F;\#VALUE&#x2F;g,&quot;input.&quot;+this.name);
+	logic=logic.replace(/\#VALUENAME/g,this.name);
+	logic=logic.replace(/\#VALUE/g,&quot;input.&quot;+this.name);
 	return logic;
 }
 
@@ -357,7 +378,7 @@ Hop.Model.applyToMethod=function(method,model){
 		var func = new Function(&quot;req&quot;,&quot;input&quot;,&quot;onComplete&quot;,&quot;next&quot;,&#x27;try {\n&#x27; +converter+&#x27;\n} catch(e){ return onComplete(e); } next();&#x27;);
 		method.addPreCall(func,&quot;conversion&quot;);
 	}	
-	method.addAfterTemplate(&quot;JavaScript&quot;,&quot;model&#x2F;postJSMethod.comb&quot;);
+	method.addAfterTemplate(&quot;JavaScript&quot;,&quot;model/postJSMethod.comb&quot;);
 }
 
 Hop.Model.prototype.field=function(name,title,description){
@@ -375,7 +396,7 @@ Hop.Model.prototype.field=function(name,title,description){
 	return field;
 }
 
-Hop.addBeforeTemplate(&quot;JavaScript&quot;,&quot;model&#x2F;preJSHop.comb&quot;);
+Hop.addBeforeTemplate(&quot;JavaScript&quot;,&quot;model/preJSHop.comb&quot;);
 
 Hop.defineModel=function(name,onDefine){
 	var model = new Hop.Model(name);
@@ -385,7 +406,7 @@ Hop.defineModel=function(name,onDefine){
 
 
 
-&#x2F;**
+/**
 Use a model for both input and output
 
 Models are used to provide meta data for both UI 
@@ -406,21 +427,21 @@ and api generation
 
 @example
 	Hop.defineModel(&quot;User&quot;,function(model){
-		model.field(&quot;name&quot;).string().regex(&#x2F;[A-Za-z]{3,10}&#x2F;,&quot;Usernames must be between 3 - 10 characters long and can only contain A-Z  and a-z&quot;);
+		model.field(&quot;name&quot;).string().regex(/[A-Za-z]{3,10}/,&quot;Usernames must be between 3 - 10 characters long and can only contain A-Z  and a-z&quot;);
 		model.field(&quot;id&quot;).integer().ID();
 		model.field(&quot;email&quot;).string().title(&quot;Email&quot;);
 	});
 
 	Hop.defineClass(&quot;User&quot;,new User(),function(api){
-		api.post(&quot;create&quot;,&quot;&#x2F;user&quot;).useModel(&quot;User&quot;);
-		api.get(&quot;list&quot;,&quot;&#x2F;user&quot;).inputModel(SearchModel).outputModel(UserModel);
+		api.post(&quot;create&quot;,&quot;/user&quot;).useModel(&quot;User&quot;);
+		api.get(&quot;list&quot;,&quot;/user&quot;).inputModel(SearchModel).outputModel(UserModel);
 	});
  
 
 @for Hop.Method
 @chainable
 @method model
-**&#x2F;
+**/
 Hop.Method.prototype.useModel=function(inputModel,outputModel){
 	if(outputModel==undefined)
 		outputModel=inputModel;
@@ -443,7 +464,7 @@ Hop.Method.prototype.useModel=function(inputModel,outputModel){
 	return this;
 }
 
-&#x2F;**
+/**
 Use a model for the input 
 
 @param {string} model Name of the model that is used as an input
@@ -452,7 +473,7 @@ Use a model for the input
 @for Hop.Method
 @method inputModel
 @chainable
-**&#x2F;
+**/
 Hop.Method.prototype.inputModel=function(inputModel,asWhat){
 	if(inputModel){
 		if(!Hop.Models[inputModel]){
@@ -472,20 +493,20 @@ Hop.Method.prototype.inputModel=function(inputModel,asWhat){
 }
 
 
-&#x2F;**
+/**
 Use a model for the output
 
 @param {string} model Name of the model that is returned
 @param {class} What the model is returned as (Array is the only valid value)
 
 @example
-	&#x2F;&#x2F;Returns an array of vehicles
-	api.get(&quot;list&quot;,&quot;&#x2F;vehicles&quot;).outputModel(&quot;Vehicle&quot;,Array);
+	//Returns an array of vehicles
+	api.get(&quot;list&quot;,&quot;/vehicles&quot;).outputModel(&quot;Vehicle&quot;,Array);
 
 @for Hop.Method
 @method inputModel
 @chainable
-**&#x2F;
+**/
 Hop.Method.prototype.outputModel=function(outputModel,asWhat){
 	if(outputModel){
 		if(!Hop.Models[outputModel]){
@@ -501,39 +522,39 @@ Hop.Method.prototype.outputModel=function(outputModel,asWhat){
 	return this;
 }
 
-&#x2F;**
+/**
  This call returns a boolean value
 
 @for Hop.Method
 @method returnsBoolean
 @chainable
-*&#x2F;
+*/
 Hop.Method.prototype.returnsBoolean=function(){
 	this.output=new Hop.Type();
 	this.output.boolean();
 	return this;
 }
 
-&#x2F;**
+/**
  This call returns a string value
 
 @for Hop.Method
 @method returnsString
 @chainable
-*&#x2F;
+*/
 Hop.Method.prototype.returnsString=function(){
 	this.output=new Hop.Type();
 	this.output.string();
 	return this;
 }
 
-&#x2F;**
+/**
  This call returns a file
 
 @for Hop.Method
 @method returnsString
 @chainable
-*&#x2F;
+*/
 Hop.Method.prototype.returnsFile =function(){
 	this.output=new Hop.Type();
 	this.output.file();
@@ -541,19 +562,20 @@ Hop.Method.prototype.returnsFile =function(){
 }
 
 
-&#x2F;**
+/**
  This call returns a number value
 
 @for Hop.Method
 @method returnsNumber
 @chainable
-*&#x2F;
+*/
 Hop.Method.prototype.returnsNumber=function(){
 	this.output=new Hop.Type();
 	this.output.number();
 	return this;
 }
 
+module.exports=Hop;
 
     </pre>
 </div>
@@ -564,13 +586,13 @@ Hop.Method.prototype.returnsNumber=function(){
         </div>
     </div>
 </div>
-<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
 <script>prettyPrint();</script>
-<script src="..&#x2F;assets/js/yui-prettify.js"></script>
-<script src="..&#x2F;assets/../api.js"></script>
-<script src="..&#x2F;assets/js/api-filter.js"></script>
-<script src="..&#x2F;assets/js/api-list.js"></script>
-<script src="..&#x2F;assets/js/api-search.js"></script>
-<script src="..&#x2F;assets/js/apidocs.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
 </body>
 </html>

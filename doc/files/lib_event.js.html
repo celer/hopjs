@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib&#x2F;event.js</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.5.1&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
-    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.5.1&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <title>lib/event.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+                <h1><img src="../assets/css/logo.png" title=""></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -41,43 +41,43 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="..&#x2F;classes/Hop.html">Hop</a></li>
+                <li><a href="../classes/Hop.html">Hop</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.CodeGenerator.html">Hop.CodeGenerator</a></li>
+                <li><a href="../classes/Hop.CodeGenerator.html">Hop.CodeGenerator</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.Method.html">Hop.Method</a></li>
+                <li><a href="../classes/Hop.Method.html">Hop.Method</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.Object.html">Hop.Object</a></li>
+                <li><a href="../classes/Hop.Object.html">Hop.Object</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.StubRequest.html">Hop.StubRequest</a></li>
+                <li><a href="../classes/Hop.StubRequest.html">Hop.StubRequest</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.StubResponse.html">Hop.StubResponse</a></li>
+                <li><a href="../classes/Hop.StubResponse.html">Hop.StubResponse</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestCase.html">Hop.TestCase</a></li>
+                <li><a href="../classes/Hop.TestCase.html">Hop.TestCase</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestTask.html">Hop.TestTask</a></li>
+                <li><a href="../classes/Hop.TestTask.html">Hop.TestTask</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestUtils.html">Hop.TestUtils</a></li>
+                <li><a href="../classes/Hop.TestUtils.html">Hop.TestUtils</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.User.html">Hop.User</a></li>
+                <li><a href="../classes/Hop.User.html">Hop.User</a></li>
             
             </ul>
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a href="..&#x2F;modules/Cache.html">Cache</a></li>
+                <li><a href="../modules/Cache.html">Cache</a></li>
             
-                <li><a href="..&#x2F;modules/CodeGenerator.html">CodeGenerator</a></li>
+                <li><a href="../modules/CodeGenerator.html">CodeGenerator</a></li>
             
-                <li><a href="..&#x2F;modules/Event.html">Event</a></li>
+                <li><a href="../modules/Event.html">Event</a></li>
             
-                <li><a href="..&#x2F;modules/Hop.html">Hop</a></li>
+                <li><a href="../modules/Hop.html">Hop</a></li>
             
-                <li><a href="..&#x2F;modules/Job.html">Job</a></li>
+                <li><a href="../modules/Job.html">Job</a></li>
             
-                <li><a href="..&#x2F;modules/Test.html">Test</a></li>
+                <li><a href="../modules/Test.html">Test</a></li>
             
-                <li><a href="..&#x2F;modules/User.html">User</a></li>
+                <li><a href="../modules/User.html">User</a></li>
             
             </ul>
         </div>
@@ -114,15 +114,15 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: lib&#x2F;event.js</h1>
+                        <h1 class="file-heading">File: lib/event.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-&#x2F;**
+/**
 	@module Hop
 	@submodule Event
-**&#x2F;
-var Hop = require(&#x27;.&#x2F;api&#x27;);
+**/
+var Hop = require(&#x27;./api&#x27;);
 var uuid = require(&#x27;node-uuid&#x27;);
 
 if(!Array.remove){
@@ -143,10 +143,10 @@ Hop.Event.Channels=[];
 
 Hop.Event.Channel = function(channel){
 	this.channel=channel;
-	this.regexp = new RegExp(this.channel.replace(&#x2F;:([^\&#x2F;]+)&#x2F;g,&quot;([^\&#x2F;]+)&quot;));
-	this.params = this.channel.match(&#x2F;:([^\&#x2F;]+)&#x2F;g)||[];
+	this.regexp = new RegExp(this.channel.replace(/:([^\/]+)/g,&quot;([^\/]+)&quot;));
+	this.params = this.channel.match(/:([^\/]+)/g)||[];
 	this.params = this.params.map(function(i){
-		return i.replace(&#x2F;^:&#x2F;,&quot;&quot;);
+		return i.replace(/^:/,&quot;&quot;);
 	});
 	this.subscribers=[];
 	Hop.Event.Channels.push(this);
@@ -248,7 +248,7 @@ Hop.Event.Channel.prototype.notify=function(url,message,source,onComplete){
 						} else {
 							Hop.log(&quot;There are listeners&quot;,res);
 						}
-						&#x2F;&#x2F;FIXME This needs to keep track of the IDs to unsubscribe
+						//FIXME This needs to keep track of the IDs to unsubscribe
 					});	
 					})(req,message);
 				} catch(e){
@@ -361,7 +361,7 @@ Hop.EventHelper.listen=function(input,onComplete,req){
 			var channel = Hop.Event.Channel.find(channelPath);
 			if(channel){
 				Hop.log(input,&quot;Found channel&quot;,channel.toString());
-				&#x2F;&#x2F;We need to see if this listener can actually subscribe to the channel
+				//We need to see if this listener can actually subscribe to the channel
 				channel.subscribe(channelPath,input.key,function(){});
 			}
 			process.nextTick(subscribe);
@@ -385,11 +385,11 @@ Hop.EventHelper.listen=function(input,onComplete,req){
 
 Hop.EventHelper.subscribe=function(input,onComplete,req){
 	Hop.log(&quot;SUBSCRIBE&quot;);
-	&#x2F;&#x2F;Find a matching channel	
+	//Find a matching channel	
 	var channel = Hop.Event.Channel.find(input.channel);
 	if(channel){
 		Hop.log(input,&quot;Found channel&quot;,channel.toString());
-		&#x2F;&#x2F;We need to see if this listener can actually subscribe to the channel
+		//We need to see if this listener can actually subscribe to the channel
 		channel.subscribe(input.channel,input.key,onComplete);
 	} else return onComplete(null,null);
 }
@@ -418,18 +418,18 @@ Hop.EventHelper.emit=function(req,input,onComplete){
 	}	
 	var message = { channel: input.channel, message: input.message, source: source };
 	
-	&#x2F;&#x2F;FIXME should try to force addition of user to event data 
+	//FIXME should try to force addition of user to event data 
 	Hop.Event.Bus.emit(message);
 	return onComplete(null,true);		
 }
 
 Hop.defineClass(&quot;Hop.Event&quot;,Hop.EventHelper,function(api){
-	api.get(&quot;getKey&quot;,&quot;&#x2F;event&#x2F;key&quot;);
-	api.get(&quot;listen&quot;,&quot;&#x2F;event&#x2F;listen&quot;).demand(&quot;key&quot;).optional(&quot;channels&quot;).noCache();
-	api.post(&quot;emit&quot;,&quot;&#x2F;event&#x2F;&quot;).demand(&quot;channel&quot;).demand(&quot;message&quot;);
-	api.post(&quot;subscribe&quot;,&quot;&#x2F;event&#x2F;channel&quot;).demand(&quot;channel&quot;).demand(&quot;key&quot;);
-	api.del(&quot;unsubscribe&quot;,&quot;&#x2F;event&#x2F;channel&quot;).demand(&quot;key&quot;).demand(&quot;id&quot;);
-	api.get(&quot;listChannels&quot;,&quot;&#x2F;event&#x2F;channel&quot;);
+	api.get(&quot;getKey&quot;,&quot;/event/key&quot;);
+	api.get(&quot;listen&quot;,&quot;/event/listen&quot;).demand(&quot;key&quot;).optional(&quot;channels&quot;).noCache();
+	api.post(&quot;emit&quot;,&quot;/event/&quot;).demand(&quot;channel&quot;).demand(&quot;message&quot;);
+	api.post(&quot;subscribe&quot;,&quot;/event/channel&quot;).demand(&quot;channel&quot;).demand(&quot;key&quot;);
+	api.del(&quot;unsubscribe&quot;,&quot;/event/channel&quot;).demand(&quot;key&quot;).demand(&quot;id&quot;);
+	api.get(&quot;listChannels&quot;,&quot;/event/channel&quot;);
 });
 
 
@@ -439,13 +439,13 @@ Hop.EventEmitter=function(channel,source){
 }
 
 Hop.EventEmitter.prototype.emit=function(message){
-	&#x2F;&#x2F;FIXME should try to force addition of user to event data 
+	//FIXME should try to force addition of user to event data 
 	Hop.Event.Bus.emit({ channel: this.channel,message: message, source:this.source},function(){});
 };
 
 Hop.EventEmitter.resolvePath=function(path,req,input){
 	var request=req;
-	return path.replace(&#x2F;:([^\&#x2F;]+)&#x2F;g,function(m,s){
+	return path.replace(/:([^\/]+)/g,function(m,s){
 		if(s){
 			try {
 				with(input){
@@ -463,7 +463,7 @@ Hop.EventEmitter.resolvePath=function(path,req,input){
 }
 
 
-&#x2F;**
+/**
 Emit an event prior to calling this method
 
 * The channel will have variables provided by the input parameters
@@ -471,12 +471,12 @@ Emit an event prior to calling this method
 
 @param {string} channel The channel to emit the event on
 @param {function} onEmit The function which determines what is emitted
-@param {object} onEmit.req The Exbeforess&#x2F;HTTP request object
+@param {object} onEmit.req The Exbeforess/HTTP request object
 @param {object} onEmit.input The input object
 
 @example
-	api.post(&quot;send&quot;,&quot;&#x2F;message&#x2F;send&quot;).emitBefore(&quot;&#x2F;user&#x2F;:to&quot;,function(req,input){
-		&#x2F;&#x2F;Emit an event to the specified channel
+	api.post(&quot;send&quot;,&quot;/message/send&quot;).emitBefore(&quot;/user/:to&quot;,function(req,input){
+		//Emit an event to the specified channel
 		this.emit({msg: input.msg, from: input.from});
 	}).demand(&quot;msg&quot;).demand(&quot;from&quot;).demand(&quot;to&quot;);
 
@@ -484,7 +484,7 @@ Emit an event prior to calling this method
 @method emitBefore
 @for Hop.Method
 @chainable
-**&#x2F;
+**/
 Hop.Method.prototype.emitBefore=function(channel,onEmit){
 
 	Hop.Event.Channel.create(channel);
@@ -511,7 +511,7 @@ Hop.Method.prototype.emitBefore=function(channel,onEmit){
 }
 
 
-&#x2F;**
+/**
 Emit an event after calling this method
 
 * The channel will have variables provided by the input parameters
@@ -519,14 +519,14 @@ Emit an event after calling this method
 
 @param {string} channel The channel to emit the event on
 @param {function} onEmit The function which determines what is emitted
-@param {object} onEmit.req The Express&#x2F;HTTP request object
+@param {object} onEmit.req The Express/HTTP request object
 @param {object} onEmit.input The input object
 @param {object} onEmit.err The error resulting from calling the method 
 @param {object} onEmit.result The result of calling the method 
 
 @example
-	api.post(&quot;processFile&quot;,&quot;&#x2F;process&#x2F;&quot;).emitAfter(&quot;&#x2F;user&#x2F;:userId&quot;,function(req,input,err,result){
-		&#x2F;&#x2F;Emit an event to the specified channel
+	api.post(&quot;processFile&quot;,&quot;/process/&quot;).emitAfter(&quot;/user/:userId&quot;,function(req,input,err,result){
+		//Emit an event to the specified channel
 		this.emit({err: err, result:result});
 	}).demand(&quot;userId&quot;);
 
@@ -535,7 +535,7 @@ Emit an event after calling this method
 @for Hop.Method
 @users Hop.Cache
 @chainable
-**&#x2F;
+**/
 Hop.Method.prototype.emitAfter=function(channel,onEmit){
 
 	new Hop.Event.Channel(channel);
@@ -561,18 +561,18 @@ Hop.Method.prototype.emitAfter=function(channel,onEmit){
 	return this;
 }
 
-&#x2F;**
+/**
 Alias to emitAFter
 
 @method emit
 @for Hop.Method
 @chainable
-**&#x2F;
+**/
 Hop.Method.prototype.emit=Hop.Method.prototype.emitAfter;
 
 Hop.Event.Bus={};
 
-Hop.addAfterTemplate(&quot;JavaScript&quot;,&quot;event&#x2F;preJSHop.comb&quot;);
+Hop.addAfterTemplate(&quot;JavaScript&quot;,&quot;event/preJSHop.comb&quot;);
 
 
 Hop.Event.Bus.localEmit=function(message,onComplete){
@@ -588,15 +588,17 @@ Hop.Event.Bus.emit=function(message,onComplete){
 }
 
 
-&#x2F;* 
-Hop.defineChannel(&quot;&#x2F;user&#x2F;:userID&#x2F;messages&quot;,function(c){
+/* 
+Hop.defineChannel(&quot;/user/:userID/messages&quot;,function(c){
 	c.onConnect(function(req,input,onAllowConnect){
 		if(req.session.user.name==input.userID || req.session.user.userID=input.userID){
 			return onAllowConnect(true);
 		} else return onAllowConnect(false);
 	});
 });
-*&#x2F;
+*/
+
+module.exports=Hop;
 
     </pre>
 </div>
@@ -607,13 +609,13 @@ Hop.defineChannel(&quot;&#x2F;user&#x2F;:userID&#x2F;messages&quot;,function(c){
         </div>
     </div>
 </div>
-<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
 <script>prettyPrint();</script>
-<script src="..&#x2F;assets/js/yui-prettify.js"></script>
-<script src="..&#x2F;assets/../api.js"></script>
-<script src="..&#x2F;assets/js/api-filter.js"></script>
-<script src="..&#x2F;assets/js/api-list.js"></script>
-<script src="..&#x2F;assets/js/api-search.js"></script>
-<script src="..&#x2F;assets/js/apidocs.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
 </body>
 </html>

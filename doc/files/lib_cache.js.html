@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib&#x2F;cache.js</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.5.1&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
-    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.5.1&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <title>lib/cache.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+                <h1><img src="../assets/css/logo.png" title=""></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -41,43 +41,43 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="..&#x2F;classes/Hop.html">Hop</a></li>
+                <li><a href="../classes/Hop.html">Hop</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.CodeGenerator.html">Hop.CodeGenerator</a></li>
+                <li><a href="../classes/Hop.CodeGenerator.html">Hop.CodeGenerator</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.Method.html">Hop.Method</a></li>
+                <li><a href="../classes/Hop.Method.html">Hop.Method</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.Object.html">Hop.Object</a></li>
+                <li><a href="../classes/Hop.Object.html">Hop.Object</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.StubRequest.html">Hop.StubRequest</a></li>
+                <li><a href="../classes/Hop.StubRequest.html">Hop.StubRequest</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.StubResponse.html">Hop.StubResponse</a></li>
+                <li><a href="../classes/Hop.StubResponse.html">Hop.StubResponse</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestCase.html">Hop.TestCase</a></li>
+                <li><a href="../classes/Hop.TestCase.html">Hop.TestCase</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestTask.html">Hop.TestTask</a></li>
+                <li><a href="../classes/Hop.TestTask.html">Hop.TestTask</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestUtils.html">Hop.TestUtils</a></li>
+                <li><a href="../classes/Hop.TestUtils.html">Hop.TestUtils</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.User.html">Hop.User</a></li>
+                <li><a href="../classes/Hop.User.html">Hop.User</a></li>
             
             </ul>
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a href="..&#x2F;modules/Cache.html">Cache</a></li>
+                <li><a href="../modules/Cache.html">Cache</a></li>
             
-                <li><a href="..&#x2F;modules/CodeGenerator.html">CodeGenerator</a></li>
+                <li><a href="../modules/CodeGenerator.html">CodeGenerator</a></li>
             
-                <li><a href="..&#x2F;modules/Event.html">Event</a></li>
+                <li><a href="../modules/Event.html">Event</a></li>
             
-                <li><a href="..&#x2F;modules/Hop.html">Hop</a></li>
+                <li><a href="../modules/Hop.html">Hop</a></li>
             
-                <li><a href="..&#x2F;modules/Job.html">Job</a></li>
+                <li><a href="../modules/Job.html">Job</a></li>
             
-                <li><a href="..&#x2F;modules/Test.html">Test</a></li>
+                <li><a href="../modules/Test.html">Test</a></li>
             
-                <li><a href="..&#x2F;modules/User.html">User</a></li>
+                <li><a href="../modules/User.html">User</a></li>
             
             </ul>
         </div>
@@ -114,20 +114,20 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: lib&#x2F;cache.js</h1>
+                        <h1 class="file-heading">File: lib/cache.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-&#x2F;**
+/**
 Implements server-side and client side caching
 
 @module Hop
 @submodule Cache
 
-**&#x2F;
-var Hop = require(&#x27;.&#x2F;api&#x27;);
+**/
+var Hop = require(&#x27;./api&#x27;);
 
-&#x2F;**
+/**
 	Specifies a cache Id to invalidate.
 	
 	This function is used to delete an item from the cache, so for 
@@ -142,7 +142,7 @@ var Hop = require(&#x27;.&#x2F;api&#x27;);
 	@chainable
 	@for Hop.Method
 	@method cacheInvalidate
-**&#x2F;
+**/
 Hop.Method.prototype.cacheInvalidate=function(cacheId){
 	var self=this;
 	self.addPreCall(function(req,input,onComplete,next){
@@ -153,7 +153,7 @@ Hop.Method.prototype.cacheInvalidate=function(cacheId){
 	return this;
 }
 
-&#x2F;**
+/**
 	Specifies a cache Id to use for storing the result of this call.
 	
 	This funciton is used to specify a cache id for the result
@@ -169,7 +169,7 @@ Hop.Method.prototype.cacheInvalidate=function(cacheId){
 	@chainable
 	@for Hop.Method
 	@method cacheId
-**&#x2F;
+**/
 Hop.Method.prototype.cacheId=function(cacheId,duration,force){
 	var self=this;
 	duration=duration||(5*60);
@@ -184,7 +184,7 @@ Hop.Method.prototype.cacheId=function(cacheId,duration,force){
 	return this;
 }
 
-&#x2F;**
+/**
 	Specifies a cache lambda for this call.
 	
 	This funciton is used to specify a cache lambda
@@ -198,32 +198,32 @@ Hop.Method.prototype.cacheId=function(cacheId,duration,force){
 		@param {number} cacheFunc.cache.id.duration The duration in seconds to cache the result for
 		@param {function} cacheFunc.cache.invalidate return the result of this function to specify the result should be invalidated
 		@param {string} cacheFunc.cache.invalidate.id The cache id
-		@param {object} cacheFunc.req the Express&#x2F;HTTP request object
+		@param {object} cacheFunc.req the Express/HTTP request object
 		@param {object} cacheFunc.input the input parameters for the call
 		@param {object} cacheFunc.error the error as a result of calling this function (only valid after the call)
 		@param {object} cacheFunc.result the result of this function (only valid after the call)
 
 @example
 		Hop.defineClass(&quot;Comment&quot;,new Comment(),function(api){
-			&#x2F;&#x2F;This will cause the list to always attempt to hit the cache
-			api.get(&quot;list&quot;,&quot;&#x2F;comment&quot;).cacheId(&quot;&#x2F;comment&#x2F;list&#x2F;:start&#x2F;:size&quot;).demand(&quot;start&quot;).demand(&quot;size&quot;).defaults({start:0, size:25});
-			api.del(&quot;delete&quot;,&quot;&#x2F;comment&#x2F;:commentId&quot;).cacheInvalidate(&quot;&#x2F;comment&#x2F;:commentId&quot;).demand(&quot;commentId&quot;);
-			api.get(&quot;load&quot;,&quot;&#x2F;comment&#x2F;:commentId&quot;).cache(function(when,cache,req,input,err,result){
+			//This will cause the list to always attempt to hit the cache
+			api.get(&quot;list&quot;,&quot;/comment&quot;).cacheId(&quot;/comment/list/:start/:size&quot;).demand(&quot;start&quot;).demand(&quot;size&quot;).defaults({start:0, size:25});
+			api.del(&quot;delete&quot;,&quot;/comment/:commentId&quot;).cacheInvalidate(&quot;/comment/:commentId&quot;).demand(&quot;commentId&quot;);
+			api.get(&quot;load&quot;,&quot;/comment/:commentId&quot;).cache(function(when,cache,req,input,err,result){
 				if(Hop.hasUser(req)){
 					var userId = Hop.User.id(req);
-					&#x2F;&#x2F;If we have a user, and that user is the one who posted the comment don&#x27;t show a cached copy
+					//If we have a user, and that user is the one who posted the comment don&#x27;t show a cached copy
 					if(userId == input.userId){
 						return false;
 					}
-				} else return cache.id(&quot;&#x2F;comment&#x2F;:commentId&quot;,60*5);
+				} else return cache.id(&quot;/comment/:commentId&quot;,60*5);
 			}).demand(&quot;commentId&quot;);
-			api.post(&quot;update&quot;,&quot;&#x2F;comment&#x2F;:commentId&quot;).cacheInvalidate(&quot;&#x2F;comment&#x2F;:commentId&quot;).demand(&quot;commentId&quot;);
+			api.post(&quot;update&quot;,&quot;/comment/:commentId&quot;).cacheInvalidate(&quot;/comment/:commentId&quot;).demand(&quot;commentId&quot;);
 		});
 
 	@chainable
 	@for Hop.Method
 	@method cache
-**&#x2F;
+**/
 Hop.Method.prototype.cache=function(cacheFunc){
 	var cache = new Hop.Cache();
 	
@@ -264,7 +264,7 @@ Hop.Cache = function(){
 
 Hop.Cache.resolvePath=function(path,req,input){
 	var request=req;
-	return path.replace(&#x2F;:([^\&#x2F;]+)&#x2F;g,function(m,s){
+	return path.replace(/:([^\/]+)/g,function(m,s){
 		if(s){
 			try {
 				with(input){
@@ -304,6 +304,8 @@ Hop.Cache.prototype.invalidate=function(cacheId){
 	return { id: cacheId, what: &quot;invalidate&quot; };
 }
 
+module.exports=Hop;
+
     </pre>
 </div>
 
@@ -313,13 +315,13 @@ Hop.Cache.prototype.invalidate=function(cacheId){
         </div>
     </div>
 </div>
-<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
 <script>prettyPrint();</script>
-<script src="..&#x2F;assets/js/yui-prettify.js"></script>
-<script src="..&#x2F;assets/../api.js"></script>
-<script src="..&#x2F;assets/js/api-filter.js"></script>
-<script src="..&#x2F;assets/js/api-list.js"></script>
-<script src="..&#x2F;assets/js/api-search.js"></script>
-<script src="..&#x2F;assets/js/apidocs.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
 </body>
 </html>

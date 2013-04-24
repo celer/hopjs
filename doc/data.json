@@ -171,7 +171,7 @@
             "module": "Hop",
             "namespace": "",
             "file": "lib/codegen.js",
-            "line": 51,
+            "line": 50,
             "description": "Provides generator functionality for generating client stubs for other languauges\n\nHop can utilize its knowledge of your APIs to generate client side stubs for various languages. This module provides the core functionality for generators in such a way that\na new generator can be built with relative ease. \n\n * Implemeneted generators can be found under /gen in the Hop root directory\n\n\n## To use a generator\n\nHop tries to make it easy to generate client side code, to do so we use a command line utilility 'hopjs-gen'\n\nTo generate client side stubs for android for a specific website:\n\n\thopjs-gen --url http://localhost:3000/ android --outputDir output/ --package com.foo\n\nYou might first want to make sure HopJS is installed locally\n\n\tnpm install -g hopjs\n\n\n\n## Creating a new generator\n 1. Create a new directory under /gen - the directory will be the name of your generator\n 2. Create a generator.json (see the android/generator.json for an example)\n 3. Define some number of templates\n\n#### Generators work by:\n * Asking for any required command line options as defiend in generator.json:demand and generator.json:optional\n * Fetching an API definition from URL/_hopjs/api.json\n * Loading any required utility functions as defined in generator.json:required\n * Determining the type of gernerator as specified by generator.json:generates\n\t * If the generator type is 'file' then file pointed to by generator.json:template will be evaluated with { Objects, Models (and options passed in via the commandline ) }\n\t * If the generator type is 'dir' then dir pointed to by generator.json:templateDir will be evaluated \n\t\t\t* Files which have the basename _object will be evaluted one for each defined object with { object (and options passed in via the commandline ) }\n\t\t\t* Files which have the basename _model will be evaluted one for each defined model with { model (and options passed in via the commandline ) }\n\n*generator.json:translatePath can be used for determining how templates get translated into the resulting output directory*"
         },
         "Event": {
@@ -214,7 +214,7 @@
             "module": "Hop",
             "namespace": "",
             "file": "lib/test.js",
-            "line": 604,
+            "line": 618,
             "description": "Testing module"
         },
         "User": {
@@ -258,7 +258,7 @@
             "module": "Hop",
             "namespace": "",
             "file": "lib/api.js",
-            "line": 82,
+            "line": 133,
             "description": "Utility class for providing mock response objects"
         },
         "Hop.StubRequest": {
@@ -272,7 +272,7 @@
             "module": "Hop",
             "namespace": "",
             "file": "lib/api.js",
-            "line": 100,
+            "line": 151,
             "description": "Utility class for providing mock request objects"
         },
         "Hop.Object": {
@@ -286,7 +286,7 @@
             "module": "Hop",
             "namespace": "",
             "file": "lib/api.js",
-            "line": 329,
+            "line": 392,
             "description": "Defines an object\n\nThis object is created by .defineClass"
         },
         "Hop.Method": {
@@ -300,7 +300,7 @@
             "module": "Hop",
             "namespace": "",
             "file": "lib/api.js",
-            "line": 575,
+            "line": 696,
             "description": "Class used to define methods",
             "is_constructor": 1
         },
@@ -316,7 +316,7 @@
             "submodule": "CodeGenerator",
             "namespace": "",
             "file": "lib/codegen.js",
-            "line": 51
+            "line": 50
         },
         "Hop.TestUtils": {
             "name": "Hop.TestUtils",
@@ -345,7 +345,7 @@
             "submodule": "Test",
             "namespace": "",
             "file": "lib/test.js",
-            "line": 344,
+            "line": 358,
             "description": "Used to impelement the .do interface for defineTest\n \nso .do(\"MyClass.myFunc\") is implemented by this class",
             "params": [
                 {
@@ -368,7 +368,7 @@
             "submodule": "Test",
             "namespace": "",
             "file": "lib/test.js",
-            "line": 604,
+            "line": 618,
             "description": "TestCase Class\n\nThis is the underlying class which is used in defineTestCase\n\n*To construct a new test case use defineTestCase instead*\n*The name of the case must alway be the name of a method, but may be followed by a description*",
             "example": [
                 "\n\tHop.defineTestCase(\"Object.Method\",function()...);\n\tHop.defineTestCase(\"Object.Method: Do a specific test\",function()...);"
@@ -406,7 +406,24 @@
     "classitems": [
         {
             "file": "lib/api.js",
-            "line": 63,
+            "line": 35,
+            "description": "Given a string representation of a stack for a trace made during a call, return a more focused stack trace\n\n\tThis function will attempt to cull a larger stack trace into something more relevant for what went on during\n\ta call.",
+            "params": [
+                {
+                    "name": "errorStack",
+                    "description": "a stack trace captured from an error",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "stack a focused stack trace"
+            },
+            "class": "Hop",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 114,
             "description": "Calculate a checksum for the Hop \n\nThis is used to detect changes in the version of the Hop",
             "itemtype": "method",
             "name": "checksum",
@@ -416,7 +433,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 185,
+            "line": 248,
             "description": "Define a new class \n\n* Use #classname to have the class name substituted into the URL",
             "params": [
                 {
@@ -447,7 +464,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 211,
+            "line": 274,
             "description": "Define a new interface\n\n* Use #classname to have the class name substituted into the URL",
             "params": [
                 {
@@ -472,7 +489,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 288,
+            "line": 351,
             "description": "Add a call back which will be called when a version of the API must be built from JSON",
             "params": [
                 {
@@ -494,7 +511,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 305,
+            "line": 368,
             "description": "Add a call back which will be called when a JSON version of the API is requested",
             "params": [
                 {
@@ -516,7 +533,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 343,
+            "line": 406,
             "description": "Wrap an object so that it may be called localy with all of the functionality that Hop normally provides\n\nThis function will create a wrapped version of a defined object with all of the functionality that Hop would normally provide.",
             "example": [
                 "\n\tHop.defineClass(\"UserService\",function(api){\n\t\tapi.get(\"load\",\"/user/:userID\").demand(\"userID\").cacheId(\"/user/:userID\");\n\t});\n\n\tvar userService = Hop.Object.wrap(\"UserService\");\n\n\t//This call will now be subject to all of the normal constraints and functionality provided by Hop\n\tuserService.load({ userID:5 },function(err,result){\n\n\t},request);"
@@ -539,7 +556,53 @@
         },
         {
             "file": "lib/api.js",
-            "line": 422,
+            "line": 469,
+            "description": "Provide a function that will be called when an error occured for any call in the class\n\nThis function can be used to filter error messages. A typical use case would be to have a small\nset of allowed error messages, and return a generic error message in all other cases. Or to attach \na unique number to each error and provide details in the console log. This function should return a string \nfor the desired error string or null if no custom error is returned. This function is not asynchronous.",
+            "params": [
+                {
+                    "name": "onError",
+                    "description": "function to be called when an error has occured",
+                    "type": "Function",
+                    "props": [
+                        {
+                            "name": "method",
+                            "description": "The method call associated with the error",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "request",
+                            "description": "The request for the call",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "input",
+                            "description": "The input for the call",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "error",
+                            "description": "The error string",
+                            "type": "String"
+                        },
+                        {
+                            "name": "stack",
+                            "description": "A stack trace of where the error occured",
+                            "type": "String"
+                        }
+                    ]
+                }
+            ],
+            "example": [
+                "\n\tHop.defineClass(\"UserService\",function(api){\n\t\tapi.post(\"update\",\"/user/:userID\");\n\t\t\n\t\tapi.errorHandler(function(method,request,input,error,stack){\n\t\t\t//If we know what the error is simply return it\n\t\t\tif(allowedErrors.contains(error)){\n\t\t\t\treturn null;\n\t\t\t} else {\n\t\t\t\t//If we don't recognize the error produce a unique ID for it and spit it out in the logs\n\t\t\t\tvar id = Date.now();\n\t\t\t\tvar err = \"Error (\"+id+\")\";\n\t\t\t\tLog.error(method.getName(),request,input,id,error,stack);\n\t\t\t\treturn err;\n\t\t\t}\n\t\t});\n\t});"
+            ],
+            "itemtype": "method",
+            "name": "errorHandler",
+            "class": "Hop.Object",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 543,
             "description": "Have this object extend from an interface",
             "example": [
                 "\n\tHop.defineInterface(\"Notification\",function(api){\n\t\tapi.post(\"send\",\"#classname/send\").usage(\"Sends a message\").demand(\"msg\").demand(\"subject\").demand(\"to\");\n\t}\n\tHop.defineClass(\"Email\",function(api){\n\t\t//This will essentially evaluate the interface defined above against thsi class adding the send function\n\t\tapi.extend(\"Notification\");\n\t});"
@@ -551,7 +614,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 447,
+            "line": 568,
             "description": "Define a HTTP get call on this method",
             "params": [
                 {
@@ -576,7 +639,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 468,
+            "line": 589,
             "description": "Define a HTTP post call on this method",
             "params": [
                 {
@@ -601,7 +664,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 489,
+            "line": 610,
             "description": "Define a HTTP del call on this method",
             "params": [
                 {
@@ -626,7 +689,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 511,
+            "line": 632,
             "description": "Define a HTTP put call on this method",
             "params": [
                 {
@@ -651,7 +714,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 532,
+            "line": 653,
             "description": "Define the usage for this class",
             "example": [
                 "\n\tHop.defineClass(\"UserService\",function(api){\n\t\tapi.usage(\"Manages Users\");\n\t\t//..\n\t});"
@@ -664,7 +727,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 550,
+            "line": 671,
             "description": "Find an object by name",
             "return": {
                 "description": "The name of the method",
@@ -681,7 +744,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 607,
+            "line": 733,
             "description": "Find a method by name",
             "return": {
                 "description": "The name of the method",
@@ -698,7 +761,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 632,
+            "line": 758,
             "description": "Get the name of the method\n\nThis will get the name of the method",
             "return": {
                 "description": "The name of the method",
@@ -714,7 +777,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 658,
+            "line": 784,
             "description": "Get the full url for the method\n\nThis will get the full path for the url for the method.",
             "return": {
                 "description": "The URL for the method",
@@ -727,7 +790,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 677,
+            "line": 803,
             "description": "Specify the default values for this call\n\nThese values will be copied into the input if no existing value is found.",
             "params": [
                 {
@@ -744,7 +807,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 690,
+            "line": 816,
             "description": "Specify a number of optionals for  for a call",
             "example": [
                 "\n\tapi.post(\"create\",\"/user/profile/\").optionals(\"email\",\"name\",\"password\");"
@@ -764,7 +827,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 708,
+            "line": 834,
             "description": "Specify a number of demands for  for a call",
             "example": [
                 "\n\tapi.post(\"create\",\"/user/profile/\").demands(\"email\",\"name\",\"password\");"
@@ -784,7 +847,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 726,
+            "line": 852,
             "description": "Demand a parameter for a call",
             "example": [
                 "\n\tapi.post(\"create\",\"/user/profile/\").demand(\"email\",\"Email address\");"
@@ -809,7 +872,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 744,
+            "line": 870,
             "description": "Describe this method",
             "params": [
                 {
@@ -826,7 +889,20 @@
         },
         {
             "file": "lib/api.js",
-            "line": 759,
+            "line": 884,
+            "description": "Note that this method can only be called when there is a user in the session\n\n*This will only allow this method to be called if req.session.user exists*",
+            "example": [
+                "\n\tHop.defineClass(\"UserService\",UserService,function(api){\n\t\t//Only allow this method to be called if a user is in the session\n\t\tapi.post(\"sendMsg\",\"/user/:userId/message\").authed();\n\t});"
+            ],
+            "chainable": 1,
+            "itemtype": "method",
+            "name": "authed",
+            "class": "Hop.Method",
+            "module": "Hop"
+        },
+        {
+            "file": "lib/api.js",
+            "line": 911,
             "description": "Note that this method can only be called using https",
             "chainable": 1,
             "itemtype": "method",
@@ -836,7 +912,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 775,
+            "line": 927,
             "description": "Include the express CSRF token in the response headers for this method\n\nThe CSRF token is utilized to prevent cross site request forgery attacks, and is a middleware component\nfor express. \n\nSee here for information: http://www.senchalabs.org/connect/middleware-csrf.html\n\nBy default HopJS will attempt to utilize the CSRF functionality in express if it is enabled, but \nsome clients require a means to access the CSRF token, hence this function will will send the csrf token\nin the headers as 'x-crsf-token'\n\nThe primary usage for this function is with secure login functions",
             "example": [
                 "\n\tHop.defineClass(\"UserService\",UserService,function(api){\n\t\tapi.post(\"login\",\"/login\").demands(\"username\",\"password\").sendCSRFToken();\n\t});"
@@ -849,7 +925,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 809,
+            "line": 961,
             "description": "Optional parameter for a call",
             "example": [
                 "\n\tapi.post(\"create\",\"/user/profile/\").optional(\"phoneNumber\",\"Phone Number\");"
@@ -874,7 +950,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 827,
+            "line": 979,
             "description": "Indicate this function performs longPolling",
             "example": [
                 "\n\tapi.get(\"status\",\"/server/:serverID/status\").longPoll();"
@@ -887,7 +963,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 843,
+            "line": 995,
             "description": "Indicate this function should avoid caching",
             "example": [
                 "\n\tapi.post(\"create\",\"/user/profile/\").noCache();"
@@ -900,7 +976,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 882,
+            "line": 1034,
             "description": "Demand a file be provided for this method.",
             "example": [
                 "\n\tapi.post(\"create\",\"/user/profile/\").demandFile(\"avatar\",\"Users avatar image\");"
@@ -913,7 +989,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 897,
+            "line": 1049,
             "description": "Specify that a file may optionally be provided as an input to this call.",
             "example": [
                 "\n\tapi.post(\"create\",\"/user/profile/\").optionalFile(\"avatar\",\"Users avatar image\");"
@@ -926,7 +1002,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 912,
+            "line": 1064,
             "description": "Add a function that will be called after this call is completed",
             "params": [
                 {
@@ -977,7 +1053,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 966,
+            "line": 1118,
             "description": "Add a function that will be called before this call is executed",
             "params": [
                 {
@@ -1024,7 +1100,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 1024,
+            "line": 1176,
             "description": "Indicate that this method call has been depricated",
             "itemtype": "method",
             "name": "depricated",
@@ -1034,7 +1110,7 @@
         },
         {
             "file": "lib/api.js",
-            "line": 1036,
+            "line": 1188,
             "description": "Calls the specified method \n\nThis function is provided so that all functionality around a specific call may be utilized.",
             "params": [
                 {
@@ -1206,7 +1282,7 @@
         },
         {
             "file": "lib/codegen.js",
-            "line": 60,
+            "line": 59,
             "description": "Lists the various types of generators that exist",
             "itemtype": "method",
             "name": "Hop.CodeGenerator.list",
@@ -1217,7 +1293,7 @@
         },
         {
             "file": "lib/codegen.js",
-            "line": 72,
+            "line": 71,
             "description": "Describe the current generator, aka get the generator.json",
             "itemtype": "method",
             "name": "Hop.CodeGenerator.describe",
@@ -1228,7 +1304,7 @@
         },
         {
             "file": "lib/codegen.js",
-            "line": 141,
+            "line": 140,
             "description": "For generators that use a directory structure this will compute the output paths\n\n* The translatePath property in generator.json can be used to override this function",
             "itemtype": "method",
             "name": "Hop.CodeGenerator.toOutputFile",
@@ -1239,7 +1315,7 @@
         },
         {
             "file": "lib/codegen.js",
-            "line": 171,
+            "line": 170,
             "description": "This will generate the files utilized for unit test for this generator. \n\n* The property 'testTemplate' in generator.json will be used as the input file for unit tests.\n* The properties Objects, TestCases, and Models will be passed into the context of the script\t\t\n* The property 'output' in options will determine what the output file is called.",
             "itemtype": "method",
             "name": "Hop.CodeGenerator.generateTest",
@@ -1250,7 +1326,7 @@
         },
         {
             "file": "lib/codegen.js",
-            "line": 212,
+            "line": 211,
             "description": "This will generate the files utilized for the stub api.",
             "itemtype": "method",
             "name": "Hop.CodeGenerator.generate",
@@ -1359,7 +1435,7 @@
         },
         {
             "file": "lib/express.js",
-            "line": 8,
+            "line": 30,
             "description": "Inserts the Hop calls into express",
             "params": [
                 {
@@ -1380,7 +1456,7 @@
         },
         {
             "file": "lib/express.js",
-            "line": 185,
+            "line": 234,
             "description": "Render a template using the cumbustion template engine",
             "params": [
                 {
@@ -1401,7 +1477,7 @@
         },
         {
             "file": "lib/model.js",
-            "line": 268,
+            "line": 289,
             "description": "Use a model for both input and output\n\nModels are used to provide meta data for both UI \nand api generation",
             "params": [
                 {
@@ -1427,7 +1503,7 @@
         },
         {
             "file": "lib/model.js",
-            "line": 326,
+            "line": 347,
             "description": "Use a model for the input",
             "params": [
                 {
@@ -1449,7 +1525,7 @@
         },
         {
             "file": "lib/model.js",
-            "line": 355,
+            "line": 376,
             "description": "Use a model for the output",
             "params": [
                 {
@@ -1474,7 +1550,7 @@
         },
         {
             "file": "lib/model.js",
-            "line": 384,
+            "line": 405,
             "description": "This call returns a boolean value",
             "itemtype": "method",
             "name": "returnsBoolean",
@@ -1484,7 +1560,7 @@
         },
         {
             "file": "lib/model.js",
-            "line": 397,
+            "line": 418,
             "description": "This call returns a string value",
             "itemtype": "method",
             "name": "returnsString",
@@ -1494,7 +1570,7 @@
         },
         {
             "file": "lib/model.js",
-            "line": 410,
+            "line": 431,
             "description": "This call returns a file",
             "itemtype": "method",
             "name": "returnsString",
@@ -1504,7 +1580,7 @@
         },
         {
             "file": "lib/model.js",
-            "line": 424,
+            "line": 445,
             "description": "This call returns a number value",
             "itemtype": "method",
             "name": "returnsNumber",
@@ -1537,7 +1613,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 81,
+            "line": 95,
             "description": "Test to ensure that the output object has a specific property with a specific value\n\n*This function is designed to be usable with (function).toString() for embedding*",
             "params": [
                 {
@@ -1569,7 +1645,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 124,
+            "line": 138,
             "description": "Test to ensure that the array contains the specified value\n\n*This function is designed to be usable with (function).toString() for embedding*",
             "params": [
                 {
@@ -1594,7 +1670,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 155,
+            "line": 169,
             "description": "Loads a value for later usage as part of a test",
             "static": 1,
             "itemtype": "method",
@@ -1605,7 +1681,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 170,
+            "line": 184,
             "description": "Clears all saved values, this is called at the completion of a test case",
             "static": 1,
             "itemtype": "method",
@@ -1616,7 +1692,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 181,
+            "line": 195,
             "description": "Saves a value for later usage as part of a test",
             "static": 1,
             "itemtype": "method",
@@ -1627,7 +1703,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 194,
+            "line": 208,
             "description": "Resolve a values within an array or object based upon saved values\n\nThis function will search for strings matching #{.+#} and replace\t\nthe object property or array value with the resolved value from a saved value. \n\nValues are resolved like so:",
             "example": [
                 "\n\twith(savedValues){\n\t\treturn eval(inputString);\n\t}\t"
@@ -1642,7 +1718,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 259,
+            "line": 273,
             "description": "Return the value of the named property in the object\n\nThe property name may be in dotted form",
             "params": [
                 {
@@ -1665,7 +1741,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 277,
+            "line": 291,
             "description": "Utility function to copy an object, primarly used by .with",
             "static": 1,
             "itemtype": "method",
@@ -1676,7 +1752,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 302,
+            "line": 316,
             "description": "Define a test case for a specific method",
             "params": [
                 {
@@ -1702,7 +1778,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 364,
+            "line": 378,
             "description": "Defines the input to be used for the API call\n\t\nThis may either be a JavaScript Object or a named value (as created by .saveOutputAs)",
             "example": [
                 "\n\ttest.do(\"Object.method\").with({a:1, b:2});",
@@ -1730,7 +1806,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 401,
+            "line": 415,
             "description": "Save the output into a name variable for usage later",
             "params": [
                 {
@@ -1748,7 +1824,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 416,
+            "line": 430,
             "description": "Require that the function does not return an error\n\n*This will not test the result in anyway, since having both a null error and null result is acceptable*",
             "chainable": 1,
             "itemtype": "method",
@@ -1759,7 +1835,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 431,
+            "line": 445,
             "description": "Require that the specified property has been changed from what was in the input\n\n*This test will also insure that the error is null and that the result is not null*",
             "params": [
                 {
@@ -1777,7 +1853,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 448,
+            "line": 462,
             "description": "Require that the input object is contained within the output object\n\nThis will test to insure that the output object minially contains all the same parameters as the input object",
             "chainable": 1,
             "itemtype": "method",
@@ -1788,7 +1864,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 463,
+            "line": 477,
             "description": "Test to insure the output is null",
             "chainable": 1,
             "itemtype": "method",
@@ -1799,7 +1875,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 476,
+            "line": 490,
             "description": "Test to insure the output is not null\n\n*This test will also insure that the error is null*",
             "chainable": 1,
             "itemtype": "method",
@@ -1810,7 +1886,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 491,
+            "line": 505,
             "description": "Test to insure that the output contains a specific object\n\nThis test will insure that the output is a superset of the specified object",
             "params": [
                 {
@@ -1828,7 +1904,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 508,
+            "line": 522,
             "description": "Insure the error contains a specific string\n\n*This will also test to insure the output is null*",
             "params": [
                 {
@@ -1846,7 +1922,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 525,
+            "line": 539,
             "description": "Insure that the output has a specified property\n\nThis will test for existence of a specific property",
             "params": [
                 {
@@ -1864,7 +1940,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 543,
+            "line": 557,
             "description": "Test the output to make sure it is the same as the specified object or saved object",
             "example": [
                 "\n\tTest.do(\"User.save\").with(user).outputSameAs({ name:'foo', email:'bar@bar.com'});\n\tTest.do(\"User.save\").with(user).outputSameAs(\"#{savedUser}\");\n\tTest.do(\"User.save\").with(user).outputSameAs(\"#{savedUsers[1]}\");"
@@ -1885,7 +1961,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 563,
+            "line": 577,
             "description": "Test the output to make sure it an array with a specified length",
             "params": [
                 {
@@ -1903,7 +1979,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 578,
+            "line": 592,
             "description": "Test the output to make sure it is an array",
             "chainable": 1,
             "itemtype": "method",
@@ -1914,7 +1990,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 591,
+            "line": 605,
             "description": "Test the output array contains",
             "chainable": 1,
             "itemtype": "method",
@@ -1925,7 +2001,7 @@
         },
         {
             "file": "lib/test.js",
-            "line": 631,
+            "line": 645,
             "description": "Create a special object to instruct Hop to use a file provide by a URL as a test input value",
             "params": [
                 {
@@ -2030,6 +2106,60 @@
             "class": "Hop.Method",
             "module": "Hop",
             "submodule": "User"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/api.js:35"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/api.js:406"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " lib/api.js:568"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " lib/api.js:568"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " lib/api.js:589"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " lib/api.js:589"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " lib/api.js:610"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " lib/api.js:610"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " lib/api.js:632"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " lib/api.js:632"
+        },
+        {
+            "message": "unknown tag: users",
+            "line": " lib/event.js:394"
+        },
+        {
+            "message": "unknown tag: examples",
+            "line": " lib/test.js:208"
+        },
+        {
+            "message": "Missing item type\nGiven a string representation of a stack for a trace made during a call, return a more focused stack trace\n\n\tThis function will attempt to cull a larger stack trace into something more relevant for what went on during\n\ta call.",
+            "line": " lib/api.js:35"
         }
     ]
 }

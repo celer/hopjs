@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib&#x2F;api.js</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.5.1&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
-    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.5.1&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <title>lib/api.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+                <h1><img src="../assets/css/logo.png" title=""></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -41,43 +41,43 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="..&#x2F;classes/Hop.html">Hop</a></li>
+                <li><a href="../classes/Hop.html">Hop</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.CodeGenerator.html">Hop.CodeGenerator</a></li>
+                <li><a href="../classes/Hop.CodeGenerator.html">Hop.CodeGenerator</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.Method.html">Hop.Method</a></li>
+                <li><a href="../classes/Hop.Method.html">Hop.Method</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.Object.html">Hop.Object</a></li>
+                <li><a href="../classes/Hop.Object.html">Hop.Object</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.StubRequest.html">Hop.StubRequest</a></li>
+                <li><a href="../classes/Hop.StubRequest.html">Hop.StubRequest</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.StubResponse.html">Hop.StubResponse</a></li>
+                <li><a href="../classes/Hop.StubResponse.html">Hop.StubResponse</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestCase.html">Hop.TestCase</a></li>
+                <li><a href="../classes/Hop.TestCase.html">Hop.TestCase</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestTask.html">Hop.TestTask</a></li>
+                <li><a href="../classes/Hop.TestTask.html">Hop.TestTask</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestUtils.html">Hop.TestUtils</a></li>
+                <li><a href="../classes/Hop.TestUtils.html">Hop.TestUtils</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.User.html">Hop.User</a></li>
+                <li><a href="../classes/Hop.User.html">Hop.User</a></li>
             
             </ul>
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a href="..&#x2F;modules/Cache.html">Cache</a></li>
+                <li><a href="../modules/Cache.html">Cache</a></li>
             
-                <li><a href="..&#x2F;modules/CodeGenerator.html">CodeGenerator</a></li>
+                <li><a href="../modules/CodeGenerator.html">CodeGenerator</a></li>
             
-                <li><a href="..&#x2F;modules/Event.html">Event</a></li>
+                <li><a href="../modules/Event.html">Event</a></li>
             
-                <li><a href="..&#x2F;modules/Hop.html">Hop</a></li>
+                <li><a href="../modules/Hop.html">Hop</a></li>
             
-                <li><a href="..&#x2F;modules/Job.html">Job</a></li>
+                <li><a href="../modules/Job.html">Job</a></li>
             
-                <li><a href="..&#x2F;modules/Test.html">Test</a></li>
+                <li><a href="../modules/Test.html">Test</a></li>
             
-                <li><a href="..&#x2F;modules/User.html">User</a></li>
+                <li><a href="../modules/User.html">User</a></li>
             
             </ul>
         </div>
@@ -114,32 +114,32 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: lib&#x2F;api.js</h1>
+                        <h1 class="file-heading">File: lib/api.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-&#x2F;**
+/**
 	Hop Core module
 
 	This is the primary impelementation behind Hop
 
 	@module Hop
-**&#x2F;
+**/
 var crypto = require(&#x27;crypto&#x27;);
 var util = require(&#x27;hopjs-common&#x27;);
 
-&#x2F;*
+/*
 	- display docs
 	- enable unit tests
 	- log functions
-	- protect docs &#x2F;w password
+	- protect docs /w password
 	- site name
 	- readme.md
 	- doc.css
 	- 
-*&#x2F;
+*/
 
-Hop=function(){
+var Hop=function(){
 	this.objects={};
 	this.interfaces={};
 }
@@ -152,6 +152,44 @@ Hop.log=console.log;
 Hop.error=console.error;
 Hop.warn=console.warn;
 
+/**
+ 	Given a string representation of a stack for a trace made during a call, return a more focused stack trace
+
+	This function will attempt to cull a larger stack trace into something more relevant for what went on during
+	a call. 
+
+	@param {String} errorStack a stack trace captured from an error
+
+	@returns stack a focused stack trace
+
+*/
+Hop.callStack=function(errorStack){
+		var lines = errorStack.split(&quot;\n&quot;);
+		var stack=[];
+		var capture=false;
+		for(var i=lines.length-1;i&gt;0;i--){
+			var l = lines[i];
+			var f = (l.replace(/^\s+at\s+([^ ]+).+/,&quot;$1&quot;));
+			if(f==&quot;Hop_call_preTask&quot;){
+				capture=true;
+			}
+			if(f==&quot;Hop_call_postTask&quot;){
+				capture=false;
+			}	
+			if(capture==true &amp;&amp; f.indexOf(&quot;Hop_call&quot;)!=0){
+				stack.push(l);
+			} 
+		}	
+		return stack.join(&quot;\n&quot;);
+}
+
+Hop.logCall=function(method,type,err,result){
+	var error = new Error();
+	var stack = Hop.callStack(error.stack);
+	Hop[type](method,err+&quot;\n&quot;+stack);
+}
+
+
 Hop.sendFile=function(file,options){
 	return new Hop.File(file,options);
 }
@@ -160,6 +198,19 @@ Hop.sendAttachment=function(file,options){
 	options=options||{};
 	options.attachment=true;	
 	return new Hop.File(file,options);
+}
+
+Hop.render=function(template,input){
+	return new Hop.Template(template,input);
+}
+
+Hop.Template=function(templateName,input){
+	this.template=templateName;
+	this.input=input;
+}
+
+Hop.Template.prototype.send=function(response){
+	response.render(this.template,this.input);
 }
 
 Hop.File=function(file,options){
@@ -180,7 +231,7 @@ Hop.Objects={};
 Hop.Interfaces={};
 
 
-&#x2F;**
+/**
 	Calculate a checksum for the Hop 
 
 	This is used to detect changes in the version of the Hop
@@ -188,7 +239,7 @@ Hop.Interfaces={};
 	@for Hop
 	@method checksum
 	@static
-**&#x2F;
+**/
 Hop.checksum = function(){
 	if(Hop._checksum)
 		return Hop._checksum;
@@ -199,11 +250,11 @@ Hop.checksum = function(){
 	return Hop._checksum;
 }
 
-&#x2F;**
+/**
 	Utility class for providing mock response objects
 
 	@class Hop.StubResponse
-**&#x2F;
+**/
 Hop.StubResponse=function(){
 	this.header={};
 }
@@ -217,11 +268,11 @@ Hop.StubResponse.prototype.get=function(name){
 }
 
 
-&#x2F;**
+/**
 	Utility class for providing mock request objects
 
 	@class Hop.StubRequest
-**&#x2F;
+**/
 Hop.StubRequest=function(){
 	this.header={};
 	this.response = new Hop.StubResponse();
@@ -252,18 +303,30 @@ Hop.getTemplates=function(obj,when,type){
 }
 
 Hop.renderTemplates=function(obj,when,type,input){
-	if(!obj._templates)
-		return &quot;&quot;;
-	if(!obj._templates[type])
-		return &quot;&quot;;
-	if(!obj._templates[type][when])
-		return &quot;&quot;;
+	try {
+		if(!obj._templates)
+			return &quot;&quot;;
+		if(!obj._templates[type])
+			return &quot;&quot;;
+		if(!obj._templates[type][when])
+			return &quot;&quot;;
 	
-	var out = &quot;&quot;;
-	obj._templates[type][when].map(function(template){
-		out+=(Hop.renderTemplate(template)(input));
-	});
-	return out;
+
+		var _input={};
+		for(var i in input){
+			_input[i]=input[i];
+		}
+		_input.Hop=Hop;
+	
+		var out = &quot;&quot;;
+		obj._templates[type][when].map(function(template){
+			out+=(Hop.renderTemplate(template)(_input));
+		});
+		return out;
+	} catch(e){ 
+		console.error(e);
+		console.error(e.stack);
+	}
 }
 
 Hop.addTemplate=function(obj,when,type,template){
@@ -302,7 +365,7 @@ Hop.addAfterTemplate=function(type,template){
 }
 
 
-&#x2F;**
+/**
 Define a new class 
 
 * Use #classname to have the class name substituted into the URL
@@ -313,14 +376,14 @@ Define a new class
 
 @example
 	Hop.defineClass(&quot;Email&quot;,new Email(),function(api){
-		&#x2F;&#x2F;define the class 
+		//define the class 
 	});
 
 
 @for Hop
 @method defineClass
 @static
-**&#x2F;
+**/
 Hop.defineClass=function(name,instance,onDefine){
 	delete Hop._checksum;
 	var api = new Hop.Object(name,instance);
@@ -328,7 +391,7 @@ Hop.defineClass=function(name,instance,onDefine){
 	onDefine(api);
 }
 
-&#x2F;**
+/**
 Define a new interface
 
 * Use #classname to have the class name substituted into the URL
@@ -338,14 +401,14 @@ Define a new interface
 
 @example
 	Hop.defineInterface(&quot;Notification&quot;,function(api){
-		api.post(&quot;send&quot;,&quot;#classname&#x2F;send&quot;).usage(&quot;Sends a message&quot;).demand(&quot;msg&quot;).demand(&quot;subject&quot;).demand(&quot;to&quot;);
+		api.post(&quot;send&quot;,&quot;#classname/send&quot;).usage(&quot;Sends a message&quot;).demand(&quot;msg&quot;).demand(&quot;subject&quot;).demand(&quot;to&quot;);
 	}
 
 
 @for Hop
 @method defineInterface 
 @static
-**&#x2F;
+**/
 Hop.defineInterface=function(name,onDefine){
 	delete Hop._checksum;
 	var intf = new Hop.Interface(name,onDefine);
@@ -366,7 +429,7 @@ Hop.toJSON=function(noChecksum){
 		}	
 
 		return JSON.stringify(obj,function(key,value){
-				if(&#x2F;^_&#x2F;.test(key)){
+				if(/^_/.test(key)){
 					return undefined;
 				} 
 				return value;
@@ -405,7 +468,7 @@ Hop.fromJSON=function(jsonString){
 }
 
 
-&#x2F;**
+/**
 	Add a call back which will be called when a version of the API must be built from JSON
 
 	@param {function} onJSON Callback to be called when a json version of Hop is requested
@@ -414,7 +477,7 @@ Hop.fromJSON=function(jsonString){
 	@for Hop
 	@method addToJSONHandler
 	@static
-**&#x2F;
+**/
 Hop.addToJSONHandler=function(onJSON){
 	if(!this._fromJSONHandler){
 		this._fromJSONHandler=[];
@@ -422,7 +485,7 @@ Hop.addToJSONHandler=function(onJSON){
 	this._fromJSONHandler.push(onJSON);
 }
 
-&#x2F;**
+/**
 	Add a call back which will be called when a JSON version of the API is requested
 
 	@param {function} onJSON Callback to be called when a json version of Hop is requested
@@ -431,7 +494,7 @@ Hop.addToJSONHandler=function(onJSON){
 	@for Hop
 	@method addToJSONHandler
 	@static
-**&#x2F;
+**/
 Hop.addToJSONHandler=function(onJSON){
 	if(!this._toJSONHandler){
 		this._toJSONHandler=[];
@@ -446,13 +509,13 @@ Hop.Interface = function(name,onDefine){
 	Hop.Interfaces[name]=this;
 }
 
-&#x2F;** 
+/** 
 	Defines an object
 
 	This object is created by .defineClass
 
 	@class Hop.Object
-**&#x2F;
+**/
 Hop.Object = function(name,instance){
 	this.name=name;
 	this._instance=instance;
@@ -460,19 +523,19 @@ Hop.Object = function(name,instance){
 	Hop.Objects[name]=this;
 }
 
-&#x2F;**
+/**
 	Wrap an object so that it may be called localy with all of the functionality that Hop normally provides
 
 	This function will create a wrapped version of a defined object with all of the functionality that Hop would normally provide. 
 
 	@example
 		Hop.defineClass(&quot;UserService&quot;,function(api){
-			api.get(&quot;load&quot;,&quot;&#x2F;user&#x2F;:userID&quot;).demand(&quot;userID&quot;).cacheId(&quot;&#x2F;user&#x2F;:userID&quot;);
+			api.get(&quot;load&quot;,&quot;/user/:userID&quot;).demand(&quot;userID&quot;).cacheId(&quot;/user/:userID&quot;);
 		});
 
 		var userService = Hop.Object.wrap(&quot;UserService&quot;);
 
-		&#x2F;&#x2F;This call will now be subject to all of the normal constraints and functionality provided by Hop
+		//This call will now be subject to all of the normal constraints and functionality provided by Hop
 		userService.load({ userID:5 },function(err,result){
 
 		},request);
@@ -486,7 +549,7 @@ Hop.Object = function(name,instance){
 
 
 	@method Hop.Object.wrap
-**&#x2F;
+**/
 Hop.Object.wrap=function(objectName){
 	var result = {};
 
@@ -505,6 +568,64 @@ Hop.Object.wrap=function(objectName){
 	return result;
 }
 
+
+
+Hop.Object.prototype.callOnError=function(method,request,input,error,stack){
+	if(!stack){
+		var exp = new Error();
+		var stack = Hop.callStack(exp.stack);
+	} else {
+		stack = Hop.callStack(stack);
+	}
+	if(this.onError){
+		var res = this.onError(method,request,input,error,stack);
+		if(res!==null)
+			return res;
+	}
+	Hop.error(method.getMethod(),&quot;:returned an error result of &#x27;&quot;+error+&quot;&#x27;\n&quot;+stack);
+	return error;
+}
+
+/**
+	Provide a function that will be called when an error occured for any call in the class
+
+	This function can be used to filter error messages. A typical use case would be to have a small
+	set of allowed error messages, and return a generic error message in all other cases. Or to attach 
+	a unique number to each error and provide details in the console log. This function should return a string 
+	for the desired error string or null if no custom error is returned. This function is not asynchronous.
+
+	@param {Function} onError function to be called when an error has occured
+		@param {Object} onError.method The method call associated with the error
+		@param {Object} onError.request The request for the call
+		@param {Object} onError.input The input for the call
+		@param {String} onError.error The error string
+		@param {String} onError.stack A stack trace of where the error occured
+	
+
+	@example
+		Hop.defineClass(&quot;UserService&quot;,function(api){
+			api.post(&quot;update&quot;,&quot;/user/:userID&quot;);
+			
+			api.errorHandler(function(method,request,input,error,stack){
+				//If we know what the error is simply return it
+				if(allowedErrors.contains(error)){
+					return null;
+				} else {
+					//If we don&#x27;t recognize the error produce a unique ID for it and spit it out in the logs
+					var id = Date.now();
+					var err = &quot;Error (&quot;+id+&quot;)&quot;;
+					Log.error(method.getName(),request,input,id,error,stack);
+					return err;
+				}
+			});
+		});
+	
+	@for Hop.Object
+	@method errorHandler
+ */
+Hop.Object.prototype.errorHandler=function(onError){
+	this.onError=onError;
+}
 
 Hop.Object.prototype.setLocalInterface=function(){
 	this._localInterface=true;
@@ -539,21 +660,21 @@ Hop.Object.prototype.addAfterTemplate=function(type,template){
 }
 
 
-&#x2F;**
+/**
 Have this object extend from an interface
 
 @example
 	Hop.defineInterface(&quot;Notification&quot;,function(api){
-		api.post(&quot;send&quot;,&quot;#classname&#x2F;send&quot;).usage(&quot;Sends a message&quot;).demand(&quot;msg&quot;).demand(&quot;subject&quot;).demand(&quot;to&quot;);
+		api.post(&quot;send&quot;,&quot;#classname/send&quot;).usage(&quot;Sends a message&quot;).demand(&quot;msg&quot;).demand(&quot;subject&quot;).demand(&quot;to&quot;);
 	}
 	Hop.defineClass(&quot;Email&quot;,function(api){
-		&#x2F;&#x2F;This will essentially evaluate the interface defined above against thsi class adding the send function
+		//This will essentially evaluate the interface defined above against thsi class adding the send function
 		api.extend(&quot;Notification&quot;);
 	});
 
 @for Hop.Object
 @method extend
-**&#x2F;
+**/
 Hop.Object.prototype.extend=function(intf){
 	if(!this.interfaces){
 		this.interfaces={};
@@ -564,7 +685,7 @@ Hop.Object.prototype.extend=function(intf){
 	} else throw (&quot;Invalid interface specified:&quot;+intf);
 }
 
-&#x2F;**
+/**
 Define a HTTP get call on this method
 
 @params {String} method The name of the method on the associated object
@@ -572,20 +693,20 @@ Define a HTTP get call on this method
 
 @example
 	Hop.defineClass(&quot;UserService&quot;,function(api){
-		api.get(&quot;load&quot;,&quot;&#x2F;user&#x2F;:userID&quot;);
-		&#x2F;&#x2F;..
+		api.get(&quot;load&quot;,&quot;/user/:userID&quot;);
+		//..
 	});
 
 @for Hop.Object
 @method get
 @chainable
-**&#x2F;
+**/
 Hop.Object.prototype.get=function(name,path){
 	this.methods[name]=new Hop.Method(&quot;get&quot;,this,name,path);			
 	return this.methods[name];
 }	
 
-&#x2F;**
+/**
 Define a HTTP post call on this method
 
 @params {String} method The name of the method on the associated object
@@ -593,20 +714,20 @@ Define a HTTP post call on this method
 
 @example
 	Hop.defineClass(&quot;UserService&quot;,function(api){
-		api.post(&quot;update&quot;,&quot;&#x2F;user&#x2F;:userID&quot;);
-		&#x2F;&#x2F;..
+		api.post(&quot;update&quot;,&quot;/user/:userID&quot;);
+		//..
 	});
 
 @for Hop.Object
 @method post
 @chainable
-**&#x2F;
+**/
 Hop.Object.prototype.post=function(name,path){
 	this.methods[name]=new Hop.Method(&quot;post&quot;,this,name,path);			
 	return this.methods[name];
 }	
 
-&#x2F;**
+/**
 Define a HTTP del call on this method
 
 @params {String} method The name of the method on the associated object
@@ -614,21 +735,21 @@ Define a HTTP del call on this method
 
 @example
 	Hop.defineClass(&quot;UserService&quot;,function(api){
-		api.del(&quot;delete&quot;,&quot;&#x2F;user&#x2F;:userID&quot;);
-		&#x2F;&#x2F;..
+		api.del(&quot;delete&quot;,&quot;/user/:userID&quot;);
+		//..
 	});
 
 @for Hop.Object
 @method del
 @chainable
-**&#x2F;
+**/
 Hop.Object.prototype.del=function(name,path){
 	this.methods[name]=new Hop.Method(&quot;delete&quot;,this,name,path);			
 	return this.methods[name];
 }	
 
 
-&#x2F;**
+/**
 Define a HTTP put call on this method
 
 @params {String} method The name of the method on the associated object
@@ -636,54 +757,54 @@ Define a HTTP put call on this method
 
 @example
 	Hop.defineClass(&quot;UserService&quot;,function(api){
-		api.put(&quot;create&quot;,&quot;&#x2F;user&#x2F;&quot;);
-		&#x2F;&#x2F;..
+		api.put(&quot;create&quot;,&quot;/user/&quot;);
+		//..
 	});
 
 @for Hop.Object
 @method put
 @chainable
-**&#x2F;
+**/
 Hop.Object.prototype.put=function(name,path){
 	this.methods[name]=new Hop.Method(&quot;put&quot;,this,name,path);			
 	return this.methods[name];
 }	
 
-&#x2F;**
+/**
 Define the usage for this class 
 
 @example
 	Hop.defineClass(&quot;UserService&quot;,function(api){
 		api.usage(&quot;Manages Users&quot;);
-		&#x2F;&#x2F;..
+		//..
 	});
 
 @for Hop.Object
 @method usage
 @chainable
-**&#x2F;
+**/
 Hop.Object.prototype.usage=function(usage){
 	this.desc=usage;
 	return this;
 }
 
-&#x2F;**
+/**
 Find an object by name
 
 @return {string} The name of the method
 
 @example
 	Hop.defineClass(&quot;UserService&quot;,function(api){
-		api.get(&quot;load&quot;,&quot;&#x2F;user&#x2F;:userID&quot;)
+		api.get(&quot;load&quot;,&quot;/user/:userID&quot;)
 
 	});
 	var method = Hop.Method.findMethod(&quot;UserService.load&quot;);
-	Hop.log(method.getMethod()); &#x2F;&#x2F;returns UserService.load
+	Hop.log(method.getMethod()); //returns UserService.load
 
 @for Hop.Object
 @method findObject
 @static
-**&#x2F;
+**/
 Hop.Object.findObject=function(objName){
 	if(objName.indexOf(&quot;.&quot;)!=-1){
 			var parts = objName.split(&quot;.&quot;);	
@@ -692,12 +813,12 @@ Hop.Object.findObject=function(objName){
 	return Hop.Objects[objName];
 }
 
-&#x2F;**
+/**
 	Class used to define methods
 
 	@class Hop.Method
 	@constructor
-**&#x2F;
+**/
 Hop.Method = function(method,object,name,_path){
 	this._className = object.name;
 	this.method=method;
@@ -708,38 +829,43 @@ Hop.Method = function(method,object,name,_path){
 	this._postCall=[];
 	this.defaults={};
 	this.options={};
-	this.fullPath = this.getPath();
+	this.fullPath = Hop.Method.getPath(Hop.basePath,this._className,this);
 
-	&#x2F;&#x2F;Let&#x27;s figure out what parameters we must have!
+	//Let&#x27;s figure out what parameters we must have!
 	var self=this;
-	var pathParts = _path.split(&quot;&#x2F;&quot;);
+	var pathParts = _path.split(&quot;/&quot;);
 	pathParts.map(function(part){
-		if(&#x2F;^:.*&#x2F;.test(part)){
-			self.demand(part.replace(&#x2F;^:&#x2F;,&quot;&quot;));
+		if(/^:.*/.test(part)){
+			self.demand(part.replace(/^:/,&quot;&quot;));
 		}
 	});
 
 }
 
+Hop.Method.prototype.toJSON=function(noChecksum){
+	var obj = {};
+	this.fullPath = Hop.Method.getPath(Hop.basePath,this._className,this);
+
+	return this;
+}
 
 
-
-&#x2F;**
+/**
 Find a method by name
 
 @return {string} The name of the method
 
 @example
 	Hop.defineClass(&quot;UserService&quot;,function(api){
-		api.get(&quot;load&quot;,&quot;&#x2F;user&#x2F;:userID&quot;)
+		api.get(&quot;load&quot;,&quot;/user/:userID&quot;)
 
 	});
 	var method = Hop.Method.findMethod(&quot;UserService.load&quot;);
-	Hop.log(method.getMethod()); &#x2F;&#x2F;returns UserService.load
+	Hop.log(method.getMethod()); //returns UserService.load
 
 @method findMethod
 @static
-**&#x2F;
+**/
 Hop.Method.findMethod=function(objName){
 	var obj = Hop.Object.findObject(objName);
 	if(obj){
@@ -749,7 +875,7 @@ Hop.Method.findMethod=function(objName){
 	} else return null;
 }
 
-&#x2F;**
+/**
 Get the name of the method
 
 This will get the name of the method
@@ -758,14 +884,14 @@ This will get the name of the method
 
 @example
 	Hop.defineClass(&quot;UserService&quot;,function(api){
-		api.get(&quot;load&quot;,&quot;&#x2F;user&#x2F;:userID&quot;)
+		api.get(&quot;load&quot;,&quot;/user/:userID&quot;)
 
 	});
 	var method = Hop.Method.findMethod(&quot;UserService.load&quot;);
-	Hop.log(method.getMethod()); &#x2F;&#x2F;returns UserService.load
+	Hop.log(method.getMethod()); //returns UserService.load
 
 @method getMethod
-**&#x2F;
+**/
 Hop.Method.prototype.getMethod=function(){
 	return Hop.Method.getMethod(this._className,this);
 }
@@ -775,14 +901,14 @@ Hop.Method.getMethod=function(className,method){
 }
 
 
-&#x2F;**
+/**
 Get the full url for the method
 
 This will get the full path for the url for the method.
 
 @return {string} The URL for the method
 @method getPath
-**&#x2F;
+**/
 Hop.Method.prototype.getPath=function(){
 	
 	return Hop.Method.getPath(Hop.basePath,this._className,this);
@@ -794,7 +920,7 @@ Hop.Method.getPath=function(basePath,className,method){
 	return util.webpath.join(basePath,_path);
 }
 
-&#x2F;**
+/**
 Specify the default values for this call
 
 These values will be copied into the input if no existing value is found.
@@ -802,52 +928,52 @@ These values will be copied into the input if no existing value is found.
 @param {object} defaults
 @method defaultValues
 @chainable
-**&#x2F;
+**/
 Hop.Method.prototype.defaultValues=function(defaults){
 	this.defaults=defaults;
 	return this;
 }
-&#x2F;**
+/**
 Specify a number of optionals for  for a call
 
 @example
-	api.post(&quot;create&quot;,&quot;&#x2F;user&#x2F;profile&#x2F;&quot;).optionals(&quot;email&quot;,&quot;name&quot;,&quot;password&quot;);
+	api.post(&quot;create&quot;,&quot;/user/profile/&quot;).optionals(&quot;email&quot;,&quot;name&quot;,&quot;password&quot;);
 
 @param {string} name of parameter (+)
 
 @for Hop.Method
 @method optionals
 @chainable
-**&#x2F;
+**/
 Hop.Method.prototype.optionals=function(){
 	for(var i=0;i&lt;arguments.length;i++)
 		this.optional(arguments[i]);	
 	return this;
 }
 
-&#x2F;**
+/**
 Specify a number of demands for  for a call
 
 @example
-	api.post(&quot;create&quot;,&quot;&#x2F;user&#x2F;profile&#x2F;&quot;).demands(&quot;email&quot;,&quot;name&quot;,&quot;password&quot;);
+	api.post(&quot;create&quot;,&quot;/user/profile/&quot;).demands(&quot;email&quot;,&quot;name&quot;,&quot;password&quot;);
 
 @param {string} name name of parameter (+)
 
 @for Hop.Method
 @method demands
 @chainable
-**&#x2F;
+**/
 Hop.Method.prototype.demands=function(){
 	for(var i=0;i&lt;arguments.length;i++)
 		this.demand(arguments[i]);	
 	return this;
 }
 
-&#x2F;**
+/**
 Demand a parameter for a call
 
 @example
-	api.post(&quot;create&quot;,&quot;&#x2F;user&#x2F;profile&#x2F;&quot;).demand(&quot;email&quot;,&quot;Email address&quot;);
+	api.post(&quot;create&quot;,&quot;/user/profile/&quot;).demand(&quot;email&quot;,&quot;Email address&quot;);
 
 @param {string} name of parameter
 @param {string} desc description of parameter
@@ -855,13 +981,13 @@ Demand a parameter for a call
 @for Hop.Method
 @method demand
 @chainable
-**&#x2F;
+**/
 Hop.Method.prototype.demand=function(name,desc,validate){
 	this.params[name]={ desc: desc, validate: validate, demand:true };
 	return this;
 }
 
-&#x2F;**
+/**
 	Describe this method
 
 	@param {string} usage text describing the function for documentation purposes
@@ -869,22 +995,48 @@ Hop.Method.prototype.demand=function(name,desc,validate){
 
 	@chainable
 	@method usage
-**&#x2F;
+**/
 Hop.Method.prototype.usage=function(desc){
 	this.desc=desc;
 	return this;
 }
 
+/**
+	Note that this method can only be called when there is a user in the session
 
-&#x2F;**
+	*This will only allow this method to be called if req.session.user exists*
+
+
+	@example
+		Hop.defineClass(&quot;UserService&quot;,UserService,function(api){
+			//Only allow this method to be called if a user is in the session
+			api.post(&quot;sendMsg&quot;,&quot;/user/:userId/message&quot;).authed();
+		});
+
+	@chainable
+	@method authed 
+**/
+Hop.Method.prototype.authed=function(desc){
+	this.authed=true;
+	this.addPreCall(function Hop_Method_preCall_authed(req,input,onComplete,next){
+		if(!req.session.user){
+			return onComplete(&quot;Permission denied&quot;);
+		} else return next();
+	},&quot;demand&quot;);
+	return this;
+}
+
+
+
+/**
 	Note that this method can only be called using https
 
 	@chainable
 	@method secure 
-**&#x2F;
+**/
 Hop.Method.prototype.secure=function(desc){
 	this.secure=true;
-	this.addPreCall(function(req,input,onComplete,next){
+	this.addPreCall(function Hop_Method_preCall_secure(req,input,onComplete,next){
 		if(!req.secure){
 			return onComplete(&quot;Permission denied&quot;);
 		} else return next();
@@ -892,13 +1044,13 @@ Hop.Method.prototype.secure=function(desc){
 	return this;
 }
 
-&#x2F;**
+/**
 	Include the express CSRF token in the response headers for this method
 
 	The CSRF token is utilized to prevent cross site request forgery attacks, and is a middleware component
 	for express. 
 
-	See here for information: http:&#x2F;&#x2F;www.senchalabs.org&#x2F;connect&#x2F;middleware-csrf.html
+	See here for information: http://www.senchalabs.org/connect/middleware-csrf.html
 
 	By default HopJS will attempt to utilize the CSRF functionality in express if it is enabled, but 
 	some clients require a means to access the CSRF token, hence this function will will send the csrf token
@@ -908,15 +1060,15 @@ Hop.Method.prototype.secure=function(desc){
 
 	@example
 		Hop.defineClass(&quot;UserService&quot;,UserService,function(api){
-			api.post(&quot;login&quot;,&quot;&#x2F;login&quot;).demands(&quot;username&quot;,&quot;password&quot;).sendCSRFToken();
+			api.post(&quot;login&quot;,&quot;/login&quot;).demands(&quot;username&quot;,&quot;password&quot;).sendCSRFToken();
 		});
 
 	@chainable
 	@method sendCSRFToken
-**&#x2F;
+**/
 Hop.Method.prototype.sendCSRFToken=function(){
 	this.sendsCSRFToken=true;
-	this.addPostCall(function(req,input,err,result,next){
+	this.addPostCall(function Hop_Method_postCall_sendCSRFToken(req,input,err,result,next){
 		if(!err &amp;&amp; req.session._csrf){
 			req._response.set(&#x27;X-CSRF-Token&#x27;,req.session._csrf);	
 		}
@@ -926,11 +1078,11 @@ Hop.Method.prototype.sendCSRFToken=function(){
 }
 
 
-&#x2F;**
+/**
 Optional parameter for a call
 
 @example
-	api.post(&quot;create&quot;,&quot;&#x2F;user&#x2F;profile&#x2F;&quot;).optional(&quot;phoneNumber&quot;,&quot;Phone Number&quot;);
+	api.post(&quot;create&quot;,&quot;/user/profile/&quot;).optional(&quot;phoneNumber&quot;,&quot;Phone Number&quot;);
 
 @param {string} name of parameter
 @param {string} desc description of parameter
@@ -938,38 +1090,38 @@ Optional parameter for a call
 @for Hop.Method
 @method optional
 @chainable
-**&#x2F;
+**/
 Hop.Method.prototype.optional=function(name,desc,validate){
 	this.params[name]={ desc: desc, validate: validate, optional:true };
 	return this;
 }
 
-&#x2F;**
+/**
 Indicate this function performs longPolling
 
 @example
-	api.get(&quot;status&quot;,&quot;&#x2F;server&#x2F;:serverID&#x2F;status&quot;).longPoll();
+	api.get(&quot;status&quot;,&quot;/server/:serverID/status&quot;).longPoll();
 
 @for Hop.Method
 @method longPoll
 @chainable
-**&#x2F;
+**/
 Hop.Method.prototype.longPoll=function(){
 	this.options.noCache=true;
 	this.options.longPoll=true;
 	return this;
 }
 
-&#x2F;**
+/**
 Indicate this function should avoid caching
 
 @example
-	api.post(&quot;create&quot;,&quot;&#x2F;user&#x2F;profile&#x2F;&quot;).noCache();
+	api.post(&quot;create&quot;,&quot;/user/profile/&quot;).noCache();
 
 @for Hop.Method
 @method noCache
 @chainable
-**&#x2F;
+**/
 Hop.Method.prototype.noCache=function(){
 	this.options.noCache=true;
 	return this;
@@ -999,41 +1151,41 @@ Hop.Method.prototype.addAfterTemplate=function(type,template){
 }
 
 
-&#x2F;**
+/**
 Demand a file be provided for this method.
 
 @example
-	api.post(&quot;create&quot;,&quot;&#x2F;user&#x2F;profile&#x2F;&quot;).demandFile(&quot;avatar&quot;,&quot;Users avatar image&quot;);
+	api.post(&quot;create&quot;,&quot;/user/profile/&quot;).demandFile(&quot;avatar&quot;,&quot;Users avatar image&quot;);
 
 @for Hop.Method
 @method demandFile
 @chainable
-**&#x2F;
+**/
 Hop.Method.prototype.demandFile=function(name,desc,validate){
 	this.params[name]={ desc: desc, validate: validate, demandFile:true, demand:true };
 	return this;
 }
 
-&#x2F;**
+/**
 Specify that a file may optionally be provided as an input to this call.
 
 @example
-	api.post(&quot;create&quot;,&quot;&#x2F;user&#x2F;profile&#x2F;&quot;).optionalFile(&quot;avatar&quot;,&quot;Users avatar image&quot;);
+	api.post(&quot;create&quot;,&quot;/user/profile/&quot;).optionalFile(&quot;avatar&quot;,&quot;Users avatar image&quot;);
 
 @for Hop.Method
 @method optionalFile
 @chainable
-**&#x2F;
+**/
 Hop.Method.prototype.optionalFile=function(name,desc,validate){
 	this.params[name]={ desc: desc, validate: validate, optionalFile:true };
 	return this;
 }
 
-&#x2F;**
+/**
 Add a function that will be called after this call is completed
 
 @param {function} call function to be called when this call is completed, which is passed the following parameters:
-	@param {object} call.request	the ExpressJS &#x2F; HTTP request object
+	@param {object} call.request	the ExpressJS / HTTP request object
 	@param {object} call.input	the input parameters to the call
 	@param call.err	the resulting err from the call
 	@param {object} call.result - the result of the call
@@ -1052,8 +1204,8 @@ Add a function that will be called after this call is completed
 
 
 @example
-	api.get(&quot;load&quot;,&quot;&#x2F;user&#x2F;:userID&quot;).addPostCall(function(req,input,err,result,next){
-		&#x2F;&#x2F;Let&#x27;s caclulate the users age:
+	api.get(&quot;load&quot;,&quot;/user/:userID&quot;).addPostCall(function(req,input,err,result,next){
+		//Let&#x27;s caclulate the users age:
 		if(result &amp;&amp; result.birthdate){
 			result.age = User.calculateAge(result.birthdate);
 		}	
@@ -1063,7 +1215,7 @@ Add a function that will be called after this call is completed
 @for Hop.Method
 @method addPostCall
 @chainable
-**&#x2F;
+**/
 Hop.Method.postCallPhases = [ &quot;first&quot;, &quot;data&quot;, &quot;event&quot;, &quot;cache&quot;, &quot;last&quot; ];
 Hop.Method.prototype.addPostCall=function(call,phase){
 	if(Hop.Method.postCallPhases.indexOf(phase)==-1)
@@ -1083,11 +1235,11 @@ Hop.Method.prototype.addPostCall=function(call,phase){
 }
 
 
-&#x2F;**
+/**
 Add a function that will be called before this call is executed 
 
 @param {function} call function to be called prior to when this call is executed , which is passed the following parameters:
-	@param {object} call.request the ExpressJS &#x2F; HTTP request object
+	@param {object} call.request the ExpressJS / HTTP request object
 	@param {object} call.input the input parameters to the call
 	@param {function} call.onComplete to be called if the function wants to short circuit and return a result
 	@param {function} call.next to be called when the callback is completed, causing the next call back to be called
@@ -1108,11 +1260,11 @@ Add a function that will be called before this call is executed
 
 
 @example
-	api.get(&quot;load&quot;,&quot;&#x2F;user&#x2F;:userID&quot;).addPreCall(function(req,input,err,onComplete,next){
-		&#x2F;&#x2F;If we have a user allow this call to complete
+	api.get(&quot;load&quot;,&quot;/user/:userID&quot;).addPreCall(function(req,input,err,onComplete,next){
+		//If we have a user allow this call to complete
 		if(req &amp;&amp; req.session &amp;&amp; req.session.user){
 			next();
-		&#x2F;&#x2F;If not return an error 
+		//If not return an error 
 		} else {
 			return onComplete(&quot;Permission denied&quot;);
 		}
@@ -1121,7 +1273,7 @@ Add a function that will be called before this call is executed
 @for Hop.Method
 @method addPreCall
 @chainable
-**&#x2F;
+**/
 Hop.Method.preCallPhases=[ &quot;first&quot;,&quot;demand&quot;, &quot;conversion&quot;, &quot;validation&quot;, &quot;auth&quot;, &quot;event&quot;,&quot;cache&quot;,&quot;last&quot;];
 Hop.Method.prototype.addPreCall=function(call,phase){
 	if(Hop.Method.preCallPhases.indexOf(phase)==-1)
@@ -1141,19 +1293,19 @@ Hop.Method.prototype.addPreCall=function(call,phase){
 	return this;
 }
 
-&#x2F;**
+/**
 Indicate that this method call has been depricated
 
 @for Hop.Method
 @method depricated
 @chainable
-**&#x2F;
+**/
 
 Hop.Method.prototype.depricated=function(){
 	this.depricated=true;
 }
 
-&#x2F;**
+/**
 Calls the specified method 
 
 This function is provided so that all functionality around a specific call may be utilized. 
@@ -1163,7 +1315,7 @@ This function is provided so that all functionality around a specific call may b
 @param {function} callback for completion
 	@param callback.err The error returned from the call
 	@param callback.result The result returned from the call
-@param {object} [request] ExpressJS&#x2F;HTTP request object
+@param {object} [request] ExpressJS/HTTP request object
 
 @example
 	var input = { username: &quot;cfox&quot;, email:&quot;cfox@gmail.com&quot;}
@@ -1175,10 +1327,10 @@ This function is provided so that all functionality around a specific call may b
 @for Hop
 @method call
 @static
-**&#x2F;
+**/
 Hop.call=function(name,input,onComplete,request){
 	var output = {};
-	
+
 	
 	var obj = Hop.Object.findObject(name);
 	if(!obj)
@@ -1194,7 +1346,7 @@ Hop.call=function(name,input,onComplete,request){
 	}
 	for(var paramName in method.params){
 		var param = method.params[paramName];
-		if(input[paramName]!=undefined){
+		if(typeof input[paramName]!=&quot;undefined&quot;){
 			output[paramName]=input[paramName];	
 		}
 	}
@@ -1210,18 +1362,18 @@ Hop.call=function(name,input,onComplete,request){
 			throw (&quot;Method not found on object instance: &quot;+method.name);
 				
 			var preTasks = method._preCall.length;
-			var runPreTaskFunctions=function(){
+			var runPreTaskFunctions=function Hop_call_preTask(){
 				if(preTasks&gt;0){
-					method._preCall[method._preCall.length-preTasks].call(request,output,onComplete,function(){
+					method._preCall[method._preCall.length-preTasks].call(request,output,onComplete,function Hop_call_preCall(){
 						preTasks--;
 						runPreTaskFunctions();
 					});
 				} else {
-					obj._instance[method.name](output,function(err,result){
+					obj._instance[method.name](output,function Hop_call_instance(err,result){
 							var postTasks = method._postCall.length;
-							var runPostTaskFunctions=function(){
+							var runPostTaskFunctions=function Hop_call_postTask(){
 								if(postTasks&gt;0){
-									method._postCall[method._postCall.length-postTasks].call(request,output,err,result,function(){
+									method._postCall[method._postCall.length-postTasks].call(request,output,err,result,function Hop_call_postCall(){
 										postTasks--;
 										runPostTaskFunctions();
 									});
@@ -1237,7 +1389,7 @@ Hop.call=function(name,input,onComplete,request){
 			runPreTaskFunctions();			
 
 	} else {
-		&#x2F;&#x2F;FIXME
+		//FIXME
 		throw &quot;I don&#x27;t know what to do here&quot;;
 	}
 
@@ -1245,18 +1397,18 @@ Hop.call=function(name,input,onComplete,request){
 
 var Stream = require(&#x27;stream&#x27;);
 
-Hop.appendForm=util.appendForm;
+Hop.DataEncoder=util.DataEncoder;
 
 
 Hop.addslashes=function(string) {
-		return string.replace(&#x2F;\\&#x2F;g, &#x27;\\\\&#x27;).
-				replace(&#x2F;\u0008&#x2F;g, &#x27;\\b&#x27;).
-				replace(&#x2F;\t&#x2F;g, &#x27;\\t&#x27;).
-				replace(&#x2F;\n&#x2F;g, &#x27;\\n&#x27;).
-				replace(&#x2F;\f&#x2F;g, &#x27;\\f&#x27;).
-				replace(&#x2F;\r&#x2F;g, &#x27;\\r&#x27;).
-				replace(&#x2F;&#x27;&#x2F;g, &#x27;\\\&#x27;&#x27;).
-				replace(&#x2F;&quot;&#x2F;g, &#x27;\\&quot;&#x27;);
+		return string.replace(/\\/g, &#x27;\\\\&#x27;).
+				replace(/\u0008/g, &#x27;\\b&#x27;).
+				replace(/\t/g, &#x27;\\t&#x27;).
+				replace(/\n/g, &#x27;\\n&#x27;).
+				replace(/\f/g, &#x27;\\f&#x27;).
+				replace(/\r/g, &#x27;\\r&#x27;).
+				replace(/&#x27;/g, &#x27;\\\&#x27;&#x27;).
+				replace(/&quot;/g, &#x27;\\&quot;&#x27;);
 }
 module.exports=Hop;
 
@@ -1269,13 +1421,13 @@ module.exports=Hop;
         </div>
     </div>
 </div>
-<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
 <script>prettyPrint();</script>
-<script src="..&#x2F;assets/js/yui-prettify.js"></script>
-<script src="..&#x2F;assets/../api.js"></script>
-<script src="..&#x2F;assets/js/api-filter.js"></script>
-<script src="..&#x2F;assets/js/api-list.js"></script>
-<script src="..&#x2F;assets/js/api-search.js"></script>
-<script src="..&#x2F;assets/js/apidocs.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
 </body>
 </html>

@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib&#x2F;express.js</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.5.1&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
-    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.5.1&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <title>lib/express.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+                <h1><img src="../assets/css/logo.png" title=""></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -41,43 +41,43 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="..&#x2F;classes/Hop.html">Hop</a></li>
+                <li><a href="../classes/Hop.html">Hop</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.CodeGenerator.html">Hop.CodeGenerator</a></li>
+                <li><a href="../classes/Hop.CodeGenerator.html">Hop.CodeGenerator</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.Method.html">Hop.Method</a></li>
+                <li><a href="../classes/Hop.Method.html">Hop.Method</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.Object.html">Hop.Object</a></li>
+                <li><a href="../classes/Hop.Object.html">Hop.Object</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.StubRequest.html">Hop.StubRequest</a></li>
+                <li><a href="../classes/Hop.StubRequest.html">Hop.StubRequest</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.StubResponse.html">Hop.StubResponse</a></li>
+                <li><a href="../classes/Hop.StubResponse.html">Hop.StubResponse</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestCase.html">Hop.TestCase</a></li>
+                <li><a href="../classes/Hop.TestCase.html">Hop.TestCase</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestTask.html">Hop.TestTask</a></li>
+                <li><a href="../classes/Hop.TestTask.html">Hop.TestTask</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.TestUtils.html">Hop.TestUtils</a></li>
+                <li><a href="../classes/Hop.TestUtils.html">Hop.TestUtils</a></li>
             
-                <li><a href="..&#x2F;classes/Hop.User.html">Hop.User</a></li>
+                <li><a href="../classes/Hop.User.html">Hop.User</a></li>
             
             </ul>
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a href="..&#x2F;modules/Cache.html">Cache</a></li>
+                <li><a href="../modules/Cache.html">Cache</a></li>
             
-                <li><a href="..&#x2F;modules/CodeGenerator.html">CodeGenerator</a></li>
+                <li><a href="../modules/CodeGenerator.html">CodeGenerator</a></li>
             
-                <li><a href="..&#x2F;modules/Event.html">Event</a></li>
+                <li><a href="../modules/Event.html">Event</a></li>
             
-                <li><a href="..&#x2F;modules/Hop.html">Hop</a></li>
+                <li><a href="../modules/Hop.html">Hop</a></li>
             
-                <li><a href="..&#x2F;modules/Job.html">Job</a></li>
+                <li><a href="../modules/Job.html">Job</a></li>
             
-                <li><a href="..&#x2F;modules/Test.html">Test</a></li>
+                <li><a href="../modules/Test.html">Test</a></li>
             
-                <li><a href="..&#x2F;modules/User.html">User</a></li>
+                <li><a href="../modules/User.html">User</a></li>
             
             </ul>
         </div>
@@ -114,18 +114,40 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: lib&#x2F;express.js</h1>
+                        <h1 class="file-heading">File: lib/express.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-var Hop = require(&#x27;.&#x2F;api&#x27;);
-var combustion = require(&#x27;combustion&#x27;)();
+var Hop = require(&#x27;./api&#x27;);
+var Fire = require(&#x27;fire-ts&#x27;);
 var fs = require(&#x27;fs&#x27;);
 var path = require(&#x27;path&#x27;);
 var util = require(&#x27;hopjs-common&#x27;);
 
 
-&#x2F;**
+Hop.convertValue=function(value){
+	if(value===null){
+		return &quot;&quot;;
+	} else if(value instanceof Array){
+		var r = [];
+		for(var i in value){
+			r.push(Hop.convertValue(value[i]));
+		}
+		return r;
+	} else if(typeof value==&quot;object&quot;){
+		var r = {};
+		for(var v in value){
+			r[v]=Hop.convertValue(value[v]);
+		}		
+		return r;
+	} else {
+		if(value==null)
+			return &quot;&quot;;
+		else return value.toString();
+	}
+}
+
+/**
 Inserts the Hop calls into express
 
 @param {string} basePath 
@@ -135,7 +157,7 @@ Inserts the Hop calls into express
 
 @for Hop
 @method apiHook
-**&#x2F;
+**/
 Hop.apiHook=function(basePath,app,options){
 	
 	options=options||{};
@@ -146,8 +168,8 @@ Hop.apiHook=function(basePath,app,options){
 		for(var methodName in obj.methods){
 			var method = obj.methods[methodName];
 			Hop.log(method.method,method.getPath());	
-			(function(obj,method){
-							app[method.method](method.getPath(),function(req,res){
+			(function Hop_apiHook(obj,method){
+							app[method.method](method.getPath(),function Hop_apiHook_hook(req,res){
 								Hop.log(&quot;-&quot;,method.method,method.getPath());	
 
 								var input = {};
@@ -178,58 +200,69 @@ Hop.apiHook=function(basePath,app,options){
 									if(param.demand &amp;&amp; typeof value==&quot;undefined&quot;){
 										return res.send(400,&quot;Missing parameter:&quot;+paramName);
 									}
+									//value=Hop.convertValue(value);
 									input[paramName]=value;
 								}
-								&#x2F;&#x2F;try {
+								//try {
 									req._response = res;
 									req.getResponse=function(){ return res; };
 									var called=false;
+
+	
 									Hop.call(obj.name+&quot;.&quot;+method.name,input,function(err,result){
+											var m = obj.name+&quot;.&quot;+method.name;
 											if(called){
-												Hop.error(obj.name+&quot;.&quot;+method.name,&quot;called onComplete twice&quot;);	
+												Hop.logCall(m,&quot;warn&quot;,&quot;called onComplete twice&quot;);	
 											} else {
 												called=true;
-											try {
-												if(redirect)
-													return res.redirect(redirect);
-												if(template)
-													return res.render(template,{ result: result, error: err, request: req});	
+												try {
+													if(redirect)
+														return res.redirect(redirect);
+													if(template)
+														return res.render(template,{ result: result, error: err, request: req});	
 
-												if(err){
-													res.send(500,err);
-													Hop.error(err);
-												} else {
-													if(result instanceof Hop.File){
-														result.send(res);
+													if(err){
+														err=obj.callOnError(method,req,input,err);
+														res.send(500,err);
 													} else {
-														if(result===null || result===undefined){
-															res.send(404,&quot;Not found&quot;);
-														} else { 
-															res.json(result);
+														if(result instanceof Hop.File){
+															result.send(res);
+														} else if(result instanceof Hop.Template){
+															result.send(res);
+														} else {
+															if(result===null || result===undefined){
+																res.send(404,&quot;Not found&quot;);
+															} else { 
+																res.json(result);
+															}
 														}
 													}
+												} catch(e){
+													Hop.error(e.stack);
 												}
-											} catch(e){
-												Hop.error(e);
-											}
 										}
 									},req);
-								&#x2F;*
+								/*
 								} catch(e){
 									res.send(500,e.toString()+&quot;\n&quot;+e.stack());	
-								}*&#x2F;
+								}*/
 							});
 			})(obj,method);
 		}
 	}
-	var cwd = path.join(path.dirname(module.filename),&quot;..&#x2F;&quot;);
-	Hop.docURL = util.webpath.join(basePath,&quot;&#x2F;&quot;);
-	app.get(util.webpath.join(basePath,&quot;&#x2F;&quot;),function(req,res){
+	var cwd = path.join(path.dirname(module.filename),&quot;../&quot;);
+	Hop.docURL = util.webpath.join(basePath,&quot;/&quot;);
+	app.get(util.webpath.join(basePath,&quot;/&quot;),function(req,res){
 		var apiChecksum = (Hop.checksum());
-		fs.readFile(path.join(cwd,&quot;static&#x2F;doc.comb&quot;),function(err,data){
-			var template = combustion(data.toString());
-			res.set(&#x27;Content-Type&#x27;, &#x27;text&#x2F;html&#x27;);
-			res.send(template({ Hop: Hop, _csrf: req.session._csrf }));
+		fs.readFile(path.join(cwd,&quot;static/doc.comb&quot;),function(err,data){
+			try {
+				var template = Fire.compile(data.toString());
+				res.set(&#x27;Content-Type&#x27;, &#x27;text/html&#x27;);
+				res.send(template({ Hop: Hop, _csrf: (req.session?req.session._csrf:undefined) }));
+			} catch(e){
+				Hop.error(&quot;Error parsing doc template&quot;,e.stack);
+				res.send(500,&quot;Error:&quot;+e.toString());
+			}
 		});
 	});
 	Hop.apiURL = util.webpath.join(basePath,&quot;api.js&quot;);
@@ -238,23 +271,23 @@ Hop.apiHook=function(basePath,app,options){
 		if(req.get(&quot;If-Non-Match&quot;)==apiChecksum){
 			return res.send(&quot;Not modified&quot;,304);
 		}
-		var file = path.join(cwd,&quot;static&#x2F;api.comb&quot;);
+		var file = path.join(cwd,&quot;static/api.comb&quot;);
 		fs.readFile(file,function(err,data){
-			try {
-				var template = combustion(data.toString());
+				try {
+				var template = Fire.compile(data.toString());
 			
 
-				res.set(&#x27;Content-Type&#x27;, &#x27;application&#x2F;javascript&#x27;);
-				res.set(&#x27;Content-Type&#x27;, &#x27;text&#x2F;html&#x27;);
+				res.set(&#x27;Content-Type&#x27;, &#x27;application/javascript&#x27;);
+				res.set(&#x27;Content-Type&#x27;, &#x27;text/html&#x27;);
 				res.set(&quot;ETag&quot;,apiChecksum);	
 				res.set(&quot;Hop-Checksum&quot;,apiChecksum);
-				
-				res.send(template({ Objects: Hop.Objects, Models: Hop.Models, _csrf: (req.session?req.session._csrf:null)}));
+			
+				res.send(template({ Hop: Hop, Objects: Hop.Objects, Models: Hop.Models, _csrf: (req.session?req.session._csrf:null)}));
+				} catch (e){
+					Hop.error(&quot;Error parsing api template&quot;,e.stack);
+					res.send(500,&quot;Error:&quot;+e.msg);
+				}
 
-			} catch (e){
-				Hop.error(&quot;Error parsing : api.js&quot;,e);
-				Hop.error(e.stack());
-			}
 		});
 	});
 	Hop.testURL=util.webpath.join(basePath,&quot;test.js&quot;);
@@ -264,54 +297,71 @@ Hop.apiHook=function(basePath,app,options){
 		if(req.get(&quot;If-Non-Match&quot;)==apiChecksum){
 			return res.send(&quot;Not modified&quot;,304);
 		}
-		fs.readFile(path.join(cwd,&quot;static&#x2F;test.comb&quot;),function(err,data){
-			var template = combustion(data.toString());
-			res.set(&#x27;Content-Type&#x27;, &#x27;application&#x2F;javascript&#x27;);
-			res.set(&quot;ETag&quot;,apiChecksum);	
-			res.send(template(Hop));
+		fs.readFile(path.join(cwd,&quot;static/test.comb&quot;),function(err,data){
+			try { 
+				var template = Fire.compile(data.toString());
+				res.set(&#x27;Content-Type&#x27;, &#x27;application/javascript&#x27;);
+				res.set(&quot;ETag&quot;,apiChecksum);	
+				res.send(template(Hop));
+			} catch(e){
+				Hop.error(&quot;Error parsing test template&quot;,e.stack);
+				res.send(500,&quot;Error:&quot;+e.toString());
+			}
 		});
 	});
-	app.get(util.webpath.join(basePath,&quot;&#x2F;api.json&quot;),function(req,res){
-		res.contentType(&quot;application&#x2F;json&quot;);
+	app.get(util.webpath.join(basePath,&quot;/api.json&quot;),function(req,res){
+		res.contentType(&quot;application/json&quot;);
 		res.send(Hop.toJSON());
 	});
-	app.get(&quot;&#x2F;_hopjs&#x2F;&quot;,function(req,res){
+	app.get(&quot;/_hopjs/&quot;,function(req,res){
 		res.redirect(basePath);
 	});
-	app.get(&quot;&#x2F;_hopjs&#x2F;api.json&quot;,function(req,res){
-		res.contentType(&quot;application&#x2F;json&quot;);
+	app.get(&quot;/_hopjs/api.json&quot;,function(req,res){
+		res.contentType(&quot;application/json&quot;);
 		res.send(Hop.toJSON());
 	});
-	app.get(&quot;&#x2F;_hopjs&#x2F;apitest.json&quot;,function(req,res){
-		res.contentType(&quot;application&#x2F;json&quot;);
+	app.get(&quot;/_hopjs/apitest.json&quot;,function(req,res){
+		res.contentType(&quot;application/json&quot;);
 		res.send(JSON.stringify(Hop.TestCases));
 	});
-	app.get(&quot;&#x2F;_hopjs&#x2F;apitest.js&quot;,function(req,res){
-		res.contentType(&quot;text&#x2F;javascript&quot;);
+	app.get(&quot;/_hopjs/apitest.js&quot;,function(req,res){
+		res.contentType(&quot;text/javascript&quot;);
 		res.send(Hop.TestCase.toStandAlone());
 	});
-	app.get(&quot;&#x2F;_hopjs&#x2F;*&quot;,function(req,res){
+	app.get(&quot;/_hopjs/*&quot;,function(req,res){
 		if(req.params[0].indexOf(&quot;..&quot;)!=-1)
 			return res.send(404,&quot;Not found&quot;);
-		var file = path.join(__dirname,&quot;..&#x2F;static&#x2F;_hopjs&quot;,req.params[0]);
-		console.log(file);
-		res.sendfile(file);
+		var file = path.join(__dirname,&quot;../static/_hopjs&quot;,req.params[0]);
+
+		if(/\.comb$/.test(file) || /\.html\.fts/.test(file)){
+			Fire.parse(file,{},function(err,templ){
+				if(err) return res.send(500,err.toString());
+				if(req.query.name){
+					res.send(req.query.name+&quot;=&quot;+templ.toString());
+				} else {
+					res.send(templ.toString());
+				}
+			});	
+		} else {
+			res.sendfile(file);
+		}
 	});
 }
 
-var cwd = path.join(path.dirname(module.filename),&quot;..&#x2F;&quot;);
+var cwd = path.join(path.dirname(module.filename),&quot;../&quot;);
 
 
-&#x2F;**
+/**
 Render a template using the cumbustion template engine
 
-@param {string} filename The filename of the template relative to the &quot;.&#x2F;static&quot; path
+@param {string} filename The filename of the template relative to the &quot;./static&quot; path
 @param {object} input The inputs to the template
 
 @for Hop
 @method renderTemplate
-**&#x2F;
+**/
 Hop.renderTemplate=function(filename,input){
+	input=input||{};
 	try {
 		var file = path.join(cwd,&quot;static&quot;,filename);
 		if(fs.existsSync(file)){
@@ -322,14 +372,24 @@ Hop.renderTemplate=function(filename,input){
 		if(!data){
 			return &quot;Invalid template specified:&quot;+filename;	
 		}
-		var template = combustion(data.toString(),input);
+		
+		var _input={};
+		for(var i in input){
+			_input[i]=input[i];
+		}
+		_input.Hop=Hop;
+
+
+		var template = Fire.compile(data.toString());
 		return template;
 	} catch(e){
 		Hop.error(e);
-		Hop.error(e.stack());
+		Hop.error(e.stack);
 		return (file+&quot;:&quot;+e.toString());
 	}
 }
+
+module.exports=Hop;
 
 
     </pre>
@@ -341,13 +401,13 @@ Hop.renderTemplate=function(filename,input){
         </div>
     </div>
 </div>
-<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
 <script>prettyPrint();</script>
-<script src="..&#x2F;assets/js/yui-prettify.js"></script>
-<script src="..&#x2F;assets/../api.js"></script>
-<script src="..&#x2F;assets/js/api-filter.js"></script>
-<script src="..&#x2F;assets/js/api-list.js"></script>
-<script src="..&#x2F;assets/js/api-search.js"></script>
-<script src="..&#x2F;assets/js/apidocs.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
 </body>
 </html>
