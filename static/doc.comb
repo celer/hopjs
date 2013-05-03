@@ -3,12 +3,13 @@
 	<head>
 		<title>RESTful API Documentation</title>
 		<meta name="viewport" content="Width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="/_hopjs/css/bootstrap.css" />
-		<link rel="stylesheet" href="/_hopjs/css/bootstrap-responsive.css" />
-		<script src="/_hopjs/js/jquery.js"></script>
-		<script src="/_hopjs/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.css" />
+		<link rel="stylesheet" href="css/bootstrap-responsive.css" />
+		<script src="js/jquery.js"></script>
+		<script src="js/bootstrap.min.js"></script>
 		<script>_csrf=<%=JSON.stringify(_csrf)%>;</script>
-		<script src="/_hopjs/apitest.js"></script>
+		<script src="apitest.js"></script>
+		<script src="<%=Hop.hopjsURL%>"></script>
 		<script src="<%=Hop.apiURL%>"></script>
 		<script src="<%=Hop.testURL%>"></script>
 	</head>
@@ -139,7 +140,7 @@
 			<div class="row">
 				<div class="span9">
 					<br><br><br>
-					<img src="/_hopjs/img/logo.png"><br>
+					<img src="img/logo.png"><br>
 					Powered by HopJS
 				</div>
 			</div>
