@@ -95,7 +95,7 @@
 										<div class="row">
 							 				<%= method.renderBeforeTemplates("Doc", { method: method}) %> 
 										</div>
-										<div class="offset1 span8" id="<%=obj.name%>.<%=method.name%>.overview">
+										<div class="offset1 span8" id="<%=obj.name%>.<%=method.name%>.method">
 											<% if(method.desc){ %>
 												<u>Overview</u>
 												<p><%=(method.desc?method.desc:"")%></p>

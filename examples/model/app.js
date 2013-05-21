@@ -71,6 +71,10 @@ UserService.del=function(input,onComplete,request){
   }
 }
 
+UserService.load=function(input,onComplete){
+	return onComplete(users[input.id]);
+}
+
 
 UserService.currentUser=function(input,onComplete,request){
   return onComplete(null,request.session.user);
@@ -87,6 +91,8 @@ Hop.defineModel("User",function(user){
 	user.field("name","Username","The user's username").string().regexp(/[A-Za-z0-9\_\-]{3,10}/,"Usernames must be between 3 and 10 characters long, and can only contain alphanumeric characters");
 	user.field("email","Email","The user's email address").string();
 	user.field("password","Password","The user's password").password();
+	user.link("self").call("UserService.load");
+	user.link("doc","/api/#User.model");
 });
 
 ValidatorTest={};
@@ -96,10 +102,10 @@ ValidatorTest.test=function(input,onComplete){
 
 
 Hop.defineModel("ValidatorTest",function(model){
-	model.field("minMax").range(5,100);
-	model.field("array").values(["red","blue","green"]);
+	model.field("minMax").integer().range(5,100);
+	model.field("array").string().values(["red","blue","green"]);
 	model.field("object").values({ R:"Red", B:"Blue", G:"Green" });
-	model.field("string").regexp(/[A-Z]+/,"REXP");
+	model.field("string").string().regexp(/[A-Z]+/,"REXP");
 });
 
 Hop.defineClass("ValidatorTest",ValidatorTest,function(api){
@@ -125,6 +131,7 @@ Hop.defineClass("UserService",UserService,function(api){
 	api.post("authenticate","/user/auth").usage("Authenticates a user").demands("password","name").useModel("User");
 	api.get("currentUser","/user").usage("Returns the current user").outputModel("User");
 	api.get("logout","/user/logout").usage("Logs the current user out");
+	api.get("load","/user/:id").usage("Load a user").useModel("User");
   api.del("del","/user/:id").usage("Deletes the user").demand("id").inputModel("User");
 });
 

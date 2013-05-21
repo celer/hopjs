@@ -1,0 +1,38 @@
+	<div class="span9">
+		<br><br>
+		<h2>Models</h2>
+		<hr>
+		<% for(var modelName in Hop.Models){
+				var model = Hop.Models[modelName];
+		%>	
+		<!-- Model Name -->
+		<div class="row">
+			<div class="span4">
+			<h3 id="<%=modelName%>.model"><%=modelName%></h3>
+			</div>
+		</div>		
+		<!-- Model Fields -->
+		<div class="row">
+			<div class="offset1 span8">
+				<u>Fields</u>
+				<table class="table">
+				<% for(var fieldName in model.fields){ 
+						var field = model.fields[fieldName];
+				%>
+					<tr><td width="15%"><%=fieldName%></td><td width="15%"><%=(field.type?field.type:"")%><%=(field.isArray?"[]":"")%></td><td width="50%"><%=(field.desc?field.desc:"")%></td><td><%=(typeof field.values=="object"?JSON.stringify(field.values):"")%></tr>
+				<% } %>
+				</table> 
+				<% if(model.links instanceof Array){ %>
+					<u>Links</u>
+					<table class="table">
+					<% for(var i in model.links){ 
+							var link= model.links[i];
+					%>
+						<tr><td width="15%"><%=link.rel%></td><td><span class="label"><%=link.getMethod()%></span>&nbsp;<%=link.getHREF()%></td><td><%=(typeof link.call=="string")?"<a href=\"#"+link.call+".method\">See "+link.call+"</a>":""%></tr>
+					<% } %>
+					</table>
+				<% } %>
+				</div>
+			</div>
+		<% } %>
+	</div>
