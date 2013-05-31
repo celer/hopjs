@@ -1,5 +1,5 @@
 if(typeof Hop=="undefined" || typeof Hop.remoteExec=="undefined"){
-	console.error("Please ensure that Hop from hopjs.js is loaded before this file is parsed");
+  console.error("Please ensure that Hop from hopjs.js is loaded before this file is parsed");
 }
 
 <%= Hop.renderBeforeTemplates("JavaScript",Hop) %>
@@ -19,18 +19,18 @@ if(typeof Hop=="undefined" || typeof Hop.remoteExec=="undefined"){
 <%= method.renderBeforeTemplates("JavaScript",{ method: method}) %>
 
 <%=obj.name%>.<%=methodName%>=function(input,onComplete){
-	var self = <%=obj.name%>.<%=methodName%>;	
-	Hop.remoteExec(self.methodName,self.type,self.path,self.options,self.params,input,onComplete);
+  var self = <%=obj.name%>.<%=methodName%>;  
+  Hop.remoteExec(self.methodName,self.type,self.path,self.options,self.params,input,onComplete);
 }
 
 <%=obj.name%>.<%=methodName%>.fromForm=function(selector,input,onComplete){
-	var self = <%=obj.name%>.<%=methodName%>;	
-	Hop.fromForm(selector,self.methodName,self.type,self.path,self.options,self.params,input,onComplete);
+  var self = <%=obj.name%>.<%=methodName%>;  
+  Hop.fromForm(selector,self.methodName,self.type,self.path,self.options,self.params,input,onComplete);
 }
 
 <%=obj.name%>.<%=methodName%>.toForm=function(selector,input,onComplete){
-	var self = <%=obj.name%>.<%=methodName%>;	
-	Hop.toForm(selector,self.methodName,self.type,self.path,self.options,self.params,input,onComplete);
+  var self = <%=obj.name%>.<%=methodName%>;  
+  Hop.toForm(selector,self.methodName,self.type,self.path,self.options,self.params,input,onComplete);
 }
 
 
@@ -46,7 +46,7 @@ if(typeof Hop=="undefined" || typeof Hop.remoteExec=="undefined"){
 <%= method.renderAfterTemplates("JavaScript",{ method: method}) %>
 
 <% } %>
-			
+      
 <%= obj.renderAfterTemplates("JavaScript",{ object: obj}) %>
 
 <% } %>

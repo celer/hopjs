@@ -3,10 +3,10 @@ if(typeof Hop=="undefined")
 
 
 if(typeof $=="undefined" || $.ajax=="undefined"){
-	console.error("HopJS requires jQuery");
+  console.error("HopJS requires jQuery");
 }
 
-	
+  
 //FIXME should check to see if this version is newer then the last version
 //and overwrite if so, otherwise it shouldn't.
 Hop.version=<%#Hop.version%>
@@ -14,373 +14,373 @@ Hop.version=<%#Hop.version%>
 Hop.FormUtil={};
 
 Hop.FormUtil.busy=function(formSelector,busy){
-	console.log("Hop.FormUtil.busy",formSelector,busy);
+  console.log("Hop.FormUtil.busy",formSelector,busy);
 }
 
 
 Hop.FormUtil.showErrors=function(formSelector,errs){
-	var errors = errs.split(";");
-	var errStr="";
-	for(var i in errors){
-		var err = errors[i];
-		var m=err.match(/([A-Za-z0-9]+):(.+)/);
-		if(m && m.length==3){
-			if(!Hop.FormUtil.valueError(formSelector,m[1],m[2])){
-				errStr+=err+", ";
-			}
-		} else {
-			errStr+=err+", ";
-		} 
-	}
-	if(errStr.length>0){
-		errStr=errStr.substr(0,errStr.length-2);
-		Hop.FormUtil.flash(formSelector,'error',errStr);
-	}
+  var errors = errs.split(";");
+  var errStr="";
+  for(var i in errors){
+    var err = errors[i];
+    var m=err.match(/([A-Za-z0-9]+):(.+)/);
+    if(m && m.length==3){
+      if(!Hop.FormUtil.valueError(formSelector,m[1],m[2])){
+        errStr+=err+", ";
+      }
+    } else {
+      errStr+=err+", ";
+    } 
+  }
+  if(errStr.length>0){
+    errStr=errStr.substr(0,errStr.length-2);
+    Hop.FormUtil.flash(formSelector,'error',errStr);
+  }
 }
 
 
 Hop.FormUtil.flash=function(formSelector,type,msg){
-	console.log("Hop.FormUtil.Flash",formSelector,type,msg);
-	var res = $(formSelector).children(".flash");
-	if(res.length>0){
-		res.html(msg);
-	} else {
-		if(type=="error")
-			alert(msg);
-	}
+  console.log("Hop.FormUtil.Flash",formSelector,type,msg);
+  var res = $(formSelector).children(".flash");
+  if(res.length>0){
+    res.html(msg);
+  } else {
+    if(type=="error")
+      alert(msg);
+  }
 }
 
 
 Hop.FormUtil.resetErrors=function(formSelector){
-	$(formSelector).children(".flash").html("");
-	$(formSelector).children(".valueErr").html("");
+  $(formSelector).children(".flash").html("");
+  $(formSelector).children(".valueErr").html("");
 }
 
 Hop.FormUtil.valueError=function(formSelector,parameter,err){
-	console.log("Hop.FormUtil.valueError",formSelector,parameter,err);
-	var res = $(formSelector).children("."+parameter+"Err");
-	if(res.length>0){
-		res.html(err);
-		return true;
-	} else return false;
+  console.log("Hop.FormUtil.valueError",formSelector,parameter,err);
+  var res = $(formSelector).children("."+parameter+"Err");
+  if(res.length>0){
+    res.html(err);
+    return true;
+  } else return false;
 }
 
 Hop.FormUtil.reset=function(selector){
-	$(selector).children("input[type=text]").val("");
-	$(selector).children("input[type=password]").val("");
-	$(selector).children("input[type=hidden]").val("");
-	$(selector).children("textarea").val("");
-	$(selector).children("input[type=checkbox]").attr("checked",null);
-	//FIXME can't reset selection
+  $(selector).children("input[type=text]").val("");
+  $(selector).children("input[type=password]").val("");
+  $(selector).children("input[type=hidden]").val("");
+  $(selector).children("textarea").val("");
+  $(selector).children("input[type=checkbox]").attr("checked",null);
+  //FIXME can't reset selection
 }
 
 Hop.FormUtil.getValue=function(formSelector,parameter,type){
-	var element = $(formSelector).children("[name="+parameter+"]") 
-	if(element.length==0){
-			element = $(formSelector).children("."+parameter); 
-	}
-	if(element.length==0){
-			element = $(formSelector+" [name="+parameter+"]"); 
-	}
-	if(element.length==0){
-			element = $(formSelector+" ."+parameter); 
-	}
-	if(element.length==1){
-		if(element.is("input")){
-			if(element.is("input[type=text]") || element.is("input[type=password]") || element.is("input[type=hidden]")){
-				return element.val();
-			} else if(element.is("input[type=checkbox]")){
-				return (element.attr("checked")=="checked");   
-			}
-		} else if(element.is("select")){
-			return element.val(); 
-		} else if(element.is("textarea")){
-			return element.val();
-		}
-	} else {
-		var opts={};
-		$(formSelector).children("[name*="+parameter+"]").each(function(i,e){ 
-			e=$(e);
-			var name = e.attr("name");
-			var val=undefined;
-			if(e.attr("type")=="checkbox"){
-				if(e.attr("checked")=="checked"){
-					val=e.val();
-				}
-			} else {
-				val=e.val();
-			}
-		
-			if(name.match(/\[\]$/)){
-				if(!opts[name]){
-					opts[name]=[];
-				}  
-				if(val)
-					opts[name].push(val);
-			} else {
-				opts[name]=val;
-			}
+  var element = $(formSelector).children("[name="+parameter+"]") 
+  if(element.length==0){
+      element = $(formSelector).children("."+parameter); 
+  }
+  if(element.length==0){
+      element = $(formSelector+" [name="+parameter+"]"); 
+  }
+  if(element.length==0){
+      element = $(formSelector+" ."+parameter); 
+  }
+  if(element.length==1){
+    if(element.is("input")){
+      if(element.is("input[type=text]") || element.is("input[type=password]") || element.is("input[type=hidden]")){
+        return element.val();
+      } else if(element.is("input[type=checkbox]")){
+        return (element.attr("checked")=="checked");   
+      }
+    } else if(element.is("select")){
+      return element.val(); 
+    } else if(element.is("textarea")){
+      return element.val();
+    }
+  } else {
+    var opts={};
+    $(formSelector).children("[name*="+parameter+"]").each(function(i,e){ 
+      e=$(e);
+      var name = e.attr("name");
+      var val=undefined;
+      if(e.attr("type")=="checkbox"){
+        if(e.attr("checked")=="checked"){
+          val=e.val();
+        }
+      } else {
+        val=e.val();
+      }
+    
+      if(name.match(/\[\]$/)){
+        if(!opts[name]){
+          opts[name]=[];
+        }  
+        if(val)
+          opts[name].push(val);
+      } else {
+        opts[name]=val;
+      }
 
-		});
-		if(opts[parameter+"_month"] && opts[parameter+"_day"] && opts[parameter+"_year"]){
-			if(opts[parameter+"_month"]=="")
-				return null 
-			if(opts[parameter+"_day"]=="")
-				return null;
-			if(opts[parameter+"_year"]=="")
-				return null;
-			return new Date(opts[parameter+"_year"], opts[parameter+"_month"]-1, opts[parameter+"_day"]);
-		} else if(opts[parameter+"[]"]){
-			var pt = typeof opts[parameter+"[]"];
-			if(pt=="string")
-				return [opts[parameter+"[]"]];
-			if(pt.length){
-				return opts[parameter+"[]"];
-			}
-		} else {
-			return undefined;
-		}
-	}
-	return undefined;
+    });
+    if(opts[parameter+"_month"] && opts[parameter+"_day"] && opts[parameter+"_year"]){
+      if(opts[parameter+"_month"]=="")
+        return null 
+      if(opts[parameter+"_day"]=="")
+        return null;
+      if(opts[parameter+"_year"]=="")
+        return null;
+      return new Date(opts[parameter+"_year"], opts[parameter+"_month"]-1, opts[parameter+"_day"]);
+    } else if(opts[parameter+"[]"]){
+      var pt = typeof opts[parameter+"[]"];
+      if(pt=="string")
+        return [opts[parameter+"[]"]];
+      if(pt.length){
+        return opts[parameter+"[]"];
+      }
+    } else {
+      return undefined;
+    }
+  }
+  return undefined;
 }
 
 Hop.FormUtil.setValue=function(formSelector,parameter,value){
-	var element = $(formSelector).children("[name="+parameter+"]") 
-	console.log("setValue",formSelector,parameter,value); 
-	if(element.length==0){
-			element = $(formSelector).children("."+parameter); 
-	}
-	if(element.length==0){
-			element = $(formSelector+" [name="+parameter+"]"); 
-	}
-	if(element.length==0){
-			element = $(formSelector+" ."+parameter); 
-	}
-	if(element.length==1){
-		if(element.is("input")){
-			if(element.is("input[type=text]") || element.is("input[type=password]") || element.is("input[type=hidden]")){
-				element.val(value);
-				return true;
-			} else if(element.is("input[type=checkbox]")){
-				if(value){
-					element.attr("checked",true);
-					return true;
-				} else { 
-					element.attr("checked",null);
-					return true;
-				}
-			}
-		} else if(element.is("select")){
-			element.val(value);
-			return true;
-		} else if(element.is("textarea")){
-			element.val(value);
-		}
-	} else {
-		var vt = typeof value;
-		console.log(formSelector,parameter,vt,value);
-		if(value==null)
-			return false;
-		if(vt=="object"){
-			if(value.getTime){
-				$(formSelector).children("[name="+parameter+"_month]").val(value.getMonth()+1);
-				$(formSelector).children("[name="+parameter+"_day]").val(value.getDate());
-				$(formSelector).children("[name="+parameter+"_year]").val(value.getFullYear());
-				return true;
-			} else if(value.length){
-				console.log("Setting array");
-				//Ok this looks like an array
-				var found=false;
-				$(formSelector).children("[name*="+parameter+"]").each(function(i,e){ 
-					e=$(e);
-					var name = e.attr("name");
-					if(name==parameter+"[]"){ 
-						if(value.indexOf(e.val())==-1){
-							e.attr("checked",null);
-						} else {
-							e.attr("checked",true);
-						}     
-					}
-					found=true;
-				});
-				return found;  
-			}
-		} 
-		return false;
-	}
+  var element = $(formSelector).children("[name="+parameter+"]") 
+  console.log("setValue",formSelector,parameter,value); 
+  if(element.length==0){
+      element = $(formSelector).children("."+parameter); 
+  }
+  if(element.length==0){
+      element = $(formSelector+" [name="+parameter+"]"); 
+  }
+  if(element.length==0){
+      element = $(formSelector+" ."+parameter); 
+  }
+  if(element.length==1){
+    if(element.is("input")){
+      if(element.is("input[type=text]") || element.is("input[type=password]") || element.is("input[type=hidden]")){
+        element.val(value);
+        return true;
+      } else if(element.is("input[type=checkbox]")){
+        if(value){
+          element.attr("checked",true);
+          return true;
+        } else { 
+          element.attr("checked",null);
+          return true;
+        }
+      }
+    } else if(element.is("select")){
+      element.val(value);
+      return true;
+    } else if(element.is("textarea")){
+      element.val(value);
+    }
+  } else {
+    var vt = typeof value;
+    console.log(formSelector,parameter,vt,value);
+    if(value==null)
+      return false;
+    if(vt=="object"){
+      if(value.getTime){
+        $(formSelector).children("[name="+parameter+"_month]").val(value.getMonth()+1);
+        $(formSelector).children("[name="+parameter+"_day]").val(value.getDate());
+        $(formSelector).children("[name="+parameter+"_year]").val(value.getFullYear());
+        return true;
+      } else if(value.length){
+        console.log("Setting array");
+        //Ok this looks like an array
+        var found=false;
+        $(formSelector).children("[name*="+parameter+"]").each(function(i,e){ 
+          e=$(e);
+          var name = e.attr("name");
+          if(name==parameter+"[]"){ 
+            if(value.indexOf(e.val())==-1){
+              e.attr("checked",null);
+            } else {
+              e.attr("checked",true);
+            }     
+          }
+          found=true;
+        });
+        return found;  
+      }
+    } 
+    return false;
+  }
 }
 
 Hop.onAJAXSuccess=function(data, textStatus, xhr,onComplete,methodName){
-  	if(xhr.status==200){ 
-			onComplete(null, data); 
-			//$(document).trigger(methodName,data); 
-		} else console.log(arguments); 
-	}
+    if(xhr.status==200){ 
+      onComplete(null, data); 
+      //$(document).trigger(methodName,data); 
+    } else console.log(arguments); 
+  }
 
 Hop.onAJAXError=function(xhr, textStatus, errorThrown,onComplete,methodName){
-		if(xhr.status==200){
-			onComplete(null,xhr.responseText); 
-		} else if(xhr.status==404){ 
-			onComplete(null,null); 
-		} else if(xhr && xhr.responseText && xhr.responseText.length>0){ 
-			onComplete(xhr.responseText) 
-		} else if(xhr.status==0){ 
-			_xhr=xhr; 
-			_errorThrown=errorThrown; 
-			console.log('Server Error',methodName,xhr,errorThrown,textStatus); 
-			onComplete('Error contacting server'); 
-		} else console.log(arguments);  
-	}
+    if(xhr.status==200){
+      onComplete(null,xhr.responseText); 
+    } else if(xhr.status==404){ 
+      onComplete(null,null); 
+    } else if(xhr && xhr.responseText && xhr.responseText.length>0){ 
+      onComplete(xhr.responseText) 
+    } else if(xhr.status==0){ 
+      _xhr=xhr; 
+      _errorThrown=errorThrown; 
+      console.log('Server Error',methodName,xhr,errorThrown,textStatus); 
+      onComplete('Error contacting server'); 
+    } else console.log(arguments);  
+  }
 
 Hop.validateInput=function(input,params){
-		var output = {};
-		for(var paramName in params){
-			var param = params[paramName];
-			if(param.demand && typeof input[paramName]=="undefined")
-				throw ("Missing parameter:"+paramName);
-			output[paramName]=input[paramName];
-		}
-		return output;
-	}
+    var output = {};
+    for(var paramName in params){
+      var param = params[paramName];
+      if(param.demand && typeof input[paramName]=="undefined")
+        throw ("Missing parameter:"+paramName);
+      output[paramName]=input[paramName];
+    }
+    return output;
+  }
 
 Hop.patchURL=function(input,url,params){
-		for(var paramName in params){
-			var param = params[paramName];
+    for(var paramName in params){
+      var param = params[paramName];
 
-			url = url.replace(":"+paramName,input[paramName]);
-		}
-		return url;
-	}
+      url = url.replace(":"+paramName,input[paramName]);
+    }
+    return url;
+  }
 
 Hop.DataEncoder=<%= Hop.DataEncoder.toString() %>
 
 Hop.remoteExec=function(methodName,type,url,options,params,input,onComplete){
-		var noCache=false;
-		if(input && input._noCache==true){
-			noCache=true;
-		}
-		if(typeof input=="function" && typeof onComplete=="undefined"){
-			onComplete=input;
-			input=null;
-		}
-		input=input||{};
-		options=options||{};
-		onComplete=onComplete||function(err,res){
-			console.log("debug:",err,res);
-		};
-		try {
-			input = Hop.validateInput(input,params);
-			url=Hop.patchURL(input,url,params);
-		} catch(e){
-			return onComplete(e.toString());
-		}
-		if(options.noCache){
-			input._when=(new Date().getTime())
-		}
-		if(type=="post" || type=="put" || type=="delete"){
-			if(typeof _csrf=="string"){
-				input._csrf=_csrf;
-			}
-		}
-			
-		var de = new Hop.DataEncoder();
-		
-		de.encode(input);
-		
-		if((!de.canEncodeAsJSON() && de.canEncodeAsForm()) &&type=="post" && typeof FormData!="undefined"){	
-			var xhr = new XMLHttpRequest();
-			var form = new FormData();
-		
-			de = new Hop.DataEncoder(form);
-			var hasData=de.encode(input);
+    var noCache=false;
+    if(input && input._noCache==true){
+      noCache=true;
+    }
+    if(typeof input=="function" && typeof onComplete=="undefined"){
+      onComplete=input;
+      input=null;
+    }
+    input=input||{};
+    options=options||{};
+    onComplete=onComplete||function(err,res){
+      console.log("debug:",err,res);
+    };
+    try {
+      input = Hop.validateInput(input,params);
+      url=Hop.patchURL(input,url,params);
+    } catch(e){
+      return onComplete(e.toString());
+    }
+    if(options.noCache){
+      input._when=(new Date().getTime())
+    }
+    if(type=="post" || type=="put" || type=="delete"){
+      if(typeof _csrf=="string"){
+        input._csrf=_csrf;
+      }
+    }
+      
+    var de = new Hop.DataEncoder();
+    
+    de.encode(input);
+    
+    if((!de.canEncodeAsJSON() && de.canEncodeAsForm()) &&type=="post" && typeof FormData!="undefined"){  
+      var xhr = new XMLHttpRequest();
+      var form = new FormData();
+    
+      de = new Hop.DataEncoder(form);
+      var hasData=de.encode(input);
 
-			xhr.open(type,url);
-			xhr.responseType="text";	
-			xhr.onreadystatechange=function(){
-				if(xhr.readyState==4){
-					var value=xhr.response;
-					if(typeof xhr.response=="string"){
-						try {
-							value = JSON.parse(xhr.response);	
-						} catch (e){
-						}
-					}
-					if(xhr.status==200 && xhr.response!=null){
-						Hop.onAJAXSuccess(value,xhr.statusText,xhr,onComplete,methodName);	
-					} else {
-						Hop.onAJAXError(xhr,xhr.statusText,xhr.responseText,onComplete,methodName);
-					}
-				}
-			}	
-			if(hasData){
-				xhr.send(form);	
-			} else {
-				xhr.send();	
-			}
-		} else {
-			if(noCache==true){
-				input._t=Date.now();
-			}	
-			
-			var params = {
-				type:type,
-				dataType:"json",
-				success: function(data, textStatus, jqXHR){ Hop.onAJAXSuccess(data, textStatus, jqXHR,onComplete,methodName); },
-				error: function(jqXHR, textStatus, errorThrown){ Hop.onAJAXError(jqXHR, textStatus, errorThrown,onComplete,methodName); },
-			};
-			if(type=="post" || type=="put"){
-				try { 
-					var json = JSON.stringify(input);
-					params.data =json;
-					params.contentType='application/json';
-				} catch (e){
+      xhr.open(type,url);
+      xhr.responseType="text";  
+      xhr.onreadystatechange=function(){
+        if(xhr.readyState==4){
+          var value=xhr.response;
+          if(typeof xhr.response=="string"){
+            try {
+              value = JSON.parse(xhr.response);  
+            } catch (e){
+            }
+          }
+          if(xhr.status==200 && xhr.response!=null){
+            Hop.onAJAXSuccess(value,xhr.statusText,xhr,onComplete,methodName);  
+          } else {
+            Hop.onAJAXError(xhr,xhr.statusText,xhr.responseText,onComplete,methodName);
+          }
+        }
+      }  
+      if(hasData){
+        xhr.send(form);  
+      } else {
+        xhr.send();  
+      }
+    } else {
+      if(noCache==true){
+        input._t=Date.now();
+      }  
+      
+      var params = {
+        type:type,
+        dataType:"json",
+        success: function(data, textStatus, jqXHR){ Hop.onAJAXSuccess(data, textStatus, jqXHR,onComplete,methodName); },
+        error: function(jqXHR, textStatus, errorThrown){ Hop.onAJAXError(jqXHR, textStatus, errorThrown,onComplete,methodName); },
+      };
+      if(type=="post" || type=="put"){
+        try { 
+          var json = JSON.stringify(input);
+          params.data =json;
+          params.contentType='application/json';
+        } catch (e){
 
-				}
-			} else {
-				params.data=input;	
-			}
-			$.ajax(url,params);
-		}
+        }
+      } else {
+        params.data=input;  
+      }
+      $.ajax(url,params);
+    }
 
-	}
+  }
 
 Hop.fromForm=function(selector,methodName,type,url,options,params,input,onComplete){
-	if(typeof input=="function"){
-		onComplete=input;
-		input={};
-	}
-	if(input==null) input={};
-	for(var paramName in params){
-		input[paramName]=Hop.FormUtil.getValue(selector,paramName);
-	}
-	Hop.remoteExec(methodName,type,url,options,params,input,function(err,output){
-		var ret;
-		if(onComplete!=null){
-			ret = onComplete(err,output);
-		}
-		if(ret!==false){
-			if(err){
-				Hop.FormUtil.showErrors(selector,err);
-			} else {
-				Hop.FormUtil.resetErrors(selector);
-			}
-		}
-	});
+  if(typeof input=="function"){
+    onComplete=input;
+    input={};
+  }
+  if(input==null) input={};
+  for(var paramName in params){
+    input[paramName]=Hop.FormUtil.getValue(selector,paramName);
+  }
+  Hop.remoteExec(methodName,type,url,options,params,input,function(err,output){
+    var ret;
+    if(onComplete!=null){
+      ret = onComplete(err,output);
+    }
+    if(ret!==false){
+      if(err){
+        Hop.FormUtil.showErrors(selector,err);
+      } else {
+        Hop.FormUtil.resetErrors(selector);
+      }
+    }
+  });
 }
 
 Hop.toForm=function(selector,methodName,type,url,options,params,input,onComplete){
-	Hop.FormUtil.resetErrors(selector);
-	Hop.remoteExec(methodName,type,url,options,params,input,function(err,output){
-		if(err){
-			Hop.FormUtil.showErrors(selector,err);
-		} else {
-			for(var paramName in output){
-				Hop.FormUtil.setValue(selector,paramName,output[paramName]);
-			}
-		}
-		if(onComplete){
-			onComplete(err,output);
-		}
-	});
+  Hop.FormUtil.resetErrors(selector);
+  Hop.remoteExec(methodName,type,url,options,params,input,function(err,output){
+    if(err){
+      Hop.FormUtil.showErrors(selector,err);
+    } else {
+      for(var paramName in output){
+        Hop.FormUtil.setValue(selector,paramName,output[paramName]);
+      }
+    }
+    if(onComplete){
+      onComplete(err,output);
+    }
+  });
 }
 

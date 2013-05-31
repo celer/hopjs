@@ -1,6 +1,6 @@
 {
   "name": "hopjs",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "description": "A RESTful declarative API framework, with stub generators for Shell, and Android",
   "main": "index.js",
   "bin": {

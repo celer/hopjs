@@ -1,7 +1,7 @@
 <% if( typeof supportCode!="undefined" ) { %>
   
 
-	if(typeof Hop=="undefined")
+  if(typeof Hop=="undefined")
     Hop={};
   if(typeof Hop.TestUtils=="undefined")
     Hop.TestUtils={};
@@ -41,11 +41,11 @@
     Hop.TestUtils.clearValues();
     var self=this;
     this.do("TestService.log",{ msg: "Test: Starting "+this.name},function(){
-			try {
-      	self.nextTask();
-			} catch(e){
-				console.error("Error running next task:"+e.toString());
-			}
+      try {
+        self.nextTask();
+      } catch(e){
+        console.error("Error running next task:"+e.toString());
+      }
     })
     
   }
@@ -62,7 +62,7 @@
         }
       })(this.taskIndex)
     } else {
-			console.log("Done with all tasks");
+      console.log("Done with all tasks");
       this._onComplete();
     }
   }
@@ -100,20 +100,20 @@
       var inputValue = <%= JSON.stringify(task.inputObject) %>;    
     <% } %>
       testCase.do("TestService.log",{ msg: "Test: Doing <%=task.funcName%>"},function(){
-				try {
-					testCase.do("<%=task.funcName%>",inputValue,function(err,output){
-					 <% for(var k in task.test){ %>
-						<% var test = task.test[k]; %>   
-								var value = <%= test.value!=undefined?JSON.stringify(test.value):"undefined"%>;
-								var result = (<%=test.testFunc%>)(inputValue,err,output,value);
-								testCase.testResult(taskIndex,"<%=task.funcName%>",inputValue,err,output,"<%=test.type%>",result);
-					 <% } %> 
-					 testCase.nextTask(); 
-       		});
-				} catch(e){
-					console.error("Failed to run the next task:"+e.toString());
-					testCase.nextTask();
-				}   
+        try {
+          testCase.do("<%=task.funcName%>",inputValue,function(err,output){
+           <% for(var k in task.test){ %>
+            <% var test = task.test[k]; %>   
+                var value = <%= test.value!=undefined?JSON.stringify(test.value):"undefined"%>;
+                var result = (<%=test.testFunc%>)(inputValue,err,output,value);
+                testCase.testResult(taskIndex,"<%=task.funcName%>",inputValue,err,output,"<%=test.type%>",result);
+           <% } %> 
+           testCase.nextTask(); 
+           });
+        } catch(e){
+          console.error("Failed to run the next task:"+e.toString());
+          testCase.nextTask();
+        }   
       });
     });
 

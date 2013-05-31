@@ -1,34 +1,34 @@
 Hop.Event.initSocketIO=function(){
-	Hop.Event.getKey(function(err,key){
-		Hop.Event.key=key;		
-		socket.emit("Hop.Event.Listen",key);
+  Hop.Event.getKey(function(err,key){
+    Hop.Event.key=key;    
+    socket.emit("Hop.Event.Listen",key);
 
-		socket.on("Hop.Event",function(msg){
-			Hop.Event.route(msg);
-		});
-	});
+    socket.on("Hop.Event",function(msg){
+      Hop.Event.route(msg);
+    });
+  });
 }
 
 Hop.Event.initSocketIO();
 
 Hop.socketExec=function(methodName,type,url,options,params,input,onComplete){
-		if(typeof input=="function" && typeof onComplete=="undefined"){
-			onComplete=input;
-			input=null;
-		}
-		input=input||{};
-		options=options||{};
-		onComplete=onComplete||function(err,res){
-			console.log("debug:",err,res);
-		};
-		try {
-			input = Hop.validateInput(input,params);
-			url=Hop.patchURL(input,url,params);
-		} catch(e){
-			return onComplete(e.toString());
-		}
-		if(options.noCache){
-			input._when=(new Date().getTime())
-		}
-		socket.emit("Hop.call",{ call:methodName, input: input, options: options });
+    if(typeof input=="function" && typeof onComplete=="undefined"){
+      onComplete=input;
+      input=null;
+    }
+    input=input||{};
+    options=options||{};
+    onComplete=onComplete||function(err,res){
+      console.log("debug:",err,res);
+    };
+    try {
+      input = Hop.validateInput(input,params);
+      url=Hop.patchURL(input,url,params);
+    } catch(e){
+      return onComplete(e.toString());
+    }
+    if(options.noCache){
+      input._when=(new Date().getTime())
+    }
+    socket.emit("Hop.call",{ call:methodName, input: input, options: options });
 }

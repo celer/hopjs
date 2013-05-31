@@ -15,7 +15,7 @@ api.get("/view/:product");
 Fix erorr handling in hopjs-remote to look for error in responseHandlder first
 Make it so that you can have multiple APIs loaded without conflict (i.e. detect versions and instantiate one per version!?!?)
 Make it so you can send back a template
-sub apis, aka ca fleet sub apis
+sub apis, aka fleet sub apis
 hopjs-remote cannot upload files :(
 leverage APIs from other services in the testing
 make sure Hop.remoteAPI ... passes on the request session cookies?

@@ -1,15 +1,15 @@
 <div class="offset1 span8">
-	<h5>Models</h5>
-	<table class="table">
-	<tr><th>Input</th><th>Output</th></tr>
-	<tr><td>
+  <h5>Models</h5>
+  <table class="table">
+  <tr><th>Input</th><th>Output</th></tr>
+  <tr><td>
 <% if(method.input && method.input.model){ %>
-	<a href="#<%=method.input.model%>.model"><%=method.input.model%></a>
+  <a href="#<%=method.input.model%>.model"><%=method.input.model%></a>
 <% } %>
-	</td><td>
+  </td><td>
 <% if(method.output && method.output.model){ %>
-	<a href="#<%=method.output.model%>.model"><%=method.output.model%></a>
+  <a href="#<%=method.output.model%>.model"><%=method.output.model%></a>
 <% } %>
-	</td></tr>
-	</table>
+  </td></tr>
+  </table>
 </div>
