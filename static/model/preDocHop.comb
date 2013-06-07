@@ -19,7 +19,7 @@
         <% for(var fieldName in model.fields){ 
             var field = model.fields[fieldName];
         %>
-          <tr><td width="15%"><%=fieldName%></td><td width="15%"><%=(field.type?field.type:"")%><%=(field.isArray?"[]":"")%></td><td width="50%"><%=(field.desc?field.desc:"")%></td><td><%=(typeof field.values=="object"?JSON.stringify(field.values):"")%></tr>
+          <tr><td width="15%"><%=fieldName%></td><td width="15%"><%=(field.type?field.type:"")%><%=(field.isArray===true?"[]":"")%></td><td width="50%"><%=(field.desc?field.desc:"")%></td><td><%=(typeof field.values=="object"?JSON.stringify(field.values):"")%></tr>
         <% } %>
         </table> 
         <% if(model.links instanceof Array){ %>
