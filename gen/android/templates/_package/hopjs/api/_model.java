@@ -15,7 +15,7 @@ public class <%=Java.camelHump(model.name)%> extends JSObject {
 	}
 
 
-	public <%=type%> <%=(field.type!=Boolean?"get":"is")%><%=Java.camelHump(field.name)%>(){
+	public <%=type + " "%> <%=(field.type!=Boolean?"get":"is")%><%=Java.camelHump(field.name)%>(){
 		return (<%=type%>) this.get("<%=field.name%>");
 	}
 	public void set<%=Java.camelHump(field.name)%>(<%=type%> value){
