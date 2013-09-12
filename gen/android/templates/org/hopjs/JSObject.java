@@ -30,6 +30,9 @@ public class JSObject implements Serializable  {
 	}
 
 	public void put(String name, Object value){
+		if(value == null){
+			value = "";
+		}
 		data.put(name, value);
 	}
 	
@@ -83,7 +86,12 @@ public class JSObject implements Serializable  {
 	public static JSObject newObject(String typeName){
 		try {
 			String pkg = JSObject.class.getPackage().getName();
-			Class c = Class.forName("<%=package%>" +"."+typeName);
+			Class c = null;
+			if(typeName == "JSObject"){
+				c = Class.forName("org.hopjs."+typeName);
+			}else{
+				c = Class.forName("<%=package%>" +"."+typeName);
+			}
 			return (JSObject) c.newInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
