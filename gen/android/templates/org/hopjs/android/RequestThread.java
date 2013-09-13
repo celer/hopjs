@@ -1,6 +1,5 @@
 package org.hopjs.android;
 
-import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -9,7 +8,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,6 +17,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.protocol.ClientContext;
@@ -51,8 +50,10 @@ public class RequestThread extends Thread {
 	/**
 	 * 
 	 */
+
 	private final RESTService restService;
 	Message mMessage;
+    static protected CookieStore cookieStore = new CookieStore();
 
 	RequestThread(RESTService restService, Message msg){
 	 	this.restService = restService;
@@ -65,12 +66,20 @@ public class RequestThread extends Thread {
 	
 	public void processResponse(MethodCall call, Bundle bundle,InputStream in, Bundle headers){
 		try {		
-			String contentType = headers.getString("Content-Type");			
+			String contentType = headers.getString("Content-Type");
+            if(contentType == null){
+                contentType = headers.getString("content-type");
+                if(contentType == null){
+                    Log.e("TaskTracker", "No content-type found in header");
+                    bundle.putString(RESTService.ERROR,"No content-type found");
+                    restService.sendResponse(bundle);
+                    return;
+                }
+            }
 			int resultCode = bundle.getInt(RESTService.STATUSCODE);
 			String reason = bundle.getString(RESTService.REASON);
 			if(resultCode==200){
 				if(contentType.toLowerCase().contains("json")){
-			
 				    InputStreamReader inReader = new InputStreamReader(in);
 				    StringBuffer responseString = new StringBuffer();
 				    int data = inReader.read();
@@ -79,8 +88,13 @@ public class RequestThread extends Thread {
 				    	data = inReader.read();
 				    }
 				    String finalResponse = responseString.toString();
-				    
-				    JSONObject element = (JSONObject)new JSONTokener(finalResponse).nextValue();
+				    Object element = null;
+                    if(finalResponse.charAt(0) == '['){
+                        //It's an JSONArray
+                        element = new JSONArray(new JSONTokener(finalResponse));
+                    }else{
+				        element = new JSONObject(new JSONTokener(finalResponse));
+                    }
 				    Log.d("XXXX",element.toString());				
 					 
 				    String outputType = call.getOutputClass();
@@ -94,26 +108,23 @@ public class RequestThread extends Thread {
 				    	bundle.putInt(RESTService.RESULT,Integer.parseInt(finalResponse));
 				    } else if(outputType.startsWith("List<")){
 				    	Log.d("XXXX","inside LIST");
-				    	//JSONArray array = element.getJSONArray("result");
-				    	
-				    	
-				    	
-				    	/*if(element.isJsonArray()){
+				    	if(element.getClass() == JSONArray.class){
 				    		String objType = outputType.replace("List<","").replace(">","");
 				    		Log.d("XXXX","TYPE "+objType);
 				    		LinkedList list = new LinkedList();
-				    		JsonArray array = (JsonArray) element;
-				    		for(JsonElement e: array){
+				    		JSONArray array = (JSONArray) element;
+				    		for(int i = 0; i < array.length(); i++){
+                                JSONObject e = array.getJSONObject(i);
 				    			JSObject obj = JSObject.newObjectFromJson(objType, e);
 				    			list.add(obj);
 				    		}
 				    		bundle.putSerializable(RESTService.RESULT, list);
 				    	} else {
 				    		bundle.putString(RESTService.ERROR,"API Specification requires a return type of array, yet returned JSON element was not an array.");
-				    	}*/
+				    	}
 				    	
 				    } else {
-				    	JSObject obj = JSObject.newObjectFromJson(call.getOutputClass(), element);
+				    	JSObject obj = JSObject.newObjectFromJson(call.getOutputClass(), (JSONObject)element);
 				    	if(obj!=null){	
 				    		bundle.putSerializable(RESTService.RESULT, obj);
 				    	} else {
@@ -203,8 +214,6 @@ public class RequestThread extends Thread {
     	try {
 
 			if(method.equalsIgnoreCase("get")){
-			
-						
 				StringBuffer urlParams = new StringBuffer();
 				for(String name: call.getParams().keySet()){
 					Object val = input.get(name);
@@ -220,85 +229,85 @@ public class RequestThread extends Thread {
 				
 				
 				URL url = new URL(strURL+urlParams.toString());
-				
-				
-				
-				
-				urlConn = (HttpURLConnection) url.openConnection();
-			    InputStream in = new BufferedInputStream(urlConn.getInputStream());
-			    
-			    
-			    
-			    Bundle headers = new Bundle();
-			    for(String name: urlConn.getHeaderFields().keySet()){
-			    	headers.putString(name,urlConn.getHeaderField(name));
-			    }
-			    
-				bundle.putBundle(RESTService.HEADERS, headers);
-				bundle.putInt(RESTService.STATUSCODE, urlConn.getResponseCode());
-				bundle.putString(RESTService.REASON,urlConn.getResponseMessage());
-			    
-			    processResponse(call, bundle, in, headers);
-			   
-			} else {	
-	    		HttpContext context = new BasicHttpContext();
-	    		HttpParams params = new BasicHttpParams();
-	    		HttpConnectionParams.setConnectionTimeout(params, 3000);
-	    		HttpConnectionParams.setSoTimeout(params, 3000);
-	    		ConnManagerParams.setTimeout(params, 3000);
-	    		context.setAttribute(ClientContext.COOKIE_STORE, new CookieStore()); 		
-	    		httpClient = AndroidHttpClient.newInstance("Hop");
+                Log.i("TaskTracker", "url:" + url.toString());
+                strURL = url.toString();
+            }
+            /*urlConn = (HttpURLConnection) url.openConnection();
+            InputStream in = new BufferedInputStream(urlConn.getInputStream());
 
-				HttpResponse response;
-				HttpRequestBase request;
-				if(method.equalsIgnoreCase("del")){
-					request  = new HttpDelete(strURL);
-				} else if(method.equalsIgnoreCase("post")){
-					request = new HttpPost(strURL);
-					
-					List<NameValuePair> nvp = new ArrayList<NameValuePair>(1);
-					for(String name: call.getParams().keySet()){
-						Object val = input.get(name);
-						if(val!=null){
-							nvp.add(new BasicNameValuePair(name,val.toString()));
-						}
-					}
-					
-					((HttpPost) request).setEntity(new UrlEncodedFormEntity(nvp));
-					
-				} else {
-					throw new Exception("Invalid method type specified:"+method);
-				}
-	
-				for(String key : call.getHeaders().keySet()){
-					request.addHeader(key, call.getHeaders().get(key));
-				}
-	
-				
-				response = httpClient.execute(request,context);
-				
-				InputStream in = response.getEntity().getContent();
-				
-			    //Look at the response headers to see what kind of response 
-				// we are getting / JSON / HTML / File
-			
-				String contentType = response.getFirstHeader("Content-Type").getValue();
-				
-				Log.d("XXXX",contentType);
-	
-				Bundle headers = new Bundle();
-				for(Header header: response.getAllHeaders()){
-					headers.putString(header.getName(),header.getValue());
-				}
-				bundle.putBundle(RESTService.HEADERS, headers);
-				bundle.putInt(RESTService.STATUSCODE, response.getStatusLine().getStatusCode());
-				bundle.putString(RESTService.REASON,response.getStatusLine().getReasonPhrase());
-				
-				processResponse(call,bundle, in, headers);
-				
-			    in.close();
-		
-    		}
+
+
+            Bundle headers = new Bundle();
+            for(String name: urlConn.getHeaderFields().keySet()){
+                headers.putString(name,urlConn.getHeaderField(name));
+            }
+
+            bundle.putBundle(RESTService.HEADERS, headers);
+            bundle.putInt(RESTService.STATUSCODE, urlConn.getResponseCode());
+            bundle.putString(RESTService.REASON,urlConn.getResponseMessage());
+
+            processResponse(call, bundle, in, headers);*/
+
+
+            HttpContext context = new BasicHttpContext();
+            HttpParams params = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(params, 3000);
+            HttpConnectionParams.setSoTimeout(params, 3000);
+            ConnManagerParams.setTimeout(params, 3000);
+            context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
+            cookieStore.logCookies();
+
+            httpClient = AndroidHttpClient.newInstance("Hop");
+
+            HttpResponse response;
+            HttpRequestBase request;
+            if(method.equalsIgnoreCase("del")){
+                request  = new HttpDelete(strURL);
+            } else if(method.equalsIgnoreCase("post")){
+                request = new HttpPost(strURL);
+
+                List<NameValuePair> nvp = new ArrayList<NameValuePair>(1);
+                for(String name: call.getParams().keySet()){
+                    Object val = input.get(name);
+                    if(val!=null){
+                        nvp.add(new BasicNameValuePair(name,val.toString()));
+                    }
+                }
+                ((HttpPost) request).setEntity(new UrlEncodedFormEntity(nvp));
+            } else if(method.equalsIgnoreCase("get")){
+                request = new HttpGet(strURL);
+            } else{
+                throw new Exception("Invalid method type specified:"+method);
+            }
+
+            for(String key : call.getHeaders().keySet()){
+                Log.i("TaskTracker", "Adding header:" + key + " with value:" + call.getHeaders().get(key));
+                request.addHeader(key, call.getHeaders().get(key));
+            }
+
+            response = httpClient.execute(request,context);
+            InputStream in = response.getEntity().getContent();
+
+            //Look at the response headers to see what kind of response
+            // we are getting / JSON / HTML / File
+
+            String contentType = response.getFirstHeader("Content-Type").getValue();
+
+
+            Log.d("XXXX",contentType);
+
+            Bundle headers = new Bundle();
+            for(Header header: response.getAllHeaders()){
+                headers.putString(header.getName(),header.getValue());
+            }
+            bundle.putBundle(RESTService.HEADERS, headers);
+            bundle.putInt(RESTService.STATUSCODE, response.getStatusLine().getStatusCode());
+            bundle.putString(RESTService.REASON,response.getStatusLine().getReasonPhrase());
+
+            processResponse(call,bundle, in, headers);
+
+            in.close();
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
