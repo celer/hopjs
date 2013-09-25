@@ -69,7 +69,7 @@ So now our web-site has:
   # A JSON definition of our API for client side stub generation
   GET /api/api.json
 ```
-[defineClass documenation](http://celer.github.com/hopjs/doc/classes/Hop.Method.html)
+[defineClass documentation](http://celer.github.com/hopjs/doc/classes/Hop.Method.html)
 
 *But we can also define the test cases for our new interface!*
 
@@ -214,7 +214,7 @@ You can see a complete working example at: https://github.com/celer/hopjs/tree/m
 
 ## Working with files
 
-Working with files is pretty simple! To send files we can simply tell HopJS how to send the file, either as a raw file, or as an attachmet. We can 
+Working with files is pretty simple! To send files we can simply tell HopJS how to send the file, either as a raw file, or as an attachment. We can 
 also allow uploads using the .demandFile or the .optionalFile
 
 ```javascript
@@ -241,7 +241,7 @@ You can see a complete working example at: https://github.com/celer/hopjs/tree/m
 
 ## Models
 
-Models can be defined which will enable both validation of inputs but re-use of documenation and type conversion.
+Models can be defined which will enable both validation of inputs but re-use of documentation and type conversion.
 
 ```javascript
 	Hop.defineModel("User",function(user){
@@ -275,7 +275,7 @@ You can see a complete working example at: https://github.com/celer/hopjs/tree/m
 # Known Issues / Todo
  - iPhone API generation works but needs further testing
  - Android API generation works, testing and validation on it does not
- - A bug in combination-stream, which is utilized by request and form-data prevents the unit tests for expirements/test from passing, see my fork of combination-stream for a fix
+ - A bug in combination-stream, which is utilized by request and form-data prevents the unit tests for experiments/test from passing, see my fork of combination-stream for a fix
  - Curl can't save session cookies so some shell tests won't work
  - Need to add SSL support
  - Need to add dev key support
