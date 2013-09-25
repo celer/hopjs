@@ -276,7 +276,7 @@ You can see a complete working example at: https://github.com/celer/hopjs/tree/m
  - iPhone API generation works but needs further testing
  - Android API generation works, testing and validation on it does not
  - A bug in combination-stream, which is utilized by request and form-data prevents the unit tests for expirements/test from passing, see my fork of combination-stream for a fix
- - Curl can't save session cookies so some shell tests won't wor
+ - Curl can't save session cookies so some shell tests won't work
  - Need to add SSL support
  - Need to add dev key support
 
