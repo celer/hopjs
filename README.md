@@ -12,7 +12,7 @@ HopJS is a RESTful based declarative API framework for Node.js that:
   * Can generate native APIs for Android, iPhone, iPad, JavaScript, and Shell
   * Generates easy to use browser side API hooks
   * Has a declarative testing interface, which can generate native unit tests in JavaScript and native API frameworks
-  * Generates it's own API documentation
+  * Generates its own API documentation
   * Supports intelligent server-side caching of results using Redis
   * Supports event based APIs using Socket.io 
   * Enhanced APIs with optional declarative models
