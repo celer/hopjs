@@ -148,13 +148,13 @@ and easily.
   Hop.defineClass("UserService",UserService,function(api){
     api.usage("Manages users");
    
-    //Cache user's as they are loaded for 60 seconds, and try to force the client to cache the results as well!
+    //Cache users as they are loaded for 60 seconds, and try to force the client to cache the results as well!
     api.get("load","/user/:id").demand("id").cacheId("/user/:id",60,true);
    
     //Invalidate the cache when a user is deleted 
     api.del("delete","/user/:id").demand("id").cacheInvalidate("/user/:id");
     
-    //Cache the search results for 5000
+    //Cache the search results for 5000 seconds
     api.get("list","/user/").optional("sortBy").cacheId("/users/:start/:size/",5000).demand("start").demand("size");
     
     
