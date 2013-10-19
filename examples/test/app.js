@@ -59,6 +59,19 @@ UnitTestService.testRaw=function(input,onComplete){
 	return onComplete(null,input.value);
 }
 
+UnitTestService.testGetEach=function(input,onComplete){
+	return onComplete(null,input.value);
+}
+UnitTestService.testDelEach=function(input,onComplete){
+	return onComplete(null,input.value);
+}
+UnitTestService.testPostEach=function(input,onComplete){
+	return onComplete(null,input.value);
+}
+UnitTestService.testPutEach=function(input,onComplete){
+	return onComplete(null,input.value);
+}
+
 UnitTestService.testGet=UnitTestService.test;
 UnitTestService.testPut=UnitTestService.test;
 UnitTestService.testDelete=UnitTestService.test;
@@ -153,6 +166,14 @@ Hop.defineClass("UnitTestService",UnitTestService,function(api){
 		} else return null;
 	});
 
+  api.each(function(api){  
+    api.get("testGetEach","/get/each/raw");
+    api.del("testDelEach","/del/each/raw");
+    api.post("testPostEach","/post/each/raw");  
+    api.put("testPutEach","/put/each/raw");
+  },function(method){
+    method.demand("foo");
+  });
 });
 
 function basicTest(method, funcName,test){
@@ -182,6 +203,13 @@ Hop.defineTestCase("UnitTestService.testRaw",function(test){
   test.do("UnitTestService.testRaw").with({ value:[1,2,3,4,5] }).outputIsArrayWithMinLength(5);
   test.do("UnitTestService.testRaw").with({ value:[1,2,3,4,5] }).outputIsArrayWithMinLength(2);
   test.do("UnitTestService.testRaw").with({ value:[1,2,3,4,5] }).outputIsArrayWithMaxLength(8);
+});
+
+Hop.defineTestCase("UnitTestService.testGetEach",function(test){
+  test.do("UnitTestService.testGetEach").with({}).errorContains("foo");
+  test.do("UnitTestService.testDelEach").with({}).errorContains("foo");
+  test.do("UnitTestService.testPostEach").with({}).errorContains("foo");
+  test.do("UnitTestService.testPutEach").with({}).errorContains("foo");
 });
 
 Hop.defineTestCase("UnitTestService.customError",function(test){

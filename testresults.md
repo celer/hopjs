@@ -13,4 +13,4 @@
 #secure:
 	Pass 4 Fail 0 100.00%
 #test:
-	Pass 35 Fail 0 100.00%
+	 exited with 8
