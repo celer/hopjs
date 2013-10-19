@@ -281,7 +281,7 @@ UserService.create.fromForm("#userForm",function(err,result){
 Or 
 
 ```javascript
-UserService.load({ id: 3},"#userForm",function(err,res){
+UserService.load.toForm({ id: 3},"#userForm",function(err,res){
 
 });
 
