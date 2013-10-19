@@ -55,6 +55,10 @@ UnitTestService.test=function(input,onComplete){
 	return onComplete(null,output);
 }
 
+UnitTestService.testRaw=function(input,onComplete){
+	return onComplete(null,input.value);
+}
+
 UnitTestService.testGet=UnitTestService.test;
 UnitTestService.testPut=UnitTestService.test;
 UnitTestService.testDelete=UnitTestService.test;
@@ -133,6 +137,7 @@ Hop.defineClass("UnitTestService",UnitTestService,function(api){
 	api.post("sendHeaders","/sendHeaders");
 	api.get("dualComplete","/dualComplete");
 	api.get("customError","/customError");
+  api.get("testRaw","/raw").demand("value");
 	api.post("testForm","/form/test").optionals("textValue","selectValue","multipleValue","checkbox1","radio1");
 	api.post("testPost","/ts/").demands("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat","modelStringArray").inputModel("UnitTestService");
 	api.get("testGet","/ts/").demands("string","number","float","object","date","booleanTrue","booleanFalse","nullValue","modelMinMax","modelArray","modelObject","modelString","modelBool","modelFloat","modelStringArray").inputModel("UnitTestService");
@@ -161,6 +166,7 @@ function basicTest(method, funcName,test){
 	test.do(funcName).with({}).errorContains("Missing parameter:");
 	test.do(funcName).with(testValue).outputContains(expectedValue);
 	test.do(funcName).with(testValue,{modelMinMax: 2 }).errorContains("Value must be greater than 5");
+  test.do(funcName).with(testValue,{modelMinMax: 2}).hasError();
 	test.do(funcName).with(testValue,{modelArray: 2 }).errorContains("Valid values are: red, blue, green");
 	test.do(funcName).with(testValue,{modelObject: 2 }).errorContains("Valid values are: R, B, G");
 	test.do(funcName).with(testValue,{modelString: 2 }).errorContains("REXP");
@@ -168,7 +174,15 @@ function basicTest(method, funcName,test){
 	test.do(funcName).with(testValue,{modelStringArray: ['D'] }).errorContains('Valid values are: A, B, C');
 	test.do(funcName+"Optionals").with({ }).noError();
 	test.do(funcName+"Optionals").with(testValue).outputContains(expectedValue);
+  test.do(funcName+"Optionals").with(testValue).outputDoesntContain({kittens:34});
 }
+
+Hop.defineTestCase("UnitTestService.testRaw",function(test){
+  test.do("UnitTestService.testRaw").with({ value:[1,2,3,4,5] }).outputIsArrayWithLength(5);
+  test.do("UnitTestService.testRaw").with({ value:[1,2,3,4,5] }).outputIsArrayWithMinLength(5);
+  test.do("UnitTestService.testRaw").with({ value:[1,2,3,4,5] }).outputIsArrayWithMinLength(2);
+  test.do("UnitTestService.testRaw").with({ value:[1,2,3,4,5] }).outputIsArrayWithMaxLength(8);
+});
 
 Hop.defineTestCase("UnitTestService.customError",function(test){
 	test.do("UnitTestService.customError").with({}).errorContains("Error");
