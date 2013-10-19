@@ -1,9 +1,17 @@
 if(typeof Hop.Models=="undefined"){ Hop.Models={}; }
-Hop.Models.validate=function(input,fieldsToValidate){
-    var fieldsToValidate = fieldsToValidate||Object.keys(this);
+Hop.Models.validate=function(input,params){
     for(var fieldName in this){
-      if(this[fieldName].validate && fieldsToValidate.indexOf(fieldName)!=-1){
-        this[fieldName].validate(input);
+      if(this[fieldName].validate){
+        if(params){
+          console.log(fieldName,input[fieldName]);
+          if(params[fieldName].optional && typeof input[fieldName]!="undefined" && input[fieldName]!=""){
+            this[fieldName].validate(input);
+          } else {
+            this[fieldName].validate(input);
+          } 
+        } else {
+          this[fieldName].validate(input);
+        }
       }
     }
   }

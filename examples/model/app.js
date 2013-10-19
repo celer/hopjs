@@ -91,6 +91,7 @@ Hop.defineModel("User",function(user){
 	user.field("name","Username","The user's username").string().regexp(/[A-Za-z0-9\_\-]{3,10}/,"Usernames must be between 3 and 10 characters long, and can only contain alphanumeric characters");
 	user.field("email","Email","The user's email address").string();
 	user.field("password","Password","The user's password").password();
+  user.field("favoriteColor","Favorite color").string().regexp(/[A-Za-z]{3,10}/,"Colors must be between 3 and 10 characters long, and can only contain characters");
 	user.link("self").call("UserService.load");
 	user.link("doc","/api/#User.model");
 });
@@ -127,7 +128,7 @@ Hop.defineTestCase("ValidatorTest.test: Basic tests",function(test){
 
 Hop.defineClass("UserService",UserService,function(api){
 	api.usage("Manages users");
-	api.post("create","/user").usage("Creates a user").demands("email","name","password").useModel("User");
+	api.post("create","/user").usage("Creates a user").demands("email","name","password").optionals("favoriteColor").useModel("User");
 	api.post("authenticate","/user/auth").usage("Authenticates a user").demands("password","name").useModel("User");
 	api.get("currentUser","/user").usage("Returns the current user").outputModel("User");
 	api.get("logout","/user/logout").usage("Logs the current user out");

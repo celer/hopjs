@@ -23,9 +23,11 @@ Hop.FormUtil.showErrors=function(formSelector,errs){
   var errStr="";
   for(var i in errors){
     var err = errors[i];
-    var m=err.match(/([A-Za-z0-9]+):(.+)/);
-    if(m && m.length==3){
-      if(!Hop.FormUtil.valueError(formSelector,m[1],m[2])){
+    var m=err.match(/(.+):\s*(.+)$/);
+    console.log(m.length,m);
+    console.log(m[0],m[1],m[2],m[3]);
+    if(m && m.length==3 && m[2].trim()!=""){
+      if(!Hop.FormUtil.valueError(formSelector,m[1],m[2].trim())){
         errStr+=err+", ";
       }
     } else {
@@ -41,7 +43,8 @@ Hop.FormUtil.showErrors=function(formSelector,errs){
 
 Hop.FormUtil.flash=function(formSelector,type,msg){
   console.log("Hop.FormUtil.Flash",formSelector,type,msg);
-  var res = $(formSelector).children(".flash");
+  console.log("To have Hop insert the error into your form include an element with class of 'flash'");
+  var res = $(formSelector+" .flash");
   if(res.length>0){
     res.html(msg);
   } else {
@@ -51,26 +54,43 @@ Hop.FormUtil.flash=function(formSelector,type,msg){
 }
 
 
-Hop.FormUtil.resetErrors=function(formSelector){
-  $(formSelector).children(".flash").html("");
-  $(formSelector).children(".valueErr").html("");
+Hop.FormUtil.resetErrors=function(formSelector,params){
+  $(formSelector+" .flash").html("");
+  $(formSelector+" .valueErr").html("");
+  if(params){
+    for(var paramName in params){
+      $(formSelector+" ."+paramName+"Err").html("");
+      $(formSelector+" ."+paramName+"Status").removeClass("error");
+    }
+  }
 }
 
-Hop.FormUtil.valueError=function(formSelector,parameter,err){
-  console.log("Hop.FormUtil.valueError",formSelector,parameter,err);
-  var res = $(formSelector).children("."+parameter+"Err");
+Hop.FormUtil.valueError=function(formSelector,err,parameter){
+  var res = $(formSelector+" ."+parameter+"Err");
+  $(formSelector+" ."+parameter+"Status").addClass("error");
   if(res.length>0){
     res.html(err);
     return true;
-  } else return false;
+  } else {
+    console.log("Hop.FormUtil.valueError",formSelector,parameter,err);
+    console.log("To have Hop insert the error into your form include an element with a class of '"+parameter+"Err'");
+    console.log("Hop will also add a class of 'error' to '"+parameter+"Status'");
+    return false;
+  }
 }
 
-Hop.FormUtil.reset=function(selector){
+Hop.FormUtil.reset=function(selector,params){
   $(selector).children("input[type=text]").val("");
   $(selector).children("input[type=password]").val("");
   $(selector).children("input[type=hidden]").val("");
   $(selector).children("textarea").val("");
   $(selector).children("input[type=checkbox]").attr("checked",null);
+  if(params){
+    for(var paramName in params){
+      $(selector+" ."+paramName+"Err").html("");
+      $(selector+" ."+paramName+"Status").removeClass("error");
+    }
+  }
   //FIXME can't reset selection
 }
 
@@ -352,7 +372,11 @@ Hop.fromForm=function(selector,methodName,type,url,options,params,input,onComple
   if(input==null) input={};
   for(var paramName in params){
     input[paramName]=Hop.FormUtil.getValue(selector,paramName);
+    if(params[paramName].optional && input[paramName]==""){
+      delete input[paramName];
+    }
   }
+  Hop.FormUtil.resetErrors(selector,params);
   Hop.remoteExec(methodName,type,url,options,params,input,function(err,output){
     var ret;
     if(onComplete!=null){
@@ -362,14 +386,14 @@ Hop.fromForm=function(selector,methodName,type,url,options,params,input,onComple
       if(err){
         Hop.FormUtil.showErrors(selector,err);
       } else {
-        Hop.FormUtil.resetErrors(selector);
+        Hop.FormUtil.resetErrors(selector,params);
       }
     }
   });
 }
 
 Hop.toForm=function(selector,methodName,type,url,options,params,input,onComplete){
-  Hop.FormUtil.resetErrors(selector);
+  Hop.FormUtil.resetErrors(selector,params);
   Hop.remoteExec(methodName,type,url,options,params,input,function(err,output){
     if(err){
       Hop.FormUtil.showErrors(selector,err);

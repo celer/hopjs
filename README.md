@@ -266,6 +266,31 @@ Now we can simply indicate a model is used for a call by using .useModel, .input
 
 You can see a complete working example at: https://github.com/celer/hopjs/tree/master/examples/model
 
+# How to use Hop with forms
+
+Hop has some built-in utility functions to make it very easy to use with forms. On each function defined in the browser client side two functions exist, fromForm and toForm which can be used to submit a form
+as an input to a Hop function or to populate a form with the result of a function call. For example:
+
+```javascript
+
+UserService.create.fromForm("#userForm",function(err,result){
+
+});
+
+```
+Or 
+
+```javascript
+UserService.load({ id: 3},"#userForm",function(err,res){
+
+});
+
+```
+
+These functions expect the form to have form elements with the same names as the various inputs to the functions, and also attempt to play nicely with bootstrap based forms, specifically by setting errors for various
+form elements and providing a generic error capability. This functionality is extremely powerful when combined with the models described above. See https://github.com/celer/hopjs/tree/master/examples/model for an example.
+
+
 # Notes about REST
 
  * Our implementation of REST is designed to be used with forms and does not support null values or special types, all values are converted to strings (null=="")
