@@ -1,0 +1,3 @@
+<div class="span9">
+  <button onClick='Hop.TestCase.runInDialog("","#testModal")'/>Run all test cases</button>
+</div>
