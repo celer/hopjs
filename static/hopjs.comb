@@ -44,7 +44,7 @@ Hop.FormUtil.showErrors=function(formSelector,errs){
 Hop.FormUtil.flash=function(formSelector,type,msg){
   console.log("Hop.FormUtil.Flash",formSelector,type,msg);
   console.log("To have Hop insert the error into your form include an element with class of 'flash'");
-  var res = $(formSelector+" .flash");
+  var res = $(formSelector).find(".flash");
   if(res.length>0){
     res.html(msg);
   } else {
@@ -55,19 +55,20 @@ Hop.FormUtil.flash=function(formSelector,type,msg){
 
 
 Hop.FormUtil.resetErrors=function(formSelector,params){
-  $(formSelector+" .flash").html("");
-  $(formSelector+" .valueErr").html("");
+  $(formSelector).find(".flash").html("");
+  $(formSelector).find(".valueErr").html("");
   if(params){
     for(var paramName in params){
-      $(formSelector+" ."+paramName+"Err").html("");
-      $(formSelector+" ."+paramName+"Status").removeClass("error");
+      $(formSelector).find("."+paramName+"Err").html("");
+      $(formSelector).find("."+paramName+"Status").removeClass("error");
     }
   }
 }
 
 Hop.FormUtil.valueError=function(formSelector,err,parameter){
-  var res = $(formSelector+" ."+parameter+"Err");
-  $(formSelector+" ."+parameter+"Status").addClass("error");
+  var res = $(formSelector).find("."+parameter+"Err");
+  console.log("VALUE ERROR",formSelector);
+  $(formSelector).find("."+parameter+"Status").addClass("error");
   if(res.length>0){
     res.html(err);
     return true;
@@ -87,8 +88,8 @@ Hop.FormUtil.reset=function(selector,params){
   $(selector).children("input[type=checkbox]").attr("checked",null);
   if(params){
     for(var paramName in params){
-      $(selector+" ."+paramName+"Err").html("");
-      $(selector+" ."+paramName+"Status").removeClass("error");
+      $(selector).find("."+paramName+"Err").html("");
+      $(selector).find("."+paramName+"Status").removeClass("error");
     }
   }
   //FIXME can't reset selection
@@ -100,10 +101,10 @@ Hop.FormUtil.getValue=function(formSelector,parameter,type){
       element = $(formSelector).children("."+parameter); 
   }
   if(element.length==0){
-      element = $(formSelector+" [name="+parameter+"]"); 
+      element = $(formSelector).find("[name="+parameter+"]"); 
   }
   if(element.length==0){
-      element = $(formSelector+" ."+parameter); 
+      element = $(formSelector).find("."+parameter); 
   }
   if(element.length==1){
     if(element.is("input")){
@@ -365,6 +366,8 @@ Hop.remoteExec=function(methodName,type,url,options,params,input,onComplete){
   }
 
 Hop.fromForm=function(selector,methodName,type,url,options,params,input,onComplete){
+  console.log("SELECTOR",selector);
+
   if(typeof input=="function"){
     onComplete=input;
     input={};

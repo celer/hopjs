@@ -71,8 +71,12 @@ UserService.del=function(input,onComplete,request){
   }
 }
 
+UserService.list=function(input,onComplete){
+	return onComplete(null,users);
+}
+
 UserService.load=function(input,onComplete){
-	return onComplete(users[input.id]);
+	return onComplete(null,users[input.id]);
 }
 
 
@@ -130,7 +134,8 @@ Hop.defineClass("UserService",UserService,function(api){
 	api.usage("Manages users");
 	api.post("create","/user").usage("Creates a user").demands("email","name","password").optionals("favoriteColor").useModel("User");
 	api.post("authenticate","/user/auth").usage("Authenticates a user").demands("password","name").useModel("User");
-	api.get("currentUser","/user").usage("Returns the current user").outputModel("User");
+	api.get("currentUser","/user/current").usage("Returns the current user").outputModel("User");
+  api.get("list","/user").usage("Lists the users");
 	api.get("logout","/user/logout").usage("Logs the current user out");
 	api.get("load","/user/:id").usage("Load a user").useModel("User");
   api.del("del","/user/:id").usage("Deletes the user").demand("id").inputModel("User");
