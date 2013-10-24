@@ -1,7 +1,7 @@
 ![alt text][logo]
 
-Build Status: [![Build Status](https://travis-ci.org/celer/hopjs.png)](https://travis-ci.org/celer/hopjs)
-Dependency Status: [![Depdendency Status](https://david-dm.org/celer/hopjs.png)](https://david-dm.org/celer/hopjs);
+[![Build Status](https://travis-ci.org/celer/hopjs.png)](https://travis-ci.org/celer/hopjs)
+[![Depdendency Status](https://david-dm.org/celer/hopjs.png)](https://david-dm.org/celer/hopjs);
 
 # HopJS 
 
