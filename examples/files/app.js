@@ -1,5 +1,7 @@
 var express= require('express');
 var path = require('path');
+var multiparty = require('multiparty');
+
 
 var Hop = require("./../../index");
 
@@ -11,7 +13,18 @@ app.configure(function(){
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
-  app.use(express.bodyParser());
+  app.use(express.urlencoded());
+  app.use(express.json());
+  app.use(function(req,res,next){
+    if(req.method==="POST"){ 
+      var form = new multiparty.Form();
+      form.parse(req,function(err,fields,files){
+        req.body=fields;
+        req.files=files;
+        next();
+      });    
+    } else next();
+  });
   app.use(express.methodOverride());
   app.use(express.cookieParser('your secret here'));
   app.use(express.session());
