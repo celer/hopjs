@@ -59,6 +59,8 @@ var UserService = {}
   Most of the test below will check to make sure your returning the right things from the onComplete
 
 */
+
+
 UserService.create=function(user,onComplete){
 
   if(!/.{3,100}/.test(user.email)){
@@ -73,9 +75,15 @@ UserService.create=function(user,onComplete){
   users[lastUserId]=user; 
   user.id = lastUserId;
 
+  user.href=new Hop.href("UserService.read",{id: user.id, kittens:"5>3" });
+
   lastUserId++;
 
 	return onComplete(null,user);
+}
+
+UserService.read=function(input,onComplete){
+  return onComplete(null,users[input.id]);
 }
 
 UserService.authenticate=function(credentials,onComplete,request){
@@ -130,9 +138,10 @@ Hop.defineClass("UserService",UserService,function(api){
     - We can also demand certain parameters be passed in when calling these functions
   */
 	api.post("create","/user").demand("email","The email address for the user").demand("name","The user's name").demand("password","The password for the user");
+	api.get("logout","/user/logout");
+  api.get("read","/user/:id")
 	api.post("authenticate","/user/auth").demand("password").demand("name");
 	api.get("currentUser","/user");
-	api.get("logout","/user/logout");
   api.del("del","/user/:id").demand("id");
 });
 
@@ -181,6 +190,7 @@ Hop.defineTestCase("UserService.create: Basic tests",function(test){
 */
 Hop.defineTestCase("UserService.create: Advanced",function(test){
 	var validUser = { email:"test@test.com", name:"TestUser", password:"sillycat" };
+
 	test.do("UserService.create").with(validUser).inputSameAsOutput().saveOutputAs("createdUser");
 	test.do("UserService.create").with(validUser,{name:undefined}).errorContains("Missing parameter");
 	test.do("UserService.create").with(validUser,{email:"X"}).errorContains("Invalid email");

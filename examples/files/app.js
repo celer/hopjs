@@ -81,7 +81,7 @@ Hop.defineTestCase("FileTest.sendAttachment",function(test){
 Hop.defineTestCase("FileTest.upload",function(test){
 	test.do("FileTest.upload").with({
 																		required: test.fileFromURL("/pig.png")
-																		}).outputHasProperty("required.size");
+																		}).outputHasProperty("required");
 })
 
 

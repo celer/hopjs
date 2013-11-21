@@ -14,17 +14,40 @@
     Hop.TestUtils.<%=testUtil%>=<%=Hop.TestUtils[testUtil].toString()%>
   <% } %>
 
+  if(typeof Hop.load == "undefined"){
+    Hop.load=function(urlOrService,onComplete){
+      //Override this function to load something other then a url, so for example, imagine you had a
+      // registry of services, you might perhaps refer to a service by name
+      if(typeof jQuery!="undefined"){ 
+        console.log("loading",urlOrService);
+        jQuery.getScript(urlOrService).done(function(){
+          onComplete(null,true); 
+        }).fail(function(){
+          onComplete("Failed to load:"+urlOrService);
+        }); 
+      } else {
+        throw new Error("Hop.load is not implemented");
+      }
+    }
+  }
+
+
   Hop.TestCase=function(name){
     this.tasks=[];
     this.name=name;
+    this.uses=[];
     this.taskIndex=0;
     Hop.TestCases[name]=this;
   }
 
-  Hop.TestCases={};
+  Hop.TestCases={ };
 
   Hop.TestCase.prototype.do=function(method,inputValue,onComplete){
     
+  }
+
+  Hop.TestCase.prototype.use=function(urlOrService){
+    this.uses.push(urlOrService);  
   }
 
   Hop.TestCase.prototype.testResult=function(method,inputValue,err,outputValue,testType,result){
@@ -36,17 +59,37 @@
   }
 
   Hop.TestCase.prototype.runTasks=function(onComplete){
+    
     this._onComplete=onComplete||function(){};
     this.reset(); 
     Hop.TestUtils.clearValues();
     var self=this;
-    this.do("TestService.log",{ msg: "Test: Starting "+this.name},function(){
-      try {
-        self.nextTask();
-      } catch(e){
-        console.error("Error running next task:"+e.toString());
+    
+    var run = function(){
+      self.do("TestService.log",{ msg: "Test: Starting "+this.name},function(){
+        try {
+          self.nextTask();
+        } catch(e){
+          console.error("Error running next task:"+e.toString());
+        }
+      })
+    }
+
+    var uses = this.uses.slice(0);
+    nextUse=function(){
+      if(uses.length>0){
+        Hop.load(uses.shift(),function(err,ret){
+          if(err){
+            alert(err);
+          }
+          nextUse();
+        }); 
+      } else {
+        run();
       }
-    })
+    }
+
+    nextUse();
     
   }
 
@@ -89,6 +132,10 @@
 <% } else {%>
 
   var testCase = new Hop.TestCase("<%=name%>");
+  
+  <% for(var i in uses){ %>
+    testCase.use(<%#uses[i]%>);
+  <% } %>
 
   <% for(var i in tasks){ %>
     testCase.addTask(function(testCase,taskIndex){

@@ -213,6 +213,7 @@ Hop.defineTestCase("UnitTestService.testGetEach",function(test){
   test.do("UnitTestService.testPutEach").with({}).errorContains("foo");
 });
 
+
 Hop.defineTestCase("UnitTestService.customError",function(test){
 	test.do("UnitTestService.customError").with({}).errorContains("Error");
 });
@@ -222,6 +223,11 @@ Hop.defineTestCase("UnitTestService.sendTemplate",function(test){
 });
 
 Hop.defineTestCase("UnitTestService.sendHeaders",function(test){
+
+  test.use("/js/test.js")
+
+  test.do("TestUse.test").with({}).noError().outputContains("It Worked");
+
 	test.do("UnitTestService.sendHeaders").with({}).noError();
 });
 
@@ -240,7 +246,6 @@ Hop.defineTestCase("UnitTestService.testPut: Basic tests",function(test){
 Hop.defineTestCase("UnitTestService.testPost: Basic tests",function(test){
 	basicTest("post","UnitTestService.testPost",test);
 });
-
 
 
 Hop.apiHook("/api/",app);
