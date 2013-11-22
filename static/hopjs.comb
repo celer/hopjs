@@ -264,10 +264,9 @@ Hop.validateInput=function(input,params){
     return output;
   }
 
-Hop.patchURL=function(input,url,params){
+Hop.patchURL=function(input,url,params,output){
     for(var paramName in params){
       var param = params[paramName];
-
       url = url.replace(":"+paramName,input[paramName]);
     }
     return url;
@@ -291,14 +290,23 @@ Hop.remoteExec=function(methodName,type,url,options,params,input,onComplete){
     };
     try {
       input = Hop.validateInput(input,params);
-      url=Hop.patchURL(input,url,params);
+      var newInput={};
+      for(var paramName in params){
+        var param = params[paramName];
+        if(url.indexOf(":"+paramName)!=-1){
+          url = url.replace(":"+paramName,input[paramName]);
+        } else {
+          newInput[paramName]=input[paramName];
+        }
+      }
+      input=newInput;
     } catch(e){
       return onComplete(e.toString());
     }
     if(options.noCache){
       input._when=(new Date().getTime())
     }
-    if(type=="post" || type=="put" || type=="delete"){
+    if(type=="post" || type=="put" || type=="delete" || type=="patch"){
       if(typeof _csrf=="string"){
         input._csrf=_csrf;
       }
@@ -349,7 +357,7 @@ Hop.remoteExec=function(methodName,type,url,options,params,input,onComplete){
         success: function(data, textStatus, jqXHR){ Hop.onAJAXSuccess(data, textStatus, jqXHR,onComplete,methodName); },
         error: function(jqXHR, textStatus, errorThrown){ Hop.onAJAXError(jqXHR, textStatus, errorThrown,onComplete,methodName); },
       };
-      if(type=="post" || type=="put"){
+      if(type=="post" || type=="put" || type=="patch"){
         try { 
           var json = JSON.stringify(input);
           params.data =json;

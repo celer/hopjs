@@ -7,7 +7,7 @@
 #interface:
 	Pass 6 Fail 0 100.00%
 #intro:
-	Pass 18 Fail 0 100.00%
+	Pass 31 Fail 0 100.00%
 #model:
 	Pass 24 Fail 0 100.00%
 #secure:

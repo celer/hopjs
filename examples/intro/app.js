@@ -60,6 +60,21 @@ var UserService = {}
 
 */
 
+/**
+
+  These two classes are just simple examples of how content can be used 
+  by href's or expanded in line. 
+
+*/
+UserRoles={};
+UserRoles.list=function(input,onComplete){
+  return onComplete(null,{ items:[ "admin","user"]});
+}
+
+UserGroups={};
+UserGroups.list=function(input,onComplete){
+  return onComplete(null,{ items:[ "sales"]});
+}
 
 UserService.create=function(user,onComplete){
 
@@ -75,11 +90,27 @@ UserService.create=function(user,onComplete){
   users[lastUserId]=user; 
   user.id = lastUserId;
 
+  //Here we explicitly tell Hop what call to use to refer to this object. 
   user.href=new Hop.href("UserService.read",{id: user.id, kittens:"5>3" });
+
+  //Here two references to the groups the user belongs to; we're essentially saying
+  // provide the url for these calls in the result, but if we wanted to the end
+  // consumer of the API can use the expand keyword to expand upon these hrefs. 
+  user.roles={ href: new Hop.href("UserRoles.list",{id:user.id})};
+  user.groups={ href: new Hop.href("UserGroups.list",{id:user.id})};
 
   lastUserId++;
 
 	return onComplete(null,user);
+}
+
+UserService.patch=function(input,onComplete){
+  if(users[input.id]){
+    for(var i in input){
+      users[input.id][i]=input[i];
+    }
+    return onComplete(null,users[input.id]);
+  } else return onComplete(null,null);
 }
 
 UserService.read=function(input,onComplete){
@@ -110,6 +141,10 @@ UserService.del=function(input,onComplete,request){
   }
 }
 
+UserService.list=function(input,onComplete){
+  return onComplete(null,{ items: users });   
+} 
+
 
 UserService.currentUser=function(input,onComplete,request){
   return onComplete(null,request.session.user);
@@ -120,6 +155,13 @@ UserService.logout=function(input,onComplete,request){
   return onComplete(null,true);
 }
 
+Hop.defineClass("UserGroups",UserGroups,function(api){
+  api.list("list","/user/:id/groups");
+});
+
+Hop.defineClass("UserRoles",UserRoles,function(api){
+  api.list("list","/user/:id/roles");
+});
 
 /*
   Here we'll tell Hop about our service, 
@@ -137,9 +179,11 @@ Hop.defineClass("UserService",UserService,function(api){
     - We can define four types of RESTful URLs, get, post, put and delete - which take the name of the function in the service, and the path for the URL
     - We can also demand certain parameters be passed in when calling these functions
   */
-	api.post("create","/user").demand("email","The email address for the user").demand("name","The user's name").demand("password","The password for the user");
+	api.create("create","/user").demand("email","The email address for the user").demand("name","The user's name").demand("password","The password for the user");
+  api.list("list","/user/");
 	api.get("logout","/user/logout");
-  api.get("read","/user/:id")
+  api.patch("patch","/user/:id").optionals("email","name","password");
+  api.read("read","/user/:id");
 	api.post("authenticate","/user/auth").demand("password").demand("name");
 	api.get("currentUser","/user");
   api.del("del","/user/:id").demand("id");
@@ -214,6 +258,27 @@ Hop.defineTestCase("UserService.authenticate",function(test){
   
   test.do("UserService.del").with("createdUser").noError();
 });
+
+Hop.defineTestCase("UserService.patch",function(test){
+	var validUser = { email:"test@test.com", name:"AuthUser", password:"sillycat" };
+	test.do("UserService.create").with(validUser).inputSameAsOutput().saveOutputAs("createdUser");
+  test.do("UserService.patch").with("createdUser",{email:"foo@foo.com"}).noError().outputContains({email:"foo@foo.com"}).saveOutputAs("createdUser");
+  test.do("UserService.list").noError();
+  test.do("UserService.read").with("createdUser").outputHasProperty("href");
+});
+
+/**
+  In this test we're gonna see if we can expand inline items. We will make sure that we get just href's sometimes
+  and then can expand groups and roles
+*/
+Hop.defineTestCase("UserService.read:expand",function(test){
+	var validUser = { email:"test@test.com", name:"AuthUser", password:"sillycat" };
+	test.do("UserService.create").with(validUser).inputSameAsOutput().saveOutputAs("createdUser");
+  test.do("UserService.read").with("createdUser").outputHasProperty("roles.href");
+  test.do("UserService.read").with("createdUser",{expand:"roles"}).outputContains({ roles:{items:["admin","user"]}});
+  test.do("UserService.read").with("createdUser",{expand:"roles", expand:"groups"}).outputContains({ roles:{items:["admin","user"]}}).outputContains({ groups:{items:["sales"]}});;
+});
+
 
 Hop.apiHook("/api/",app);
 
