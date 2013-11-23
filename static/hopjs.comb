@@ -232,14 +232,14 @@ Hop.FormUtil.setValue=function(formSelector,parameter,value){
 }
 
 Hop.onAJAXSuccess=function(data, textStatus, xhr,onComplete,methodName){
-    if(xhr.status==200){ 
+    if(xhr.status>=200 && xhr.status<300){ 
       onComplete(null, data); 
       //$(document).trigger(methodName,data); 
     } else console.log(arguments); 
   }
 
 Hop.onAJAXError=function(xhr, textStatus, errorThrown,onComplete,methodName){
-    if(xhr.status==200){
+    if(xhr.status>=200 &&  xhr.status<300){
       onComplete(null,xhr.responseText); 
     } else if(xhr.status==404){ 
       onComplete(null,null); 
@@ -334,7 +334,7 @@ Hop.remoteExec=function(methodName,type,url,options,params,input,onComplete){
             } catch (e){
             }
           }
-          if(xhr.status==200 && xhr.response!=null){
+          if((xhr.status>=200 && xhr.status<300) && xhr.response!=null){
             Hop.onAJAXSuccess(value,xhr.statusText,xhr,onComplete,methodName);  
           } else {
             Hop.onAJAXError(xhr,xhr.statusText,xhr.responseText,onComplete,methodName);

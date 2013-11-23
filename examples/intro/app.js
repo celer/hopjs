@@ -76,19 +76,20 @@ UserGroups.list=function(input,onComplete){
   return onComplete(null,{ items:[ "sales"]});
 }
 
-UserService.create=function(user,onComplete){
+UserService.create=function(input,onComplete){
 
-  if(!/.{3,100}/.test(user.email)){
-    return onComplete("Invalid email address specified: "+user.email);
+  if(!/.{3,100}/.test(input.email)){
+    return onComplete("Invalid email address specified: "+input.email);
   }
   
-  if(!/[A-Za-z0-9]{3,100}/.test(user.name)){
-    return onComplete("Invalid name specified: "+user.name);
+  if(!/[A-Za-z0-9]{3,100}/.test(input.name)){
+    return onComplete("Invalid name specified: "+input.name);
   }
 
   /* Let's add this user to our list of known users */
-  users[lastUserId]=user; 
-  user.id = lastUserId;
+  users[lastUserId]={ email:input.email, name: input.name, password: input.password, id:lastUserId};
+
+  var user = users[lastUserId];
 
   //Here we explicitly tell Hop what call to use to refer to this object. 
   user.href=new Hop.href("UserService.read",{id: user.id, kittens:"5>3" });
@@ -101,7 +102,7 @@ UserService.create=function(user,onComplete){
 
   lastUserId++;
 
-	return onComplete(null,user);
+	return onComplete(null,user.href);
 }
 
 UserService.patch=function(input,onComplete){
