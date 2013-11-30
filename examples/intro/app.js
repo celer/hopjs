@@ -56,7 +56,14 @@ var UserService = {}
     - If you have an error, result must be null
     - If you have no error and no result, both can be null (this will return a 404)
 
+  Lastly you may override the status code by providing the desired status code as the third parameter to the
+  call back. 
+
+    ex: return onComplete("Invalid email address", null, 400);
+
   Most of the test below will check to make sure your returning the right things from the onComplete
+
+    
 
 */
 

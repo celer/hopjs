@@ -1,0 +1,18 @@
+{
+  "name": "application-name",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "express": "*",
+    "jade": "*",
+    "tracer": "*",
+    "node-uuid": "*",
+    "connect": "*",
+    "hopjs-common": "*",
+    "okapi": "0.0.5",
+    "sqlite3": "~2.1.19"
+  }
+}
