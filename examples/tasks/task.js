@@ -3,10 +3,12 @@ Okapi = require('okapi');
 dialect = require('./db');
 crypto = require('crypto');
 
+Okapi.log=true;
 
 UserDAO = require('./user').UserDAO;
 
 var TaskDAO = new Okapi.Object(dialect,"tasks");
+
 
 
 TaskDAO.column("id", {type: Okapi.ID }); 
@@ -32,9 +34,7 @@ Hop.defineModel("Task",function(user){
 Task={};
 
 Task.create=function(input,onComplete,request){
-
   input.createdBy = request.session.user.id;
-  
   TaskDAO.insert(input).done(function(err,task){
     Hop.log(err,task);
     if(err) return onComplete("Unable to create task");
@@ -44,11 +44,9 @@ Task.create=function(input,onComplete,request){
 
 Task.read=function(input,onComplete){
   Hop.log("READING",input);
-  TaskDAO.find({id: input.id }).done(function(err,tasks){
+  TaskDAO.find({id: input.id }).first(function(err,task){
     if(err) return onComplete("Unable to read task");
-    if(tasks.length>0){
-      var task = tasks[0];
-
+    if(task){
       var assignedTo = task.assignedTo*1;
       var createdBy = task.createdBy*1;
 
@@ -85,7 +83,12 @@ Task.delete=function(input,onComplete){
 
 Task.list=function(input,onComplete){
   //FIXME add offset & limit
-  TaskDAO.find().done(function(err,tasks){
+  TaskDAO.find().limit(input.limit).offset(input.offset).orderBy("id","asc").done(function(err,tasks){
+    tasks.forEach(function(task){
+      task.href = new Hop.href("Task.read", { id: task.id }); 
+      task.assignedTo= { href: new Hop.href("User.read",{id:task.assignedTo}), id: task.assignedTo }
+      task.createdBy= { href: new Hop.href("User.read",{id:task.createdBy}), id: task.createdBy }
+    });
     return onComplete(err,{ items: tasks });      
   });
 }
@@ -108,25 +111,18 @@ Hop.defineTestCase("Task.list",function(test){
   test.do("User.login").with(user1).noError();
   test.do("User.current").with().noError().saveOutputAs("user1");
 
-  test.do("Task.create").with(validTask).noError().saveOutputAs("savedTask");
-  test.do("Task.create").with(validTask).noError().saveOutputAs("savedTask");
-  test.do("Task.create").with(validTask).noError().saveOutputAs("savedTask");
-  test.do("Task.create").with(validTask).noError().saveOutputAs("savedTask");
-  test.do("Task.create").with(validTask).noError().saveOutputAs("savedTask");
-  test.do("Task.create").with(validTask).noError().saveOutputAs("savedTask");
-  test.do("Task.create").with(validTask).noError().saveOutputAs("savedTask");
-  test.do("Task.create").with(validTask).noError().saveOutputAs("savedTask");
-  test.do("Task.create").with(validTask).noError().saveOutputAs("savedTask");
-  test.do("Task.create").with(validTask).noError().saveOutputAs("savedTask");
-  test.do("Task.create").with(validTask).noError().saveOutputAs("savedTask");
-  test.do("Task.create").with(validTask).noError().saveOutputAs("savedTask");
-  test.do("Task.create").with(validTask).noError().saveOutputAs("savedTask");
-  test.do("Task.create").with(validTask).noError().saveOutputAs("savedTask");
-  test.do("Task.create").with(validTask).noError().saveOutputAs("savedTask");
+  for(var i = 0;i<100;i++){
+    test.do("Task.create").with(validTask).noError().saveOutputAs("savedTask"+i);
+  }
 
-  test.do("Task.list").with().noError();
+  test.do("Task.list").with().noError().arrayContains("items","savedTask1");
+  
+  test.do("Task.list").with({offset:50}).noError().arrayContains("items","savedTask52");
+  
+  for(var i = 0;i<100;i++){
+    test.do("Task.delete").with("savedTask"+i).noError();
+  }
 
-  test.do("Task.delete").with("savedTask").noError();
   test.do("User.delete").with("user1").noError();
   test.do("User.logout").with().noError();
 });

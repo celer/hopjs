@@ -13,6 +13,6 @@
 #secure:
 	Pass 4 Fail 0 100.00%
 #tasks:
-	Pass 74 Fail 0 100.00%
+	Pass 105 Fail 0 100.00%
 #test:
 	Pass 51 Fail 0 100.00%

@@ -3,6 +3,8 @@ Okapi = require('okapi');
 dialect = require('./db');
 crypto = require('crypto');
 
+Okapi.log=true;
+
 
 var UserDAO = new Okapi.Object(dialect,"users");
 
@@ -11,7 +13,8 @@ UserDAO.column("id", {type: Okapi.ID });
 UserDAO.column("email",{ type: Okapi.String, unique:true });
 UserDAO.column("password", { type: Okapi.String }); 
 UserDAO.column("salt", { type: Okapi.String }); 
- 
+
+console.log(Okapi); 
 
 //FIXME make this take no lambda
 Okapi.createTables(UserDAO,function(){});
@@ -171,7 +174,7 @@ Hop.defineTestCase("User.create: Basic Test",function(test){
    
 });
 
-Hop.defineTestCase("User.delete: Basic Test",function(test){
+Hop.defineTestCase("User.delete: Session Test",function(test){
   var user1 = { email:"test1@test.com", password:"password"};
   var user2 = { email:"test2@test.com", password:"password"};
 
