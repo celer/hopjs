@@ -12,7 +12,7 @@
     "node-uuid": "*",
     "connect": "*",
     "hopjs-common": "*",
-    "okapi": "~0.0.5",
+    "okapi": "~0.0.7",
     "sqlite3": "~2.1.19"
   }
 }

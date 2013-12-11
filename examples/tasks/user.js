@@ -14,7 +14,6 @@ UserDAO.column("email",{ type: Okapi.String, unique:true });
 UserDAO.column("password", { type: Okapi.String }); 
 UserDAO.column("salt", { type: Okapi.String }); 
 
-console.log(Okapi); 
 
 //FIXME make this take no lambda
 Okapi.createTables(UserDAO,function(){});
