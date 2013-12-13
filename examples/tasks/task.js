@@ -36,16 +36,14 @@ Task={};
 Task.create=function(input,onComplete,request){
   input.createdBy = request.session.user.id;
   TaskDAO.insert(input).done(function(err,task){
-    Hop.log(err,task);
-    if(err) return onComplete("Unable to create task");
+    if(err) return onComplete(Hop.DAOError("Unable to create task",err));
     return onComplete(null,new Hop.href("Task.read",{id: task.id }));
   });
 }
 
 Task.read=function(input,onComplete){
-  Hop.log("READING",input);
   TaskDAO.find({id: input.id }).first(function(err,task){
-    if(err) return onComplete("Unable to read task");
+    if(err) return onComplete(Hop.DAOError("Unable to read task",err));
     if(task){
       var assignedTo = task.assignedTo*1;
       var createdBy = task.createdBy*1;
@@ -56,7 +54,6 @@ Task.read=function(input,onComplete){
       task.assignedTo= { href: new Hop.href("User.read",{id:assignedTo}), id: assignedTo }
       task.createdBy= { href: new Hop.href("User.read",{id:createdBy}), id: createdBy }
 
-      Hop.log(JSON.stringify(task));
     
       return onComplete(null, task);
     } else return onComplete(null,null);
@@ -67,7 +64,7 @@ Task.read=function(input,onComplete){
 Task.update=function(input,onComplete){
   //FIXME need to pull an ID from the task
   TaskDAO.update(input).done(function(err,task){
-    if(err) return onComplete("Unable to update task");
+    if(err) return onComplete(Hop.DAOError("Unable to update task",err));
     task.assignedTo = new Hop.href("User.read",{id:task.assignedTo}); 
     task.createdBy = new Hop.href("User.read",{id:task.createdBy});
     return onComplete(null,task);
@@ -76,7 +73,7 @@ Task.update=function(input,onComplete){
 
 Task.delete=function(input,onComplete){
   TaskDAO.delete(input).done(function(err,res){
-    if(err) return onComplete("Unable to delete tasks");
+    if(err) return onComplete(Hop.DAOError("Unable to delete tasks",err));
     return onComplete(null,true);
   });
 }
@@ -84,6 +81,7 @@ Task.delete=function(input,onComplete){
 Task.list=function(input,onComplete){
   //FIXME add offset & limit
   TaskDAO.find().limit(input.limit).offset(input.offset).orderBy("id","asc").done(function(err,tasks){
+    if(err) return onComplete(Hop.DAOError("Unable to list tasks",err));
     tasks.forEach(function(task){
       task.href = new Hop.href("Task.read", { id: task.id }); 
       task.assignedTo= { href: new Hop.href("User.read",{id:task.assignedTo}), id: task.assignedTo }

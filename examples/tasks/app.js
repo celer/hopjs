@@ -3,6 +3,13 @@ var path = require('path');
 
 var Hop = require("./../../index");
 
+var logger = require('tracer').colorConsole();
+
+//Setup logging so we get nice pretty logs
+Hop.log=logger.info;
+Hop.warn=logger.warn;
+Hop.error=logger.error;
+
 /*
   This is express boiler plate, see http://expressjs.com/guide.html
 */

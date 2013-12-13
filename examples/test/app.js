@@ -194,6 +194,23 @@ function basicTest(method, funcName,test){
 	test.do(funcName).with(testValue,{modelString: 2 }).errorContains("REXP");
 	test.do(funcName).with(testValue,{modelStringArray: 2 }).errorContains("Invalid value");
 	test.do(funcName).with(testValue,{modelStringArray: ['D'] }).errorContains('Valid values are: A, B, C');
+
+  test.do(funcName).with(testValue,{string:null}).noError();  
+  test.do(funcName).with(testValue,{number:null}).noError();
+  test.do(funcName).with(testValue,{float:null}).noError();
+  test.do(funcName).with(testValue,{object:null}).noError();
+  test.do(funcName).with(testValue,{date:null}).noError();
+  test.do(funcName).with(testValue,{booleanTrue:null}).noError();
+  test.do(funcName).with(testValue,{booleanFalse:null}).noError();
+ 
+  test.do(funcName).with(testValue,{modelStringArray:null}).errorContains("Invalid value");
+  test.do(funcName).with(testValue,{modelMinMax:null}).errorContains("Value must be greater than");
+  test.do(funcName).with(testValue,{modelArray:null}).errorContains("Valid values are");
+  test.do(funcName).with(testValue,{modelString:null}).errorContains("REXP");
+  test.do(funcName).with(testValue,{modelObject:null}).errorContains("Valid values are");
+  test.do(funcName).with(testValue,{modelBool:null}).outputContains({modelBool:false});
+  test.do(funcName).with(testValue,{modelFloat:null}).outputContains({modelFloat:null});
+  
 	test.do(funcName+"Optionals").with({ }).noError();
 	test.do(funcName+"Optionals").with(testValue).outputContains(expectedValue);
   test.do(funcName+"Optionals").with(testValue).outputDoesntContain({kittens:34});
@@ -205,6 +222,8 @@ Hop.defineTestCase("UnitTestService.testRaw",function(test){
   test.do("UnitTestService.testRaw").with({ value:[1,2,3,4,5] }).outputIsArrayWithMinLength(2);
   test.do("UnitTestService.testRaw").with({ value:[1,2,3,4,5] }).outputIsArrayWithMaxLength(8);
 });
+
+
 
 Hop.defineTestCase("UnitTestService.testGetEach",function(test){
   test.do("UnitTestService.testGetEach").with({}).errorContains("foo");

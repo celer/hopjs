@@ -147,7 +147,8 @@ Hop.defineTestCase("UserService.create: Basic tests",function(test){
 
 	test.do("UserService.create").with(validUser).inputSameAsOutput().saveOutputAs("createdUser");
   test.do("UserService.del").with("createdUser").noError();
-
+	
+  test.do("UserService.create").with(validUser, {favoriteColor:null }).errorContains("Colors must");
 });
 
 Hop.defineTestCase("UserService.create: Advanced",function(test){

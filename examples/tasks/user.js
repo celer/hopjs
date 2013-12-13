@@ -45,11 +45,9 @@ User.create=function(input,onComplete){
  
  
   input.password = User.cryptPassword(input.salt,input.password);
-  console.log(input.password);
  
   UserDAO.insert(input).done(function(err,user){
-    Hop.log(err);
-    if(err) return onComplete("Error creating user",null);
+    if(err) return onComplete(Hop.DAOError("Unable to create user",err),null);
     return onComplete(null,new Hop.href("User.read",{id: user.id }));
   });
 }
@@ -59,7 +57,7 @@ User.login=function(input,onComplete,request){
     q.eq("email",input.email);
   }).done(function(err,users){
     delete request.session.user;
-    if(err) return onComplete("Error authenticating user",null);
+    if(err) return onComplete(Hop.AuthError(),null);
 
     if(users.length>0){
 
@@ -68,10 +66,10 @@ User.login=function(input,onComplete,request){
         request.session.user = users[0];
         return onComplete(null,true);
       } else { 
-        return onComplete("Invalid username or password",null,401); 
+        return onComplete(Hop.AuthError(),null,401); 
       }
     } else {
-      return onComplete("Invalid username or password",null,401); 
+      return onComplete(Hop.AuthError(),null,401); 
     }
   });
 }
@@ -84,7 +82,7 @@ User.logout=function(input,onComplete,request){
 User.list=function(input,onComplete){
   //FIXME add offset & limit 
   UserDAO.find().done(function(err,users){
-    if(err) return onComplete("Unable to list users");
+    if(err) return onComplete(Hop.DAOError("Unable to list users",err));
   
     return onComplete(null,{ 
       items:  users.map(function(user){ 
@@ -96,13 +94,10 @@ User.list=function(input,onComplete){
 
 
 User.read=function(input,onComplete){
-  //FIXME Add find one
-  Hop.log("Input",input);
   UserDAO.find(input).done(function(err,user){
-    if(err) return onComplete("Unable to delete user");
+    if(err) return onComplete(Hop.DAOError("Unable to delete user",err));
     if(!user || user.length==0) return onComplete(null,null);
     user = user[0];
-    Hop.log(arguments);
     user.href = new Hop.href("User.read",{id:user.id});
     return onComplete(null,user);
   });
@@ -114,18 +109,17 @@ User.current=function(input,onComplete,request){
 
 User.update=function(input,onComplete){
   UserDAO.update(input).done(function(err,user){
-    if(err) return onComplete("Unable to delete user");
+    if(err) return onComplete(Hop.DAOError("Unable to update user",err));
     user.href = new Hop.href("User.read",{id:user.id});
     return onComplete(null,input);
   });
 }
 
 User.delete=function(input,onComplete,request){
-  if(input.id != request.session.user.id) return onComplete("Not Authorized",null,401);
+  if(input.id != request.session.user.id) return onComplete("Not Authorized",null,400);
 
   UserDAO.delete(input).done(function(err,result){
-    if(err) return onComplete("Unable to delete user");
-    console.log(input);
+    if(err) return onComplete(Hop.DAOError("Unable to delete user",err));
     return onComplete(null,true);
   });
 }
@@ -135,7 +129,7 @@ Hop.Method.prototype.requireUser=function(){
   var self=this;
   this.addPreCall(function(request,input,onComplete,next){
     if(!request.session.user)
-      return onComplete("Not Authorized",null,401);
+      return onComplete("Not Authorized",null,400);
     else next();
   },"auth");
 }
@@ -160,6 +154,7 @@ Hop.defineTestCase("User.create: Basic Test",function(test){
   var user = { email:"test@test.com", password:"password"};
 
   test.do("User.create").with(user).noError();
+  test.do("User.create").with(user).errorContains("Unable to");
   test.do("User.current").noError().outputIsNull();
   test.do("User.login").with(user).noError().outputContains(true);
   test.do("User.current").noError().saveOutputAs("createdUser");
