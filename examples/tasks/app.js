@@ -27,14 +27,55 @@ app.configure(function(){
   app.use(express.static(path.join(__dirname, 'public')));
 });
 
-app.engine("jade",require('jade').__express);
-
-app.get("/",function(req,res){
-	res.render("index",{Hop:Hop});
-});
+var requireUser=function(req,res,next){
+  if(req.session.user){
+    next();
+  } else {
+	  res.render("login",{Hop:Hop});
+  }
+}
 
 require('./user');
 require('./task');
+
+var UserStub = Hop.Object.wrap("User");
+
+
+app.engine("jade",require('jade').__express);
+
+app.get("/",requireUser,function(req,res){
+	res.render("index",{Hop:Hop});
+});
+
+app.post("/login",function(req,res){
+  UserStub.login(req.body,function(err,user){
+    if(user){
+      res.redirect("/"); 
+    } else {
+	    res.render("login",{Hop:Hop,error:err});
+    }
+  },req,res);
+}); 
+
+
+app.get("/signup",function(req,res){
+  res.render("signup",{Hop:Hop});
+});
+
+app.post("/signup",function(req,res){
+  UserStub.create(req.body,function(err,user){
+    if(user){
+      UserStub.login(req.body,function(err,user){
+        if(err) 
+	        res.render("signup",{Hop:Hop,error:err});
+        res.redirect("/"); 
+      },req,res);
+    } else {
+	    res.render("signup",{Hop:Hop,error:err});
+    }
+  },req,res);
+});
+
 
 Hop.apiHook("/api/",app);
 
