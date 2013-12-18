@@ -1,9 +1,11 @@
 extends layout
 
+
 block head
   script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js")
   script(src=Hop.hopjsURL);
   script(src=Hop.apiURL);
+  script(src="/ui.js")
   style
     .error {
       color: red;
@@ -40,13 +42,37 @@ block content
         input(type="text",name="favoriteColor",placeholder="Favorite color")
         span.favoriteColorErr
         br
-        button(type="submit") Create
+        button(type="submit",data-call="UserService.create", data-upsert-list-item="#userList") Create with magic
+
+
+
+  form(data-call="UserService.load", data-input="{id:0}")
+    span(data-contents="foo")
+    span
+      input(data-value="foo")
+
+  a(data-call="UserService.load",href="#",data-input="{id:1}",data-target="#bar") Click me
+
+  div#bar
+    input(data-value="result.email")
+    span(data-contents="result.email")
+
+  div#userList(data-type="list",data-call="UserService.list",data-page-var="offset",data-page-size="5",data-input={ pageSize: 5 },data-link="/users/#offset")
+    div Header
+    div(data-contents="error")
+    div#res(data-foreach="result")
+      div.foo.bar(data-id="id")
+        span Foo
+        br
+        span(data-contents="email")
+        br
+        span(data-contents="id")
+        br
+        a(href="#", data-call="UserService.del", data-list-action="delete", data-input="{id: ${id}}") Delete me
+        hr
+    a(href="#", data-list-action="next") Next
+    &nbsp;
+    a(href="#", data-list-action="prev") Prev
+    div Footer
   script
-    $(document).ready(function(){
-      $("#createUser").submit(function(){
-        UserService.create.fromForm("#createUser",function(err,res){
-          console.log(err,res);
-        });
-        return false;
-      })
-    });
+    $(document).hopjs("start");
