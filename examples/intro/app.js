@@ -226,7 +226,7 @@ Hop.defineTestCase("UserService.create: Basic tests",function(test){
       - and expect the input to be a subset of the output
       - and we want to save the result of this call as "createdUser"
   */
-	test.do("UserService.create").with(validUser).inputSameAsOutput().saveOutputAs("createdUser");
+	test.do("UserService.create").with(validUser,{expand:true}).outputContains(validUser).saveOutputAs("createdUser");
 
   /*
     Now we want to delete the user we created above. This works because UserService.del only requires 
@@ -243,7 +243,7 @@ Hop.defineTestCase("UserService.create: Basic tests",function(test){
 Hop.defineTestCase("UserService.create: Advanced",function(test){
 	var validUser = { email:"test@test.com", name:"TestUser", password:"sillycat" };
 
-	test.do("UserService.create").with(validUser).inputSameAsOutput().saveOutputAs("createdUser");
+	test.do("UserService.create").with(validUser,{expand:true}).outputContains(validUser).saveOutputAs("createdUser");
 	test.do("UserService.create").with(validUser,{name:undefined}).errorContains("Missing parameter");
 	test.do("UserService.create").with(validUser,{email:"X"}).errorContains("Invalid email");
 	test.do("UserService.create").with(validUser,{name:"@#$"}).errorContains("Invalid name");
@@ -257,7 +257,7 @@ Hop.defineTestCase("UserService.create: Advanced",function(test){
 */
 Hop.defineTestCase("UserService.authenticate",function(test){
 	var validUser = { email:"test@test.com", name:"AuthUser", password:"sillycat" };
-	test.do("UserService.create").with(validUser).inputSameAsOutput().saveOutputAs("createdUser");
+	test.do("UserService.create").with(validUser,{expand:true}).outputContains(validUser).saveOutputAs("createdUser");
   test.do("UserService.logout").noError();
 	test.do("UserService.authenticate").with({name:"authuser",password:"badpass"}).errorContains("Permission denied");
   test.do("UserService.currentUser").noError().outputIsNull();
@@ -269,7 +269,7 @@ Hop.defineTestCase("UserService.authenticate",function(test){
 
 Hop.defineTestCase("UserService.patch",function(test){
 	var validUser = { email:"test@test.com", name:"AuthUser", password:"sillycat" };
-	test.do("UserService.create").with(validUser).inputSameAsOutput().saveOutputAs("createdUser");
+	test.do("UserService.create").with(validUser,{expand:true}).outputContains(validUser).saveOutputAs("createdUser");
   test.do("UserService.patch").with("createdUser",{email:"foo@foo.com"}).noError().outputContains({email:"foo@foo.com"}).saveOutputAs("createdUser");
   test.do("UserService.list").noError();
   test.do("UserService.read").with("createdUser").outputHasProperty("href");
@@ -281,7 +281,7 @@ Hop.defineTestCase("UserService.patch",function(test){
 */
 Hop.defineTestCase("UserService.read:expand",function(test){
 	var validUser = { email:"test@test.com", name:"AuthUser", password:"sillycat" };
-	test.do("UserService.create").with(validUser).inputSameAsOutput().saveOutputAs("createdUser");
+	test.do("UserService.create").with(validUser,{expand:true}).outputContains(validUser).saveOutputAs("createdUser");
   test.do("UserService.read").with("createdUser").outputHasProperty("roles.href");
   test.do("UserService.read").with("createdUser",{expand:"roles"}).outputContains({ roles:{items:["admin","user"]}});
   test.do("UserService.read").with("createdUser",{expand:"roles", expand:"groups"}).outputContains({ roles:{items:["admin","user"]}}).outputContains({ groups:{items:["sales"]}});;
