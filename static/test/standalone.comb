@@ -158,7 +158,7 @@
            testCase.nextTask(); 
            });
         } catch(e){
-          console.error("Failed to run the next task:"+e.toString());
+          alert("Failed to run the next task:"+e.toString());
           testCase.nextTask();
         }   
       });
