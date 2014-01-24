@@ -110,7 +110,7 @@ Hop.defineTestCase("Task.list",function(test){
   test.do("User.current").with().noError().saveOutputAs("user1");
 
   for(var i = 0;i<100;i++){
-    test.do("Task.create").with(validTask).noError().saveOutputAs("savedTask"+i);
+    test.do("Task.create").with(validTask,  {expand:true }).noError().saveOutputAs("savedTask"+i);
   }
 
   test.do("Task.list").with().noError().arrayContains("items","savedTask1");
