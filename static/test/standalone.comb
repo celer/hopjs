@@ -18,6 +18,11 @@
     Hop.load=function(urlOrService,onComplete){
       //Override this function to load something other then a url, so for example, imagine you had a
       // registry of services, you might perhaps refer to a service by name
+
+      if(/\/$/.test(urlOrService)){
+        urlOrService+="api.js"
+      }
+
       if(typeof jQuery!="undefined"){ 
         console.log("loading",urlOrService);
         jQuery.getScript(urlOrService).done(function(){

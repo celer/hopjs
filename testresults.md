@@ -12,6 +12,8 @@
 	Pass 25 Fail 0 100.00%
 #secure:
 	Pass 4 Fail 0 100.00%
+#services:
+	Pass 2 Fail 0 100.00%
 #tasks:
 	Pass 347 Fail 0 100.00%
 #test:
