@@ -134,8 +134,10 @@ Hop.defineTestCase("Task.create",function(test){
   test.do("User.login").with(user1).noError();
   test.do("User.current").with().noError().saveOutputAs("user1");
 
-  test.do("Task.create").with(validTask).noError().saveOutputAs("savedTask");
-  test.do("Task.read").with("savedTask",{ expand:"fo"}).noError();
+  test.do("Task.create").with(validTask).noError().saveOutputAs("savedTask").outputHasProperty("href");
+  test.do("Task.read").with("savedTask").noError();
+  test.do("Task.read").with("savedTask",{expand:"createdBy"}).noError().outputHasProperty("createdBy","user1");
+  test.do("Task.read").with("savedTask",{expand:["assignedTo","createdBy"]}).noError().outputHasProperty("createdBy","user1");
   test.do("Task.delete").with("savedTask").noError();
   test.do("User.delete").with("user1").noError();
   test.do("User.logout").with().noError();
