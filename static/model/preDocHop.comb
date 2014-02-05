@@ -19,7 +19,20 @@
         <% for(var fieldName in model.fields){ 
             var field = model.fields[fieldName];
         %>
-          <tr><td width="15%"><%=fieldName%></td><td width="15%"><%=(field.type?field.type:"")%><%=(field.isArray===true?"[]":"")%></td><td width="50%"><%=(field.desc?field.desc:"")%></td><td><%=(typeof field.values=="object"?JSON.stringify(field.values):"")%></tr>
+          <tr><td width="15%"><%=fieldName%></td>
+              <td width="15%">
+                <% if(typeof field.model=="string"){%>
+                  <a href="#<%=field.model%>.model"><%=field.model%></a><%=(field.array===true?"[]":"")%>
+                <% } else { %>
+                  <%=(field.type?field.type:"")%><%=(field.array===true?"[]":"")%>
+                <% } %>
+              </td>
+              <td width="50%"><%=(field.desc?field.desc:"")%></td>
+              <td>
+                  <%=(typeof field.values=="object"?JSON.stringify(field.values):"")%>
+                  <%=(field.modelFields instanceof Array?field.modelFields.join(", "):"")%>
+              </td>
+          </tr>
         <% } %>
         </table> 
         <% if(model.links instanceof Array){ %>

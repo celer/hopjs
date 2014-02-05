@@ -17,6 +17,10 @@ app.configure(function(){
   app.use(express.json());
   app.use(express.cookieParser('your secret here'));
   app.use(express.session());
+  app.use(function(req,res,next){
+    console.log(req.body);
+    next();
+  });
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });
@@ -90,12 +94,19 @@ UserService.logout=function(input,onComplete,request){
 }
 
 
+Hop.defineModel("Role",function(role){
+  role.field("customer","Customer","The customer the user has the role on").integer().ID();
+  role.field("role","Role","The role the user has").string().values(["Admin","User","SuperAdmin"]);
+});
+
+
 Hop.defineModel("User",function(user){
 	user.field("id","UserID","The user's id").integer().ID();
 	user.field("name","Username","The user's username").string().regexp(/[A-Za-z0-9\_\-]{3,10}/,"Usernames must be between 3 and 10 characters long, and can only contain alphanumeric characters");
 	user.field("email","Email","The user's email address").string();
 	user.field("password","Password","The user's password").password();
   user.field("favoriteColor","Favorite color").string().regexp(/[A-Za-z]{3,10}/,"Colors must be between 3 and 10 characters long, and can only contain characters");
+  user.field("roles","The roles the user has").isArray().model("Role");
 	user.link("self").call("UserService.load");
 	user.link("doc","/api/#User.model");
 });
@@ -104,6 +115,22 @@ ValidatorTest={};
 ValidatorTest.test=function(input,onComplete){
 	return onComplete(null,true);
 }
+ValidatorTest.test2=function(input,onComplete){
+	return onComplete(null,true);
+}
+ValidatorTest.test3=function(input,onComplete){
+	return onComplete(null,true);
+}
+
+
+Hop.defineModel("SubModel2",function(model){
+  model.field("string").string().regexp(/[A-Z]{1,4}/);
+});
+
+Hop.defineModel("SubModel1",function(model){
+  model.field("yetAnotherArrayOfModels").isArray().model("SubModel2"); 
+  model.field("number").integer().range(10,20);
+});
 
 
 Hop.defineModel("ValidatorTest",function(model){
@@ -111,21 +138,76 @@ Hop.defineModel("ValidatorTest",function(model){
 	model.field("array").string().values(["red","blue","green"]);
 	model.field("object").values({ R:"Red", B:"Blue", G:"Green" });
 	model.field("string").string().regexp(/[A-Z]+/,"REXP");
+
+  
+  model.field("arrayOfModels").model("SubModel1").isArray();
+  model.field("subModel2").model("SubModel2");
+
+  model.field("arrayOfStrings").string().isArray().regexp(/[A-Z]{2,3}/,"Invalid string specified");
+});
+
+Hop.defineModel("ModelArraySizes",function(model){
+  model.field("subModelArray").model("SubModel1").isArray(2,4);
+});
+
+Hop.defineModel("ValidatorTest2",function(model){
+  model.field("subModel1").model("SubModel1",["yetAnotherArrayOfModels","number"]);
+  model.field("subModel2").model("SubModel2",["string"]);
 });
 
 Hop.defineClass("ValidatorTest",ValidatorTest,function(api){
-	api.post("test","/validator/test").demands("minMax","array","object","string").useModel("ValidatorTest");
+	api.post("test","/validator/test").demands("minMax","array","object","string","arrayOfModels","subModel2").optionals("arrayOfStrings").useModel("ValidatorTest");
+	api.post("test2","/validator/test2").demands("subModel1","subModel2").useModel("ValidatorTest2");
+	api.post("test3","/validator/test3").demands("subModelArray").useModel("ModelArraySizes");
 });
 
 
 Hop.defineTestCase("ValidatorTest.test: Basic tests",function(test){
 
-	test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A"}).noError();
-	test.do("ValidatorTest.test").with({ minMax: 2, array: 'red', object: 'R',string:"A" }).errorContains("greater than");
-	test.do("ValidatorTest.test").with({ minMax: 101, array: 'red', object: 'R',string:"A" }).errorContains("less than");
-	test.do("ValidatorTest.test").with({ minMax: 7, array: 'sred', object: 'R',string:"A" }).errorContains("values are");
-	test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'X',string:"A" }).errorContains("values are");
-	test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R',string:"3" }).errorContains("REXP");
+	test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[], subModel2:{} }).noError();
+	test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:"A", subModel2:{} }).errorContains("Invalid type, expected array: arrayOfModels");
+	test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:{}, subModel2:{} }).errorContains("Invalid type, expected array: arrayOfModels");
+  test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[], subModel2:{ string: 5} }).errorContains("Invalid value, string expected: subModel2.string");
+  test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[], subModel2:{ string: "AZ"} }).noError();
+  
+  test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[ { } ], subModel2:{ string: "AZ"} }).noError();
+
+	test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[], subModel2:{}, arrayOfStrings:[ 1 ] }).errorContains("Invalid value, string expected: arrayOfStrings[0]");
+
+	test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[], subModel2:{}, arrayOfStrings:[ "AD","DA",1 ] }).errorContains("Invalid value, string expected: arrayOfStrings[2]");
+
+
+  
+  test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[ { number:7,  } ], subModel2:{ string: "AZ"} }).errorContains("Value must be greater than 10: arrayOfModels[0].number");
+  
+  test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[ { number:10, yetAnotherArrayOfModels:"A"  } ], subModel2:{ string: "AZ"} }).errorContains("Invalid type, expected array: arrayOfModels[0].yetAnotherArrayOfModels");
+  
+  test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[ { number:10, yetAnotherArrayOfModels:[ { string:33 }  ]  } ], subModel2:{ string: "AZ"} }).errorContains("Invalid value, string expected: arrayOfModels[0].yetAnotherArrayOfModels[0].string");
+
+  test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[ { number:10, yetAnotherArrayOfModels:[ { string:"AA" }, {string:33}  ]  } ], subModel2:{ string: "AZ"} }).errorContains("Invalid value, string expected: arrayOfModels[0].yetAnotherArrayOfModels[1].string");
+  
+  test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[ {}, { number:10, yetAnotherArrayOfModels:[ { string:"AA" }, {string:33}  ]  } ], subModel2:{ string: "AZ"} }).errorContains("Invalid value, string expected: arrayOfModels[1].yetAnotherArrayOfModels[1].string");
+  
+  test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[ {}, { number:10, yetAnotherArrayOfModels:[ { string:"AA" }, {string:"LL"}  ]  } ], subModel2:{ string: "AZ"} }).noError();
+	
+  test.do("ValidatorTest.test").with({ minMax: 2, array: 'red', object: 'R',string:"A",arrayOfModels:[], subModel2:{} }).errorContains("greater than");
+	test.do("ValidatorTest.test").with({ minMax: 101, array: 'red', object: 'R',string:"A",arrayOfModels:[], subModel2:{} }).errorContains("less than");
+	test.do("ValidatorTest.test").with({ minMax: 7, array: 'sred', object: 'R',string:"A", arrayOfModels:[], subModel2:{}  }).errorContains("values are");
+	test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'X',string:"A",arrayOfModels:[], subModel2:{} }).errorContains("values are");
+	test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R',string:"3",arrayOfModels:[], subModel2:{} }).errorContains("REXP");
+});
+
+Hop.defineTestCase("ValidatorTest.test2",function(test){  
+  test.do("ValidatorTest.test2").with({ subModel1:{}, subModel2:{}}).errorContains("Missing required value: subModel1.yetAnotherArrayOfModels");
+  test.do("ValidatorTest.test2").with({ subModel1:{ yetAnotherArrayOfModels:[] }, subModel2:{}}).errorContains("Missing required value: subModel1.number");
+  test.do("ValidatorTest.test2").with({ subModel1:{ yetAnotherArrayOfModels:[],number:12 }, subModel2:{ }}).errorContains("Missing required value: subModel2.string");
+  test.do("ValidatorTest.test2").with({ subModel1:{ yetAnotherArrayOfModels:[],number:12 }, subModel2:{ string:"AA"}}).noError();
+});
+
+Hop.defineTestCase("ValidatorTest.test3",function(test){  
+  test.do("ValidatorTest.test3").with({ subModelArray:[] }).errorContains("Array must have at least 2 item(s): subModelArray");
+  test.do("ValidatorTest.test3").with({ subModelArray:[ { }, { }, { }, { }, { } ] }).errorContains("Array must have no more than 4 item(s): subModelArray");
+  test.do("ValidatorTest.test3").with({ subModelArray:[ { }, { } ] }).noError();
 
 });
 
@@ -148,7 +230,7 @@ Hop.defineTestCase("UserService.create: Basic tests",function(test){
 	test.do("UserService.create").with(validUser).inputSameAsOutput().saveOutputAs("createdUser");
   test.do("UserService.del").with("createdUser").noError();
 	
-  test.do("UserService.create").with(validUser, {favoriteColor:null }).errorContains("Colors must");
+  test.do("UserService.create").with(validUser, {favoriteColor:null }).errorContains("Invalid value, string expected: favoriteColor");
 });
 
 Hop.defineTestCase("UserService.create: Advanced",function(test){

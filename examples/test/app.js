@@ -192,7 +192,7 @@ function basicTest(method, funcName,test){
 	test.do(funcName).with(testValue,{modelArray: 2 }).errorContains("Valid values are: red, blue, green");
 	test.do(funcName).with(testValue,{modelObject: 2 }).errorContains("Valid values are: R, B, G");
 	test.do(funcName).with(testValue,{modelString: 2 }).errorContains("REXP");
-	test.do(funcName).with(testValue,{modelStringArray: 2 }).errorContains("Invalid value");
+	test.do(funcName).with(testValue,{modelStringArray: 2 }).errorContains("Invalid type, expected array");
 	test.do(funcName).with(testValue,{modelStringArray: ['D'] }).errorContains('Valid values are: A, B, C');
 
   test.do(funcName).with(testValue,{string:null}).noError();  
@@ -203,7 +203,7 @@ function basicTest(method, funcName,test){
   test.do(funcName).with(testValue,{booleanTrue:null}).noError();
   test.do(funcName).with(testValue,{booleanFalse:null}).noError();
  
-  test.do(funcName).with(testValue,{modelStringArray:null}).errorContains("Invalid value");
+  test.do(funcName).with(testValue,{modelStringArray:null}).errorContains("Invalid type, expected array");
   test.do(funcName).with(testValue,{modelMinMax:null}).errorContains("Value must be greater than");
   test.do(funcName).with(testValue,{modelArray:null}).errorContains("Valid values are");
   test.do(funcName).with(testValue,{modelString:null}).errorContains("REXP");

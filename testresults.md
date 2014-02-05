@@ -9,11 +9,9 @@
 #intro:
 	Pass 31 Fail 0 100.00%
 #model:
-	Pass 25 Fail 0 100.00%
+	Pass 45 Fail 0 100.00%
 #secure:
 	Pass 4 Fail 0 100.00%
-#services:
-	Pass 2 Fail 0 100.00%
 #tasks:
 	Pass 352 Fail 0 100.00%
 #test:
