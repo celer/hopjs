@@ -22,15 +22,15 @@
           <tr><td width="15%"><%=fieldName%></td>
               <td width="15%">
                 <% if(typeof field.model=="string"){%>
-                  <a href="#<%=field.model%>.model"><%=field.model%></a><%=(field.array===true?"[]":"")%>
+                  <a href="#<%=field.model%>.model"><%=field.model%></a><%=(field.array===true?"[]":"")%><%=(field.hash===true?"{}":"")%>
                 <% } else { %>
                   <%=(field.type?field.type:"")%><%=(field.array===true?"[]":"")%>
                 <% } %>
               </td>
               <td width="50%"><%=(field.desc?field.desc:"")%></td>
               <td>
-                  <%=(typeof field.values=="object"?JSON.stringify(field.values):"")%>
-                  <%=(field.modelFields instanceof Array?field.modelFields.join(", "):"")%>
+                  <%=(typeof field.values=="object"?JSON.stringify(field.values)+"<sup>1</sup>":"")%>
+                  <%=(field.modelFields instanceof Array?field.modelFields.join(", ")+"<sup>2</sup>":"")%>
               </td>
           </tr>
         <% } %>
@@ -48,4 +48,8 @@
         </div>
       </div>
     <% } %>
+    <div class="span8">
+      <sup>1. Valid values for this field</sup><br>
+      <sup>2. Required fields in the enclosed model</sup><br>
+    </div>
   </div>

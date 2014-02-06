@@ -121,6 +121,9 @@ ValidatorTest.test2=function(input,onComplete){
 ValidatorTest.test3=function(input,onComplete){
 	return onComplete(null,true);
 }
+ValidatorTest.test4=function(input,onComplete){
+	return onComplete(null,true);
+}
 
 
 Hop.defineModel("SubModel2",function(model){
@@ -146,6 +149,13 @@ Hop.defineModel("ValidatorTest",function(model){
   model.field("arrayOfStrings").string().isArray().regexp(/[A-Z]{2,3}/,"Invalid string specified");
 });
 
+
+Hop.defineModel("HashModel",function(model){
+  model.field("subModel1Hash").model("SubModel1").isHash();
+  model.field("subModel2Hash").model("SubModel2",["string"]).isHash();
+});
+
+
 Hop.defineModel("ModelArraySizes",function(model){
   model.field("subModelArray").model("SubModel1").isArray(2,4);
 });
@@ -159,37 +169,24 @@ Hop.defineClass("ValidatorTest",ValidatorTest,function(api){
 	api.post("test","/validator/test").demands("minMax","array","object","string","arrayOfModels","subModel2").optionals("arrayOfStrings").useModel("ValidatorTest");
 	api.post("test2","/validator/test2").demands("subModel1","subModel2").useModel("ValidatorTest2");
 	api.post("test3","/validator/test3").demands("subModelArray").useModel("ModelArraySizes");
+	api.post("test4","/validator/test4").demands("subModel1Hash","subModel2Hash").useModel("HashModel");
 });
 
 
 Hop.defineTestCase("ValidatorTest.test: Basic tests",function(test){
-
 	test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[], subModel2:{} }).noError();
 	test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:"A", subModel2:{} }).errorContains("Invalid type, expected array: arrayOfModels");
 	test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:{}, subModel2:{} }).errorContains("Invalid type, expected array: arrayOfModels");
   test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[], subModel2:{ string: 5} }).errorContains("Invalid value, string expected: subModel2.string");
   test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[], subModel2:{ string: "AZ"} }).noError();
-  
   test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[ { } ], subModel2:{ string: "AZ"} }).noError();
-
 	test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[], subModel2:{}, arrayOfStrings:[ 1 ] }).errorContains("Invalid value, string expected: arrayOfStrings[0]");
-
 	test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[], subModel2:{}, arrayOfStrings:[ "AD","DA",1 ] }).errorContains("Invalid value, string expected: arrayOfStrings[2]");
-
-
-  
-  test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[ { number:7,  } ], subModel2:{ string: "AZ"} }).errorContains("Value must be greater than 10: arrayOfModels[0].number");
-  
   test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[ { number:10, yetAnotherArrayOfModels:"A"  } ], subModel2:{ string: "AZ"} }).errorContains("Invalid type, expected array: arrayOfModels[0].yetAnotherArrayOfModels");
-  
   test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[ { number:10, yetAnotherArrayOfModels:[ { string:33 }  ]  } ], subModel2:{ string: "AZ"} }).errorContains("Invalid value, string expected: arrayOfModels[0].yetAnotherArrayOfModels[0].string");
-
   test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[ { number:10, yetAnotherArrayOfModels:[ { string:"AA" }, {string:33}  ]  } ], subModel2:{ string: "AZ"} }).errorContains("Invalid value, string expected: arrayOfModels[0].yetAnotherArrayOfModels[1].string");
-  
   test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[ {}, { number:10, yetAnotherArrayOfModels:[ { string:"AA" }, {string:33}  ]  } ], subModel2:{ string: "AZ"} }).errorContains("Invalid value, string expected: arrayOfModels[1].yetAnotherArrayOfModels[1].string");
-  
   test.do("ValidatorTest.test").with({ minMax: 7, array: 'red', object: 'R' ,string:"A", arrayOfModels:[ {}, { number:10, yetAnotherArrayOfModels:[ { string:"AA" }, {string:"LL"}  ]  } ], subModel2:{ string: "AZ"} }).noError();
-	
   test.do("ValidatorTest.test").with({ minMax: 2, array: 'red', object: 'R',string:"A",arrayOfModels:[], subModel2:{} }).errorContains("greater than");
 	test.do("ValidatorTest.test").with({ minMax: 101, array: 'red', object: 'R',string:"A",arrayOfModels:[], subModel2:{} }).errorContains("less than");
 	test.do("ValidatorTest.test").with({ minMax: 7, array: 'sred', object: 'R',string:"A", arrayOfModels:[], subModel2:{}  }).errorContains("values are");
@@ -208,7 +205,13 @@ Hop.defineTestCase("ValidatorTest.test3",function(test){
   test.do("ValidatorTest.test3").with({ subModelArray:[] }).errorContains("Array must have at least 2 item(s): subModelArray");
   test.do("ValidatorTest.test3").with({ subModelArray:[ { }, { }, { }, { }, { } ] }).errorContains("Array must have no more than 4 item(s): subModelArray");
   test.do("ValidatorTest.test3").with({ subModelArray:[ { }, { } ] }).noError();
+});
 
+Hop.defineTestCase("ValidatorTest.test4",function(test){  
+  test.do("ValidatorTest.test4").with({ subModel1Hash: {  }, subModel2Hash:{}  }).noError();
+  test.do("ValidatorTest.test4").with({ subModel1Hash: { foo:{ number: 7 }}, subModel2Hash:{} }).errorContains("Value must be greater than 10: subModel1Hash[\"foo\"].number");
+  test.do("ValidatorTest.test4").with({ subModel1Hash: { foo:{ number: 12 }}, subModel2Hash:{} }).noError();
+  test.do("ValidatorTest.test4").with({ subModel1Hash: { foo:{ number: 12 }}, subModel2Hash:{ foo: { } } }).errorContains("Missing required value: subModel2Hash[\"foo\"].string");
 });
 
 
@@ -224,14 +227,12 @@ Hop.defineClass("UserService",UserService,function(api){
 });
 
 Hop.defineTestCase("UserService.create: Basic tests",function(test){
-
 	var validUser = { email:"test@test.com", name:"TestUser", password:"sillycat" };
-
 	test.do("UserService.create").with(validUser).inputSameAsOutput().saveOutputAs("createdUser");
   test.do("UserService.del").with("createdUser").noError();
-	
   test.do("UserService.create").with(validUser, {favoriteColor:null }).errorContains("Invalid value, string expected: favoriteColor");
 });
+
 
 Hop.defineTestCase("UserService.create: Advanced",function(test){
 	var validUser = { email:"test@test.com", name:"TestUser", password:"sillycat" };
@@ -239,7 +240,6 @@ Hop.defineTestCase("UserService.create: Advanced",function(test){
 	test.do("UserService.create").with(validUser,{name:undefined}).errorContains("Missing parameter");
 	test.do("UserService.create").with(validUser,{email:"X"}).errorContains("Invalid email");
 	test.do("UserService.create").with(validUser,{name:"@#$"}).errorContains("alphanumeric");
-
   test.do("UserService.del").with("createdUser").noError();
 });
 

@@ -9,7 +9,7 @@
 #intro:
 	Pass 31 Fail 0 100.00%
 #model:
-	Pass 45 Fail 0 100.00%
+	Pass 48 Fail 0 100.00%
 #secure:
 	Pass 4 Fail 0 100.00%
 #tasks:
