@@ -25,7 +25,7 @@
 
       if(typeof jQuery!="undefined"){ 
         console.log("loading",urlOrService);
-        jQuery.getScript(urlOrService).done(function(){
+        jQuery.getScript(urlOrService+"?url="+urlOrService).done(function(){
           onComplete(null,true); 
         }).fail(function(){
           onComplete("Failed to load:"+urlOrService);

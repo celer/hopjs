@@ -1,4 +1,18 @@
 
+- when using a referenced value in the tests it dies with an esoteric error
+- TestService.wait maximum of 30 seconds to void testing oddits
+- Print out a test call before making it rather then after
+- Print out all test calls rather then only those with tests
+- devkey module
+- stddev fix for hopjs-remote
+- better logging of errors
+
+Mongo Tests
+  - no path specified in method reg
+  
+
+
+
 hopjs can't run the tests when they are hidden by the front end
 pull in the changes to cjade
 make cjade delay a little bit

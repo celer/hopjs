@@ -20,17 +20,17 @@ if(typeof Hop=="undefined" || typeof Hop.remoteExec=="undefined"){
 
 <%=obj.name%>.<%=methodName%>=function(input,onComplete){
   var self = <%=obj.name%>.<%=methodName%>;  
-  Hop.remoteExec(self.methodName,self.type,self.path,self.options,self.params,input,onComplete);
+  Hop.remoteExec(self.methodName,self.type,<%#typeof srcURL!="undefined"?srcURL:""%>+self.path,self.options,self.params,input,onComplete);
 }
 
 <%=obj.name%>.<%=methodName%>.fromForm=function(selector,input,onComplete){
   var self = <%=obj.name%>.<%=methodName%>;  
-  Hop.fromForm(selector,self.methodName,self.type,self.path,self.options,self.params,input,onComplete);
+  Hop.fromForm(selector,self.methodName,self.type,<%#typeof srcURL!="undefined"?srcURL:""%>+self.path,self.options,self.params,input,onComplete);
 }
 
 <%=obj.name%>.<%=methodName%>.toForm=function(selector,input,onComplete){
   var self = <%=obj.name%>.<%=methodName%>;  
-  Hop.toForm(selector,self.methodName,self.type,self.path,self.options,self.params,input,onComplete);
+  Hop.toForm(selector,self.methodName,self.type,<%#typeof srcURL!="undefined"?srcURL:""%>+self.path,self.options,self.params,input,onComplete);
 }
 
 
