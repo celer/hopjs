@@ -88,6 +88,7 @@ common.requireOnDemand(['hopjs-remote'],function(){
 					console.log("Unit test exited with",code);
 					results[example]={ exitCode:code } 
 
+
 					var m = /^Pass.*$/gm.exec(unitTestOut);
 					if(m){
 						results[example].results=m[0];
@@ -133,7 +134,7 @@ common.requireOnDemand(['hopjs-remote'],function(){
 				testExample(example,function(err,res){
 					if(err){
 						console.error(err,example);
-						process.exit();
+						process.exit(-1);
 					}
 					run();
 				})

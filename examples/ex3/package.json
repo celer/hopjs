@@ -6,13 +6,13 @@
     "start": "node app"
   },
   "dependencies": {
-    "express": "*",
+    "express": "3.4.8",
     "jade": "*",
     "tracer": "*",
     "node-uuid": "*",
     "redis": "*",
     "socket.io": "*",
-    "connect-redis": "*",
+    "connect-redis": "1.4.7",
     "hopjs-common": "*"
   }
 }
