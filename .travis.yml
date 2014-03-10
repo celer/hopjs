@@ -1,5 +1,11 @@
- language: node_js
- node_js: 
-  - "0.8"
-  - "0.10"
- services: redis-server
+before_script:
+  - curl https://gist.github.com/santiycr/5139565/raw/sauce_connect_setup.sh | bash
+language: node_js
+node_js:
+- '0.8'
+- '0.10'
+services: redis-server
+env:
+  global:
+  - secure: JOKBozm9q20aMkIQ5pDWJ78DobL6FqTsiNhQfIIZwtWU9krCt+RvPITc0IkIVaVdeeTebSYxf6zWF5UGdxMPiTEgZm94bjN75q/PKp3z5Z/SR8VIIm3mGjLR/1pZ3slCbsNysOodRkVFFJR0KFHAYClZDBAVhT70XuqoLv6/SZQ=
+  - secure: R8qULT8CkmKdn01nCeK+9aALPJ555LWG06z3VzRNJFU/Qj/uX/L3M3zeAI/lTv+u2JF/8n4wapm4JulvMpGCD83552X15oirjYmutrWCWQ9ggXcY5cUHJKAWPOpF4lbKeaZytJlQ6nljocZlNfzg20KjKxR66rkNTsu4yhWHdwU=
