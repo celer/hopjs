@@ -15,7 +15,7 @@
     "Framework"
   ],
   "scripts": {
-    "test": "node testexamples"
+    "test": "node testexamples && ./testsl.sh"
   },
   "dependencies": {
     "fire-ts": ">=0.0.3",
@@ -29,7 +29,8 @@
   },
 	"devDepdendencies": {
     "mocha": ">=1.4.2",
-    "should": ">=1.1.0"
+    "should": ">=1.1.0",
+    "hopjs-remote":"0.0.29"
 	},
   "engine": "node 0.8.9",
   "repository": {
