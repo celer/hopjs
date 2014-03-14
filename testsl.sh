@@ -1,5 +1,6 @@
 #!/bin/sh
 
+
 (cd examples/intro && node app.js)&
 APP_PID=$?
 sleep 1
