@@ -1,5 +1,5 @@
 before_script:
-  - curl https://gist.githubusercontent.com/celer/9541969/raw/6f06f1d39bf652c681769551b2bac3733f6bbd5f/sc.sh | bash
+  - curl https://gist.githubusercontent.com/celer/9541969/raw/sc.sh | bash
 language: node_js
 node_js:
 - '0.8'
