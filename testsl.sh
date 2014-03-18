@@ -2,8 +2,9 @@
 
 
 (cd examples/intro && node app.js)&
-APP_PID=$?
 sleep 1
+
+echo $APP_PID
 
 HOSTNAME=`hostname -f`
 
@@ -20,9 +21,9 @@ do
   VERSION=$3
 
    
-  if ! node_modules/hopjs-remote/bin/hopjs-selenium --url http://localhost:3000/  --browser "$BROWSER" --platform "$PLATFORM" --version "$VERSION" --remote "http://${SAUCE_USERNAME}:${SAUCE_ACCESS_KEY}@localhost:16455/wd/hub" --name "Build: ${TRAVIS_BUILD_NUMBER}" --tunnelid ${TRAVIS_JOB_NUMBER} --build ${TRAVIS_BUILD_NUMBER} --public true
+  if ! node_modules/hopjs-remote/bin/hopjs-selenium --url http://localhost:3000/  --browser "$BROWSER" --platform "$PLATFORM" --version "$VERSION" --remote "http://${SAUCE_USERNAME}:${SAUCE_ACCESS_KEY}@localhost:16455/wd/hub" --name "Build: ${TRAVIS_BUILD_NUMBER}" --tunnelid ${TRAVIS_JOB_NUMBER} --build ${TRAVIS_BUILD_NUMBER} --public public 
   then
-    kill $APP_PID
+    killall node
     exit -1
   fi
   
@@ -31,9 +32,6 @@ do
   IFS=';'
 done
 
-
-
-kill $APP_PID
-
+killall node
 
 exit 0
