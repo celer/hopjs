@@ -30,7 +30,7 @@
 	"devDepdendencies": {
     "mocha": ">=1.4.2",
     "should": ">=1.1.0",
-    "hopjs-remote":"0.0.32"
+    "hopjs-remote":"0.0.33"
 	},
   "engine": "node 0.8.9",
   "repository": {

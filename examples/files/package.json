@@ -6,11 +6,8 @@
     "start": "node app"
   },
   "dependencies": {
-    "express": "*",
-    "jade": "*",
-    "tracer": "*",
-    "node-uuid": "*",
-    "connect": "*",
-    "multiparty": "*"
+    "express": "^3.4.8",
+    "jade": "^1.3.0",
+    "multiparty": "^3.2.3"
   }
 }

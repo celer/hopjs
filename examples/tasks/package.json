@@ -6,12 +6,9 @@
     "start": "node app"
   },
   "dependencies": {
-    "express": "*",
-    "jade": "*",
+    "express": "^3.4.8",
+    "jade": "^1.3.0",
     "tracer": "~0.6.1",
-    "node-uuid": "*",
-    "connect": "*",
-    "hopjs-common": "*",
     "okapi": "~0.0.7",
     "sqlite3": "~2.1.19"
   }

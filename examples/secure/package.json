@@ -6,8 +6,8 @@
     "start": "node app"
   },
   "dependencies": {
-    "express": "*",
-    "jade": "*",
+    "express": "^3.4.8",
+    "jade": "^1.3.0",
     "tracer": "*",
     "node-uuid": "*",
     "connect": "*"

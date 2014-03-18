@@ -1,80 +1,80 @@
 extends layout
 
 block head
-	script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js")
-	script(src=Hop.hopjsURL);
-	script(src=Hop.apiURL);
-	script(src="http://ajaxorg.github.com/ace/build/src/ace.js")
-	script
-		$(document).ready(function(){
-			editor = ace.edit("editor");
-			editor.getSession().setMode("ace/mode/javascript");
-			console._log=console.log;
-			console.log=function(){
-				console._log(arguments);
-				var out = Array.prototype.slice.call(arguments,0);
-				var str="";
-				out.map(function(arg){
-					if(typeof arg == "object")
-						str+=JSON.stringify(arg);
-					else 
-						str+=arg.toString();
-				});
+  script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js")
+  script(src=Hop.hopjsURL)
+  script(src=Hop.apiURL)
+  script(src="http://ajaxorg.github.com/ace/build/src/ace.js")
+  script.
+    $(document).ready(function(){
+      editor = ace.edit("editor");
+      editor.getSession().setMode("ace/mode/javascript");
+      console._log=console.log;
+      console.log=function(){
+        console._log(arguments);
+        var out = Array.prototype.slice.call(arguments,0);
+        var str="";
+        out.map(function(arg){
+          if(typeof arg == "object")
+            str+=JSON.stringify(arg);
+          else 
+            str+=arg.toString();
+        });
 
-				$("#log").append(str+"\n");
-			}
-		});
-		runCode=function(){
-			try {
-				var code = editor.getSession().getValue();
-				eval(code);
-			} catch(e){
-				console.error(e);
-				console.error(e.stack);
-				console.error(e.line,e.lineNumber);
-			}
-		}
+        $("#log").append(str+"\n");
+      }
+    });
+    runCode=function(){
+      try {
+        var code = editor.getSession().getValue();
+        eval(code);
+      } catch(e){
+        console.error(e);
+        console.error(e.stack);
+        console.error(e.line,e.lineNumber);
+      }
+    }
 block content
-	a(href=Hop.docURL) Documentation about the API
-	p	
-		| You an also use the API you've defined in your own JavaScript applications! 
-		| Simply open the JavaScript console in your browser and type:
-	div
-		form(action="/api/form/test",method="post")
-			select(multiple="true")
-				option(id="v1")	v1
-				option(id="v2")	v2
-				option(id="v3")	v3
-			input(type="submit")
-		form(action="/api/form/test", method="post")
-			input(type="text", value="textValue", name="textValue")
-			br
-			select(name="selectValue")
-				option(id="v1")	v1
-				option(id="v2")	v2
-				option(id="v3")	v3
-			br
-			select(name="multipleValue",multiple="true")
-				option(id="v1")	v1
-				option(id="v2")	v2
-				option(id="v3")	v3
-			br
-			input(type="checkbox", name="checkbox1", value="c1")
-			input(type="checkbox", name="checkbox1", value="c2")
-			input(type="checkbox", name="checkbox1", value="c3")
-			input(type="checkbox", name="checkbox1", value="c4")
-			br
-			input(type="radio", name="radio1", value="c1")
-			input(type="radio", name="radio1", value="c2")
-			input(type="radio", name="radio1", value="c3")
-			input(type="radio", name="radio1", value="c4")
-			input(type="submit")
-		pre#editor(style="width:80%;height:400px;clear:both;display:block;position:relative;")
-			| //First lets create a user
-			| UserService.create({ name: "user", password:"password", email:"email@email.com" },function(err,user){
-			|		UserService.authenticate(user,function(err,user){
-			|			console.log("Authenticated:"user);
-			|	  });
-			| });
-		button(onclick="runCode()") Run
-		pre#log(style="width:80%;height:200px;background:black;clear:both;display:block;position:relative;border:solid 2px;border-color: grey;color:grey;overflow:scroll")
+  a(href=Hop.docURL) Documentation about the API
+  p.
+    You an also use the API you've defined in your own JavaScript applications! 
+    Simply open the JavaScript console in your browser and type:
+  div
+    form(action="/api/form/test",method="post")
+      select(multiple="true")
+        option(id="v1")  v1
+        option(id="v2")  v2
+        option(id="v3")  v3
+      input(type="submit")
+    form(action="/api/form/test", method="post")
+      input(type="text", value="textValue", name="textValue")
+      br
+      select(name="selectValue")
+        option(id="v1")  v1
+        option(id="v2")  v2
+        option(id="v3")  v3
+      br
+      select(name="multipleValue",multiple="true")
+        option(id="v1")  v1
+        option(id="v2")  v2
+        option(id="v3")  v3
+      br
+      input(type="checkbox", name="checkbox1", value="c1")
+      input(type="checkbox", name="checkbox1", value="c2")
+      input(type="checkbox", name="checkbox1", value="c3")
+      input(type="checkbox", name="checkbox1", value="c4")
+      br
+      input(type="radio", name="radio1", value="c1")
+      input(type="radio", name="radio1", value="c2")
+      input(type="radio", name="radio1", value="c3")
+      input(type="radio", name="radio1", value="c4")
+      input(type="submit")
+    pre#editor(style="width:80%;height:400px;clear:both;display:block;position:relative;").
+      //First lets create a user
+      UserService.create({ name: "user", password:"password", email:"email@email.com" },function(err,user){
+        UserService.authenticate(user,function(err,user){
+          console.log("Authenticated:"user);
+        });
+      });
+    button(onclick="runCode()") Run
+    pre#log(style="width:80%;height:200px;background:black;clear:both;display:block;position:relative;border:solid 2px;border-color: grey;color:grey;overflow:scroll")

@@ -2,25 +2,25 @@ extends layout
 
 block head
   script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js")
-  script(src=Hop.hopjsURL);
-  script(src=Hop.apiURL);
-  style
+  script(src=Hop.hopjsURL)
+  script(src=Hop.apiURL)
+  style.
     .error {
       color: red;
     }
 block content
   a(href=Hop.docURL) Documentation about the API
-  p  
-    | You an also use the API you've defined in your own JavaScript applications! 
-    | Simply open the JavaScript console in your browser and type:
+  p.
+    You an also use the API you've defined in your own JavaScript applications! 
+    Simply open the JavaScript console in your browser and type:
   div
-    pre
-      | //First lets create a user
-      | UserService.create({ name: "user", password:"password", email:"email@email.com" },function(err,user){
-      |    UserService.authenticate(user,function(err,user){
-      |      console.log("Authenticated:"user);
-      |    });
-      | });
+    pre.
+      //First lets create a user
+      UserService.create({ name: "user", password:"password", email:"email@email.com" },function(err,user){
+         UserService.authenticate(user,function(err,user){
+           console.log("Authenticated:"user);
+         });
+      });
   div
     form#createUser
       fieldset
@@ -41,7 +41,7 @@ block content
         span.favoriteColorErr
         br
         button(type="submit") Create
-  script
+  script.
     $(document).ready(function(){
       $("#createUser").submit(function(){
         UserService.create.fromForm("#createUser",function(err,res){
