@@ -1,19 +1,18 @@
 #!/bin/sh
 
 
-(cd examples/intro && node app.js)&
-sleep 1
-
-echo $APP_PID
-
 HOSTNAME=`hostname -f`
-
 
 BROWSERS="internet explorer,Windows 7,11;firefox,Linux,27;chrome,Linux,32;safari,OS X 10.8,7" 
 
 IFS=';'
 for b in $BROWSERS
 do
+  killall node
+
+  (cd examples/intro && node app.js)&
+  sleep 1
+
   IFS=','
   set $b
   BROWSER=$1
