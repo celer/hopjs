@@ -3,7 +3,7 @@
 
 HOSTNAME=`hostname -f`
 
-BROWSERS="internet explorer,Windows 7,11;firefox,Linux,27;chrome,Linux,32;safari,OS X 10.8,7" 
+BROWSERS="internet explorer,Windows 7,11;firefox,Linux,27;chrome,Linux,32;safari,OS X 10.9,7" 
 
 IFS=';'
 for b in $BROWSERS
