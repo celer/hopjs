@@ -153,15 +153,54 @@
     <% } %>
       testCase.do("TestService.log",{ msg: "Test: Doing <%=task.funcName%>"},function(){
         try {
-          testCase.do("<%=task.funcName%>",inputValue,function(err,output){
-           <% for(var k in task.test){ %>
-            <% var test = task.test[k]; %>   
-                var value = <%= test.value!=undefined?JSON.stringify(test.value):"undefined"%>;
-                var result = (<%=test.testFunc%>)(inputValue,err,output,value);
-                testCase.testResult(taskIndex,"<%=task.funcName%>",inputValue,err,output,"<%=test.type%>",result);
-           <% } %> 
-           testCase.nextTask(); 
-           });
+          <% if(task.until) { %>
+              var times = 0;
+          <% } %>
+          var doTest=function(){
+            var pass=undefined;
+            testCase.do("<%=task.funcName%>",inputValue,function(err,output){
+             <% for(var k in task.test){ %>
+              <% var test = task.test[k]; %>   
+                  var value = <%= test.value!=undefined?JSON.stringify(test.value):"undefined"%>;
+                  var result = (<%=test.testFunc%>)(inputValue,err,output,value);
+                  <% if(task.until) { %>
+                    if(result==true && pass!=false){ 
+                      pass=true;
+                      testCase.testResult(taskIndex,"<%=task.funcName%>",inputValue,err,output,"<%=test.type%>",result);
+                    } else if(result===false){
+                      pass=false;
+                    }
+                  <% } else { %>
+                    testCase.testResult(taskIndex,"<%=task.funcName%>",inputValue,err,output,"<%=test.type%>",result);
+                  <% } %> 
+             <% } %> 
+
+             <% if(task.until) { %>
+                
+              setTimeout(function(){
+                times++;
+                if(pass===true){
+                  testCase.testResult(taskIndex,"<%=task.funcName%>",inputValue,err,output,"Condition for until passed",true);
+                  testCase.nextTask();
+                <%if (typeof task.until.limit!="undefined") { %> 
+                  } else if(times>=<%=task.until.limit%>){
+                    <% if(task.until.failOnLimit){ %>
+                      testCase.testResult(taskIndex,"<%=task.funcName%>",inputValue,err,output,"Reached limit of until <%=task.until.limit%>",false);
+                    <% } else { %>
+                      testCase.testResult(taskIndex,"<%=task.funcName%>",inputValue,err,output,"Attempted "+times+" times",true);
+                    <% } %>
+                    testCase.nextTask();
+                <% } %>
+                } else {
+                  doTest();
+                }
+              }, <%=task.until.delay || 1 %> );
+             <% } else {  %>
+              testCase.nextTask(); 
+             <% } %>
+             });
+        }
+        doTest();
         } catch(e){
           alert("Failed to run the next task:"+e.toString());
           testCase.nextTask();

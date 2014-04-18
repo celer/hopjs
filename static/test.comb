@@ -23,7 +23,7 @@ var patchTestCases=function(){
           xhrTasks.push({ url: input._fileFromURL, field: i });  
         }
       }
-
+      var times = 1; 
       var run = function(){
         if(xhrTasks.length>0){
           var xhrTask = xhrTasks.shift();

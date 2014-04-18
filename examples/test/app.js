@@ -56,6 +56,19 @@ UnitTestService.test=function(input,onComplete){
 	return onComplete(null,output);
 }
 
+UnitTestService.counts={};
+UnitTestService.reset=function(input,onComplete){
+  UnitTestService.counts[input.name]=0;
+  return onComplete(null, { count: UnitTestService.counts[input.name] });
+}
+UnitTestService.increment=function(input,onComplete){
+  if(!UnitTestService.counts[input.name]){
+    UnitTestService.counts[input.name]=0;
+  }
+  UnitTestService.counts[input.name]++;
+  return onComplete(null, { count: UnitTestService.counts[input.name] });
+}
+
 UnitTestService.testRaw=function(input,onComplete){
 	return onComplete(null,input.value);
 }
@@ -175,6 +188,10 @@ Hop.defineClass("UnitTestService",UnitTestService,function(api){
   },function(method){
     method.demand("foo");
   });
+
+  api.post("reset","test/reset").demand("name");
+  api.post("increment","test/increment").demand("name");
+
 });
 
 function basicTest(method, funcName,test){
@@ -215,6 +232,17 @@ function basicTest(method, funcName,test){
 	test.do(funcName+"Optionals").with(testValue).outputContains(expectedValue);
   test.do(funcName+"Optionals").with(testValue).outputDoesntContain({kittens:34});
 }
+
+Hop.defineTestCase("UnitTestService.increment",function(test){
+  test.do("UnitTestService.reset").with({ name:"counter"});
+  test.until("UnitTestService.increment",{delay:100,limit:20}).with({ name:"counter" }).outputContains({ count: 10 }).noError();
+  test.do("UnitTestService.increment").with({ name:"counter"}).outputContains({ count:11 });
+  //This should pass
+  test.until("UnitTestService.increment",{delay:100,limit:20}).with({ name:"counter" }).outputContains({ count: 10 });
+  test.do("UnitTestService.increment").with({ name:"counter"}).outputContains({ count:32 });
+  //To have the test fail when the limit has been reached add failOnLimit
+  //test.until("UnitTestService.increment",{delay:100,limit:20, failOnLimit:true}).with({ name:"counter" }).outputContains({ count: 10 });
+}); 
 
 Hop.defineTestCase("UnitTestService.testRaw",function(test){
   test.do("UnitTestService.testRaw").with({ value:[1,2,3,4,5] }).outputIsArrayWithLength(5);
