@@ -2,6 +2,7 @@
 
 var express= require('express');
 var path = require('path');
+var redis = require('redis');
 
 var Hop = require("./../../index");
 
@@ -20,7 +21,7 @@ app.configure(function(){
   app.use(express.static(path.join(__dirname, 'public')));
 });
 
-Hop.enableCaching({ log:true });
+Hop.enableCaching({ log:true, redisClient: redis.createClient() });
 Hop.Cache.clear();
 
 app.engine("jade",require('jade').__express);

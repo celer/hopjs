@@ -6,7 +6,8 @@ var UserService = function(){
 }
 
 UserService.prototype.create=function(input,onComplete){
-  Hop.log(input);
+
+  console.log(input);
 
   if(input && !input.name)
     return onComplete("Invalid username");
@@ -84,7 +85,6 @@ Hop.defineModel("User",function(model){
 });
 
 
-new Hop.Event.Channel("/user/:username");
 
 var userService = new UserService();
 Hop.defineClass("UserService",userService,function(api){
@@ -98,7 +98,7 @@ Hop.defineClass("UserService",userService,function(api){
 	}).outputModel("User");
 	api.get("load","/user/:id").demand("id").cacheId("/user/:id",60,true).useModel("User");
 	api.post("create","/user").demand("email","Email address").demand("name","name").useModel("User");
-	api.post("message","/user/message").demand("message").demand("to").demand("from").demand("subject").emitBefore("/user/:to",function(req,input,err,result){ this.emit(input.message); }).useModel("UserMessage");
+	api.post("message","/user/message").demand("message").demand("to").demand("from").demand("subject").useModel("UserMessage");
 	api.get("avatarImage","/user/:id/icon").demand("id").returnsFile().inputModel("User");
 	api.get("logout","/logout").cache(function(cache,req,input){
 		if(req.user){

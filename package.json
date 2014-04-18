@@ -1,7 +1,7 @@
 {
   "name": "hopjs",
-  "version": "0.0.40",
-  "description": "A RESTful declarative API framework, with stub generators for Shell, and Android",
+  "version": "0.1.0",
+  "description": "A RESTful declarative API framework, with stub generators for iOS, XCode, and Android",
   "main": "index.js",
   "bin": {
     "hopjs-gen": "bin/hopjs-gen"
@@ -19,20 +19,16 @@
   },
   "dependencies": {
     "fire-ts": ">=0.0.3",
-    "node-uuid": ">=1.4.1",
-    "redis": ">=0.9.0",
-    "socket.io": ">=0.9.10",
     "optimist": ">=0.3.4",
-    "querystring": ">=0.1.0",
     "hopjs-common": ">=0.0.8",
     "colors": ">=0.6.0-1"
   },
 	"devDepdendencies": {
     "mocha": ">=1.4.2",
     "should": ">=1.1.0",
-    "hopjs-remote":"0.0.34"
+    "hopjs-remote":"0.0.35"
 	},
-  "engine": "node 0.8.9",
+  "engine": "node 0.10.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/celer/hopjs.git"

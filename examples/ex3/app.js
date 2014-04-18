@@ -8,12 +8,10 @@ var express= require('express');
 var RedisStore = require('connect-redis')(express);
 var app = express();
 var server = require('http').createServer(app);
-var io = require('socket.io').listen(server);
 var sessionStore = new RedisStore();
 var path = require('path');
 
 Hop.enableCaching();
-Hop.enableEvents();
 
 require('./user');
 
@@ -91,5 +89,4 @@ app.get("/bar",function(req,res){
 */
 
 Hop.apiHook("/api/1.0/",app);
-Hop.hookSocketIO(io);
 

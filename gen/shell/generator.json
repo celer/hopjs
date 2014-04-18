@@ -1,9 +1,0 @@
-{ 
-  "desc": "Generators a shell script which utilizes curl to make API calls",
-  "demand":{},
-  "optional":{},
-  "generates":"file",
-  "template":"template.sh",
-  "testTemplate":"testTemplate.sh",
-  "require":[]
-}
