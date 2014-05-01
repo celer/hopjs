@@ -9,10 +9,10 @@ Hop.enableCaching=function(options){
   require('./lib/cacheredis.js');
 }
 
-require('./lib/express.js');
 
 require('./lib/test.js');
 require('./lib/user.js');
 require('./lib/model.js');
+require('./lib/express.js');
 
 module.exports=Hop;

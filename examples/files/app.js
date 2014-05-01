@@ -28,6 +28,7 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser('your secret here'));
   app.use(express.session());
+  app.use(Hop.expressAPI("/api"));
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });

@@ -21,13 +21,14 @@
     "fire-ts": ">=0.0.3",
     "optimist": ">=0.3.4",
     "hopjs-common": ">=0.0.8",
-    "colors": ">=0.6.0-1"
+    "colors": ">=0.6.0-1",
+    "keen-router": "^0.1.2"
   },
-	"devDepdendencies": {
+  "devDepdendencies": {
     "mocha": ">=1.4.2",
     "should": ">=1.1.0",
-    "hopjs-remote":"0.0.35"
-	},
+    "hopjs-remote": "0.0.35"
+  },
   "engine": "node 0.10.0",
   "repository": {
     "type": "git",

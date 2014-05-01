@@ -16,6 +16,7 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser('your secret here'));
   app.use(express.session());
+  app.use(Hop.expressAPI("/api"));
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });
@@ -60,9 +61,9 @@ TwitterService.prototype.constructor=TwitterService;
 
 Hop.defineInterface("Notification",function(api){
 		/* #classname will cause the classname of the extending class to be substituted into the path */
-		api.post("send","#classname/send").usage("Sends a message").demand("msg").demand("subject").demand("to");
+		api.post("send","/#classname/send").usage("Sends a message").demand("msg").demand("subject").demand("to");
 		
-		api.post("common","#classname/common").usage("Sends a message").demand("msg").demand("subject").demand("to");
+		api.post("common","/#classname/common").usage("Sends a message").demand("msg").demand("subject").demand("to");
 });
 
 Hop.defineClass("Email",new EmailService(),function(api){

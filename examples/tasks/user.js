@@ -138,7 +138,7 @@ Hop.defineClass("User",User,function(api){
   api.post("create","/users").demands("email","password");
   api.post("login","/users/login").demands("email","password");
   api.get("logout","/users/logout");
-  api.get("current","users/current");
+  api.get("current","/users/current");
 
   api.each(function(api){
     api.list("list","/users");

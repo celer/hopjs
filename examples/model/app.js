@@ -17,6 +17,7 @@ app.configure(function(){
   app.use(express.json());
   app.use(express.cookieParser('your secret here'));
   app.use(express.session());
+  app.use(Hop.expressAPI("/api"));
   app.use(function(req,res,next){
     console.log(req.body);
     next();

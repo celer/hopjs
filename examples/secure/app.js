@@ -35,6 +35,7 @@ app.configure(function(){
 		This will tell express to use it's csrf protection: ( http://en.wikipedia.org/wiki/Cross-site_request_forgery )
 	*/	
 	app.use(express.csrf());
+  app.use(Hop.expressAPI("/api"));
 	app.use(app.router);
 	app.use(express.static(path.join(__dirname, 'public')));
 });
