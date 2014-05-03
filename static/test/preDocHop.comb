@@ -1,3 +1,12 @@
 <div class="span9">
-  <button onClick='Hop.TestCase.runInDialog("","#testModal")'/>Run all test cases</button>
+  <span>
+  <select id="preDocTest">
+    <option value="All">All</option>
+    <% for(var testCase in Hop.TestCases){%>
+      <option value="<%=testCase%>"><%=testCase%></option> 
+    <% } %>
+  </select>
+  <button onClick='Hop.TestCase.runTest($("#preDocTest").val())'/>Run</button>
+  </span>
 </div>
+

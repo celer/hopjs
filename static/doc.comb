@@ -8,13 +8,11 @@
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script>_csrf=<%=JSON.stringify(_csrf)%>;</script>
-    <% if(Hop.enableUnitTests) { %>
-    <script src="apitest.js"></script>
-    <% } %>
     <script src="<%=Hop.hopjsURL%>"></script>
     <script src="<%=Hop.apiURL%>"></script>
     <% if(Hop.enableUnitTests) { %>
-    <script src="<%=Hop.testURL%>"></script>
+    <script src="<%=Hop.workflowURL%>"></script>
+    <script src="apitest.js"></script>
     <% } %>
   </head>
   <body>

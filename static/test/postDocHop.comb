@@ -1,8 +1,17 @@
 <div class="span9">
-  <button onClick='Hop.TestCase.runInDialog("","#testModal")'/>Run all test cases</button>
+  <span class="form-horizontal">
+    <select id="postDocTest">
+      <option value="All">All</option>
+      <% for(var testCase in Hop.TestCases){%>
+        <option value="<%=testCase%>"><%=testCase%></option> 
+      <% } %>
+    </select>
+    <button class="btn" onClick='Hop.TestCase.runTest($("#postDocTest").val())'/>Run</button>
+    <button class="btn" onClick='Hop.TestCase.runTest($("#postDocTest").val(),null,{step:true})'/>Step</button>
+  </span>
 </div>
-<div class="span9">
-  <div id="testModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalTestLabel" aria-hidden="true">
+<div class="span10">
+  <div id="testModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalTestLabel" aria-hidden="true" style="width:80%; margin-left:-40%">
     <div class="modal-header">
       <h3 id="modalTestLabel">Running Tests</h3>
     </div>
@@ -10,6 +19,12 @@
       This is a bunch of crap
     </div>
     <div class="modal-footer">
+      <span class="pull-left">
+        <span id="testModalPass" class="pass"></span>
+        <span id="testModalFail" class="fail"></span>
+        <span id="testModalStatus" class="status"></span>
+      </span>
+      <button id="stepTest" style="display;none;" class="btn" onClick="Hop.TestCase.step()">Step</button>
       <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
     </div>
   </div>

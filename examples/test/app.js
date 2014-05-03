@@ -256,7 +256,7 @@ Hop.defineTestCase("UnitTestService.testGet: Basic tests",function(test){
 });
 
 Hop.defineTestCase("UnitTestService.testDelete: Basic tests",function(test){
-	test.do("UnitTestService.testDelete").with({ id:"3" }).inputSameAsOutput();
+	//test.do("UnitTestService.testDelete").with({ id:"3" }).inputSameAsOutput();
 });
 
 Hop.defineTestCase("UnitTestService.testPut: Basic tests",function(test){

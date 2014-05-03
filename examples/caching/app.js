@@ -219,7 +219,7 @@ Hop.defineTestCase("UserService.create: Basic tests",function(test){
 Hop.defineTestCase("UserService.create: Advanced",function(test){
 	var validUser = { email:"test@test.com", name:"TestUser", password:"sillycat" };
 	test.do("UserService.create").with(validUser).inputSameAsOutput().saveOutputAs("createdUser");
-	test.do("UserService.create").with(validUser,{name:undefined}).errorContains("Missing parameter");
+	test.do("UserService.create").with(validUser,{ name:undefined }).errorContains("Missing parameter");
 	test.do("UserService.create").with(validUser,{email:"X"}).errorContains("Invalid email");
 	test.do("UserService.create").with(validUser,{name:"@#$"}).errorContains("Invalid name");
   

@@ -86,6 +86,8 @@ UserGroups.list=function(input,onComplete){
 
 UserService.create=function(input,onComplete){
 
+  console.log("INPUT",input);
+
   if(!/.{3,100}/.test(input.email)){
     return onComplete("Invalid email address specified: "+input.email);
   }
