@@ -20,7 +20,7 @@ Hop.Models.validate=function(input,params){
 Hop.Models[<%=JSON.stringify(modelName)%>]={
   <% for(var fieldName in model.fields) {%>
     <% var field=model.fields[fieldName]; %>
-    <%=fieldName%>:{
+    <%=JSON.stringify(fieldName)%>:{
       name:<%=JSON.stringify(field.name)%>,
       <% if(field.displayName){ %> displayName:<%=JSON.stringify(field.displayName)%>, <% } %>
       <% if(field.desc){ %> desc:<%=JSON.stringify(field.desc)%>, <% } %>
