@@ -20,7 +20,7 @@ TaskDAO.column("assignedTo", { type: Okapi.IDRef, ref:{ dao: UserDAO, column:"id
  
 
 //FIXME make this take no lambda
-Okapi.createTables(TaskDAO,function(){});
+TaskDAO.createTable().done(function(err){ console.log(err) });
  
 Hop.defineModel("Task",function(user){
   user.field("id", "TaskID","The user ID").integer().ID();

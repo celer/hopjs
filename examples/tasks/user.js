@@ -14,9 +14,7 @@ UserDAO.column("email",{ type: Okapi.String, unique:true });
 UserDAO.column("password", { type: Okapi.String }); 
 UserDAO.column("salt", { type: Okapi.String }); 
 
-
-//FIXME make this take no lambda
-Okapi.createTables(UserDAO,function(){});
+UserDAO.createTable().done(function(err){ console.log(err) });
  
 Hop.defineModel("User",function(user){
   user.field("id", "UserID","The user ID").integer().ID();
